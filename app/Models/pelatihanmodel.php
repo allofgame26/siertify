@@ -25,8 +25,8 @@ class pelatihanmodel extends Model
         'lokasi',
         'biaya',
         'quota_peserta',
-        'no_sertifikat',
-        'bukti_sertifikat',
+        'no_pelatihan',
+        'bukti_pelatihan',
         'status_disetujui',
         'input_by'
     ];
