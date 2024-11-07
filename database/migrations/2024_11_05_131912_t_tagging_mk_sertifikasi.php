@@ -18,7 +18,7 @@ return new class extends Migration
             $table->timestamps();
             
             $table->foreign('id_sertifikasi')->references('id_sertifikasi')->on('m_sertifikasi');
-            $table->foreign('id_mk')->references('id_mk')->on('m_bidang_minat');
+            $table->foreign('id_mk')->references('id_mk')->on('m_mata_kuliah');
         });
     }
 

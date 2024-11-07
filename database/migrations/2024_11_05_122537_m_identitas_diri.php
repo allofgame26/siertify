@@ -20,7 +20,7 @@ return new class extends Migration
             $table->enum('jenis_kelamin',['laki','perempuan']);
             $table->string('alamat',100);
             $table->string('no_telp',15);
-            $table->string('email',20);
+            $table->string('email',50);
             $table->string('foto_profil',255);
             $table->timestamps();
         });

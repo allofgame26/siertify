@@ -13,9 +13,9 @@ return new class extends Migration
     {
         Schema::create('m_mata_kuliah', function (Blueprint $table){
             $table->id('id_mk');
-            $table->string('nama_mk',20);
-            $table->string('kode_mk',5);
-            $table->string('deskripsi_mk',30);
+            $table->string('nama_mk',50);
+            $table->string('kode_mk',10);
+            $table->string('deskripsi_mk',255);
             $table->timestamps();
         });
     }

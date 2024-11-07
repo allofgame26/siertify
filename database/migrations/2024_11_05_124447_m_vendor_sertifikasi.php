@@ -13,8 +13,8 @@ return new class extends Migration
     {
         Schema::create('m_vendor_sertifikasi', function(Blueprint $table){
             $table->id('id_vendor_sertifikasi');
-            $table->string('nama_vendor_sertifikasi',20);
-            $table->string('alamat_vendor_sertifikasi',20);
+            $table->string('nama_vendor_sertifikasi',50);
+            $table->string('alamat_vendor_sertifikasi',255);
             $table->string('kota_vendor_sertifikasi',10);
             $table->string('notelp_vendor_sertifikasi',15);
             $table->string('web_vendor_sertifikasi',30);

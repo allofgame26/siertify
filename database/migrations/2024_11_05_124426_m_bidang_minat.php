@@ -13,9 +13,9 @@ return new class extends Migration
     {
         Schema::create('m_bidang_minat', function (Blueprint $table){
             $table->id('id_bd');
-            $table->string('nama_bd',20);
-            $table->string('kode_bd',5);
-            $table->string('deskripsi_bd',30);
+            $table->string('nama_bd',50);
+            $table->string('kode_bd',10);
+            $table->string('deskripsi_bd',255);
             $table->timestamps();
         });
     }
