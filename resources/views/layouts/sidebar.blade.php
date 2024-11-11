@@ -26,7 +26,7 @@
         <li class="nav-header">Kelola Pelatihan Sertifikasi</li>
         <li class="nav-item"> 
           <a href="{{ url('/level') }}" class="nav-link {{ ($activeMenu == 'level')? 'active' : '' }} "> 
-            <i class="nav-icon fas fa-layer-group"></i> 
+            <i class="nav-icon fas fa-archive"></i> 
             <p>Data Pelatihan & Sertifikasi Dosen</p> 
           </a> 
         </li>
@@ -39,7 +39,7 @@
         <li class="nav-header">Statistik</li>  
         <li class="nav-item"> 
           <a href="{{ url('/level') }}" class="nav-link {{ ($activeMenu == 'level')? 'active' : '' }} "> 
-            <i class="nav-icon fas fa-layer-group"></i> 
+            <i class="nav-icon fas fa-chart-bar"></i> 
             <p>Statistik</p> 
           </a> 
         </li>
