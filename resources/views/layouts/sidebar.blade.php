@@ -18,7 +18,7 @@
         </li>
         <li class="nav-item">
             <a href="{{ url('profile') }}" class="nav-link {{ $activeMenu == 'profile' ? 'active' : '' }}">
-                <i class="nav-icon fas fa-user"></i>
+                <i class="nav-icon 	fas fa-id-badge"></i>
                 <p>Edit Profile</p>
             </a>
         </li>
@@ -26,20 +26,20 @@
         <li class="nav-header">Kelola Pelatihan Sertifikasi</li>
         <li class="nav-item"> 
           <a href="{{ url('/level') }}" class="nav-link {{ ($activeMenu == 'level')? 'active' : '' }} "> 
-            <i class="nav-icon fas fa-layer-group"></i> 
+            <i class="nav-icon 	fas fa-archive"></i> 
             <p>Data Pelatihan & Sertifikasi Dosen</p> 
           </a> 
         </li>
         <li class="nav-item"> 
           <a href="{{ url('/level') }}" class="nav-link {{ ($activeMenu == 'level')? 'active' : '' }} "> 
-            <i class="nav-icon fas fa-layer-group"></i> 
+            <i class="nav-icon 	fas fa-user-friends"></i> 
             <p>Pengajuan</p> 
           </a> 
         </li>
         <li class="nav-header">Statistik</li>  
         <li class="nav-item"> 
           <a href="{{ url('/level') }}" class="nav-link {{ ($activeMenu == 'level')? 'active' : '' }} "> 
-            <i class="nav-icon fas fa-layer-group"></i> 
+            <i class="nav-icon fas fa-chart-bar"></i> 
             <p>Statistik</p> 
           </a> 
         </li>
@@ -47,13 +47,13 @@
         <li class="nav-header">Kelola Pelatihan Sertifikasi</li> 
         <li class="nav-item"> 
           <a href="{{ url('/level') }}" class="nav-link {{ ($activeMenu == 'level')? 'active' : '' }} "> 
-            <i class="nav-icon fas fa-layer-group"></i> 
+            <i class="nav-icon fas fa-user-alt"></i> 
             <p>Pendataan</p> 
           </a> 
         </li> 
         <li class="nav-item"> 
           <a href="{{ url('/level') }}" class="nav-link {{ ($activeMenu == 'level')? 'active' : '' }} "> 
-            <i class="nav-icon fas fa-layer-group"></i> 
+            <i class="nav-icon fas fa-user-friends"></i> 
             <p>Penawaran</p> 
           </a> 
         </li> 
@@ -61,19 +61,19 @@
         <li class="nav-header">Kelola Pengguna</li> 
         <li class="nav-item"> 
           <a href="{{ url('/level') }}" class="nav-link {{ ($activeMenu == 'level')? 'active' : '' }} "> 
-            <i class="nav-icon fas fa-layer-group"></i> 
+            <i class="nav-icon fas fa-user-alt"></i> 
             <p>Jenis Pengguna</p> 
           </a> 
         </li> 
         <li class="nav-item"> 
           <a href="{{ url('/level') }}" class="nav-link {{ ($activeMenu == 'level')? 'active' : '' }} "> 
-            <i class="nav-icon fas fa-layer-group"></i> 
+            <i class="nav-icon 	fas fa-unlock-alt"></i> 
             <p>Data Akun Pengguna</p> 
           </a> 
         </li>
         <li class="nav-item"> 
           <a href="{{ url('/level') }}" class="nav-link {{ ($activeMenu == 'level')? 'active' : '' }} "> 
-            <i class="nav-icon fas fa-layer-group"></i> 
+            <i class="nav-icon fas fa-user-friends"></i> 
             <p>Data Pengguna</p> 
           </a> 
         </li>  
@@ -81,53 +81,53 @@
         <li class="nav-header">Data Pengguna</li>
         <li class="nav-item"> 
           <a href="{{ url('/level') }}" class="nav-link {{ ($activeMenu == 'level')? 'active' : '' }} "> 
-            <i class="nav-icon fas fa-layer-group"></i> 
+            <i class="nav-icon fas fa-user-friends"></i> 
             <p>Data Dosen</p> 
           </a> 
         </li>  
         <li class="nav-header">Kelola Akademik</li> 
         <li class="nav-item"> 
           <a href="{{ url('/level') }}" class="nav-link {{ ($activeMenu == 'level')? 'active' : '' }} "> 
-            <i class="nav-icon fas fa-layer-group"></i> 
+            <i class="nav-icon 	far fa-calendar-alt"></i> 
             <p>Periode</p> 
           </a> 
         </li>
         <li class="nav-item"> 
           <a href="{{ url('/level') }}" class="nav-link {{ ($activeMenu == 'level')? 'active' : '' }} "> 
-            <i class="nav-icon fas fa-layer-group"></i> 
+            <i class="nav-icon 	fas fa-award"></i> 
             <p>Mata Kuliah</p> 
           </a> 
         </li>
         <li class="nav-item"> 
           <a href="{{ url('/level') }}" class="nav-link {{ ($activeMenu == 'level')? 'active' : '' }} "> 
-            <i class="nav-icon fas fa-layer-group"></i> 
+            <i class="nav-icon 	fas fa-folder-open"></i> 
             <p>Bidang Minat</p> 
           </a> 
         </li>   
         <li class="nav-header">Kelola Pelatihan Sertifikasi</li> 
         <li class="nav-item"> 
           <a href="{{ url('/level') }}" class="nav-link {{ ($activeMenu == 'level')? 'active' : '' }} "> 
-            <i class="nav-icon fas fa-layer-group"></i> 
+            <i class="nav-icon 	fas fa-clipboard"></i> 
             <p>Jenis Pelatihan & Sertifikasi</p> 
           </a> 
         </li>
         <li class="nav-item"> 
           <a href="{{ url('/level') }}" class="nav-link {{ ($activeMenu == 'level')? 'active' : '' }} "> 
-            <i class="nav-icon fas fa-layer-group"></i> 
+            <i class="nav-icon 	fas fa-landmark"></i> 
             <p>Vendor</p> 
           </a>
           <ul class="nav nav-treeview">
             <!-- Submenu Pelatihan -->
             <li class="nav-item">
                 <a href="{{ url('/vendor/pelatihan') }}" class="nav-link {{ ($activeMenu == 'pelatihan') ? 'active' : '' }}">
-                    <i class="far fa-circle nav-icon"></i>
+                    <i class="fas fa-landmark"></i>
                     <p>Pelatihan</p>
                 </a>
             </li>
             <!-- Submenu Sertifikasi -->
             <li class="nav-item">
                 <a href="{{ url('/vendor/sertifikasi') }}" class="nav-link {{ ($activeMenu == 'sertifikasi') ? 'active' : '' }}">
-                    <i class="far fa-circle nav-icon"></i>
+                    <i class="fas fa-landmark"></i>
                     <p>Sertifikasi</p>
                 </a>
             </li>
@@ -135,14 +135,14 @@
         </li>
         <li class="nav-item"> 
           <a href="{{ url('/level') }}" class="nav-link {{ ($activeMenu == 'level')? 'active' : '' }} "> 
-            <i class="nav-icon fas fa-layer-group"></i> 
+            <i class="nav-icon 	fas fa-archive"></i> 
             <p>Pelatihan & Sertifikasi</p> 
           </a> 
         </li>   
         <li class="nav-header">Statistik</li> 
         <li class="nav-item"> 
           <a href="{{ url('/level') }}" class="nav-link {{ ($activeMenu == 'level')? 'active' : '' }} "> 
-            <i class="nav-icon fas fa-layer-group"></i> 
+            <i class="nav-icon fas fa-chart-bar"></i> 
             <p>Statistik</p> 
           </a> 
         </li>
@@ -160,66 +160,38 @@
     <!-- /.sidebar-menu -->
 </div>
 <style>
-  .sidebar {
-    background: linear-gradient(180deg, #000000 0%, #3498db 100%);
-    box-shadow: 2px 0 5px rgba(0,0,0,0.1);
+.sidebar {
+  background-color: #052336; /* Mengganti warna gradien menjadi warna solid */
+  box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
 }
 
 .sidebar .nav-link {
-    border-radius: 8px;
-    margin: 5px 15px;
-    transition: all 0.3s ease;
+  border-radius: 8px;
+  margin: 5px 15px;
+  transition: all 0.3s ease;
+  color: #ffffff;
 }
 
 .sidebar .nav-link:hover {
-    background-color: rgba(255,255,255,0.1);
-    transform: translateX(5px);
+  background-color: rgba(255, 255, 255, 0.1);
+  transform: translateX(5px);
 }
 
 .sidebar .nav-link.active {
-    background: rgba(255,255,255,0.2);
-    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+  background: rgba(255, 255, 255, 0.2);
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
 }
 
 .sidebar .nav-header {
-    color: #ecf0f1;
-    font-size: 0.85rem;
-    text-transform: uppercase;
-    letter-spacing: 1px;
-    padding: 1rem 1rem 0.5rem;
+  color: #ecf0f1;
+  font-size: 0.85rem;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  padding: 1rem 1rem 0.5rem;
 }
 
-.sidebar-search .form-control-sidebar {
-    background: rgba(255,255,255,0.1);
-    border: none;
-    color: #fff;
-}
-
-.sidebar-search .btn-sidebar {
-    background: rgba(255,255,255,0.1);
-    border: none;
-}
-
-/* header.blade.php styles */
-.main-header {
-    background: #fff;
-    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-}
-
-.navbar-light .navbar-nav .nav-link {
-    color: #2c3e50;
-    font-weight: 500;
-    padding: 0.8rem 1rem;
-    transition: color 0.3s ease;
-}
-
-.navbar-light .navbar-nav .nav-link:hover {
-    color: #3498db;
-}
-
-.navbar-badge {
-    padding: 0.35em 0.6em;
-    font-size: 0.75rem;
-    border-radius: 0.5rem;
+.nav-link.text-white.bg-danger {
+  color: #fff !important;
+  background-color: #e74c3c !important;
 }
 </style>
