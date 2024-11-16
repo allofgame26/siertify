@@ -1,19 +1,14 @@
-
-
 @extends('layouts.template')
 
 @section('content')
 
 <div class="card">
-
     <div class="card-header">
-        <h2 class="card-title">Halo, Apakabar</h2>
+        <h3 class="card-title">Halo, Apa kabar !!!</h3>
         <div class="card-tools"></div>
     </div>
     <div class="card-body">
         Selamat datang semua, ini adalah halaman utama dari aplikasi ini.
     </div>
-
-</div>    
-
+</div>
 @endsection
