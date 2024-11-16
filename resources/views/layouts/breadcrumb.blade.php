@@ -21,15 +21,13 @@
   <style>
     .content-header {
     background: #f8f9fa;
-    padding: 1.5rem 0;
-    margin-bottom: 1.5rem;
+    margin-bottom: 8px;
 }
 
 .content-header h1 {
     color: #2c3e50;
     font-weight: 600;
     font-size: 1.8rem;
-    margin: 0;
 }
 
 .breadcrumb {
