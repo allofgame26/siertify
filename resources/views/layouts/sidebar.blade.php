@@ -87,7 +87,7 @@
                 </a>
             </li>
             <li class="nav-item">
-                <a href="{{ url('/data-user') }}" class="nav-link {{ $activeMenu == 'data-user' ? 'active' : '' }} ">
+                <a href="{{ url('/datapengguna') }}" class="nav-link {{ $activeMenu == 'data-user' ? 'active' : '' }} ">
                     <i class="nav-icon fas fa-user-friends"></i>
                     <p>Data Pengguna</p>
                 </a>

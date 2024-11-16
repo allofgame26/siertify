@@ -30,7 +30,7 @@ class JenisPelatihanSertifikasiController extends Controller
 
     public function list(Request $request)
     {
-        $jenis = jenispelatihansertifikasimodel::select('id_jenis_pelatihan_sertifikasi','nama_jenis_setifikasi','deskripsi_pendek');
+        $jenis = jenispelatihansertifikasimodel::select('id_jenis_pelatihan_sertifikasi','nama_jenis_sertifikasi','deskripsi_pendek');
 
         // Return data untuk DataTables
         return DataTables::of($jenis)
@@ -70,13 +70,25 @@ class JenisPelatihanSertifikasiController extends Controller
                     'msgField' => $validator->errors() // pesan error validasi
                 ]);
             }
-            jenispelatihansertifikasimodel::create($request->all());
+            $jenis = jenispelatihansertifikasimodel::create([
+                'nama_jenis_sertifikasi' => $request->nama_jenis_sertifikasi,
+                'deskripsi_pendek' => $request->deskripsi_pendek
+            ]);
+
+            if($jenis){
+                return response()->json([
+                    'status'    => true,
+                    'message'   => 'Data user berhasil disimpan'
+                ], 200);
+            }
+            
+            
             return response()->json([
                 'status' => true,
                 'message' => 'Data Jenis berhasil disimpan'
             ]);
         }
-        return redirect('/');
+        return redirect('/jenis');
     }
 
     public function edit_ajax(string $id)

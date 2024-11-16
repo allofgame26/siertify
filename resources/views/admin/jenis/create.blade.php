@@ -11,8 +11,7 @@
             <div class="modal-body">
                 <div class="form-group">
                     <label>Nama Jenis Pelatihan dan Sertifikasi</label>
-                    <input value="" type="text" name="nama_jenis_sertifikasi" id="nama_jenis_sertifikasi" class="form-control"
-                        placeholder="Enter nama jenis" required>
+                    <input value="" type="text" name="nama_jenis_sertifikasi" id="nama_jenis_sertifikasi" class="form-control" placeholder="Enter nama jenis" required>
                     <small id="error-nama_jenis_sertifikasi" class="error-text form-text text-danger"></small>
                 </div>
                 <div class="form-group">
@@ -44,6 +43,11 @@
 
 <script>
     $(document).ready(function() {
+        $.ajaxSetup({
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            }
+        });
         $("#form-tambah-jenis").validate({
             rules: {
                 nama_jenis_sertifikasi: {
@@ -59,30 +63,53 @@
 
             },
             submitHandler: function(form) {
+                console.log('Validasi Berhasil, Form akan disubmit');
                 $.ajax({
-                    url: form.action,
-                    type: form.method,
+                    url: $(form).attr('action'),
+                    type: 'POST',
                     data: $(form).serialize(),
+                    dataType: 'json',
+                    beforeSend: function() {
+                        // Disable submit button
+                        $('button[type="submit"]').prop('disabled', true);
+                    },
                     success: function(response) {
                         if (response.status) {
                             $('#myModal').modal('hide');
+                            $(form)[0].reset();
                             Swal.fire({
                                 icon: 'success',
                                 title: 'Berhasil',
                                 text: response.message
                             });
-                            datajenis.ajax.reload();
+                            if (typeof tableUser !== 'undefined') {
+                                tableUser.ajax.reload();
+                            }
                         } else {
                             $('.error-text').text('');
-                            $.each(response.msgField, function(prefix, val) {
-                                $('#error-' + prefix).text(val[0]);
-                            });
+                            if (response.msgField) {
+                                $.each(response.msgField, function(prefix, val) {
+                                    $('#error-' + prefix).text(val[0]);
+                                });
+                            }
                             Swal.fire({
                                 icon: 'error',
                                 title: 'Terjadi Kesalahan',
                                 text: response.message
                             });
                         }
+                    },
+                    error: function(xhr, status, error) {
+                        console.error('Error:', xhr.responseJSON);
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Terjadi Kesalahan',
+                            text: xhr.responseJSON?.message || 'Gagal menyimpan data. Silakan coba lagi.'
+                        });
+                    },
+                    complete: function() {
+                        // Enable submit button
+                        $('button[type="submit"]').prop('disabled', false);
                     }
                 });
                 return false;

@@ -1,6 +1,8 @@
 <?php
 
 // web.php
+
+use App\Http\Controllers\datapenggunaSuperadminController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\WelcomeController;
 use App\Http\Controllers\JenisPelatihanSertifikasiController;
@@ -10,7 +12,7 @@ use App\Http\Controllers\JenisPelatihanSertifikasiController;
 // Route::get('/', [WelcomeController::class, 'index']);
 Route::get('/', [WelcomeController::class, 'index']);
 
-// jenis pelatihan dan sertifikasi
+// jenis pelatihan dan sertifikasi admin
 Route::get('/jenis', [JenisPelatihanSertifikasiController::class, 'index']);  // menampilkan halaman jenis
 Route::post('/jenis/list', [JenisPelatihanSertifikasiController::class, 'list'] );    //menampilkan data jenis dalam bentuk json datatables
 
@@ -26,3 +28,12 @@ Route::get('/jenis/import', [JenisPelatihanSertifikasiController::class, 'import
 Route::post('/jenis/import_ajax', [JenisPelatihanSertifikasiController::class, 'import_ajax']); //ajax import exvel)
 Route::get('/jenis/export_excel', [JenisPelatihanSertifikasiController::class, 'export_excel']);  //export excel
 Route::get('/jenis/export_pdf', [JenisPelatihanSertifikasiController::class, 'export_pdf']); //export pdf
+
+// data pengguna super admin
+Route::get('/datapengguna', [datapenggunaSuperadminController::class, 'index']);
+Route::POST('/datapengguna/list', [datapenggunaSuperadminController::class, 'list']);
+
+Route::get('/datapengguna/create', [datapenggunaSuperadminController::class, 'create']);
+Route::POST('/datapengguna/proses', [datapenggunaSuperadminController::class, 'store']);
+
+
