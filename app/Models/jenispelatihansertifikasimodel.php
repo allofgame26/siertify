@@ -13,7 +13,7 @@ class jenispelatihansertifikasimodel extends Model
     protected $table = 'm_jenis_pelatihan_sertifikasi';
     protected $primaryKey = 'id_jenis_pelatihan_sertifikasi';
 
-    protected $fillable = ['nama_jenis_setifikasi','deskripsi_pendek'];
+    protected $fillable = ['nama_jenis_sertifikasi','deskripsi_pendek'];
 
     public function sertifikasi():HasMany{
         return $this->hasMany(sertifikasimodel::class);

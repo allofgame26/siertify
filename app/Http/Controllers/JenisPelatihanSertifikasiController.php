@@ -30,7 +30,7 @@ class JenisPelatihanSertifikasiController extends Controller
 
     public function list(Request $request)
     {
-        $jenis = jenispelatihansertifikasimodel::select('id_jenis_pelatihan_sertifikasi','nama_jenis_setifikasi','deskripsi_pendek');
+        $jenis = jenispelatihansertifikasimodel::select('id_jenis_pelatihan_sertifikasi','nama_jenis_sertifikasi','deskripsi_pendek');
 
         // Return data untuk DataTables
         return DataTables::of($jenis)
