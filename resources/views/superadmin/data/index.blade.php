@@ -89,7 +89,7 @@
                         searchable: false
                     },
                     {
-                        data: "nama_jenis_setifikasi",
+                        data: "nama_jenis_sertifikasi",
                         className: "",
                         orderable: true,
                         searchable: true

@@ -30,7 +30,7 @@ class JenisPelatihanSertifikasiController extends Controller
 
     public function list(Request $request)
     {
-        $jenis = jenispelatihansertifikasimodel::select('id_jenis_pelatihan_sertifikasi', 'nama_jenis_sertifikasi', 'deskripsi_pendek');
+        $jenis = jenispelatihansertifikasimodel::select('id_jenis_pelatihan_sertifikasi','nama_jenis_setifikasi','deskripsi_pendek');
 
         // Return data untuk DataTables
         return DataTables::of($jenis)
@@ -91,7 +91,7 @@ class JenisPelatihanSertifikasiController extends Controller
         // cek apakah request dari ajax
         if ($request->ajax() || $request->wantsJson()) {
             $rules = [
-              'nama_jenis_sertifikasi' => 'required|string|min:3|max:50',
+            'nama_jenis_sertifikasi' => 'required|string|min:3|max:50',
             'deskripsi_pendek' => 'required|string|min:1|max:255'
             ];
             // use Illuminate\Support\Facades\Validator;
