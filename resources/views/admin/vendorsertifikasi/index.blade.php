@@ -4,10 +4,10 @@
         <div class="card-header">
             <h3 class="card-title">{{ $page->title }}</h3>
             <div class="card-tools">
-                <button onclick="modalAction('{{ url('/jenis/import') }}')" class="btn btn-primary btn-sm"><i class="fas fa-upload"></i>Import Data</button>
-                <a href="{{ url('/jenis/export_excel') }}" class="btn btn-indigo btn-sm"><i class="fas fa-file-excel"></i>Export Excel</a>
-                <a href="{{ url('/jenis/export_pdf') }}" class="btn btn-pink btn-sm"><i class="fas fa-file-pdf"></i> Export PDF</a>
-                <button onclick="modalAction('{{ url('jenis/create_ajax') }}')"
+                <button onclick="modalAction('{{ url('/vendor/sertifikasi/import') }}')" class="btn btn-primary btn-sm"><i class="fas fa-upload"></i>Import Data</button>
+                <a href="{{ url('/vendor/sertifikasi/export_excel') }}" class="btn btn-indigo btn-sm"><i class="fas fa-file-excel"></i>Export Excel</a>
+                <a href="{{ url('/vendor/sertifikasi/export_pdf') }}" class="btn btn-pink btn-sm"><i class="fas fa-file-pdf"></i> Export PDF</a>
+                <button onclick="modalAction('{{ url('vendor/sertifikasi/create_ajax') }}')"
                     class="btn btn-success btn-sm"><i class="fas fa-plus-square"></i>Tambah Data</button>
             </div>
         </div>
@@ -18,12 +18,13 @@
             @if (session('error'))
                 <div class="alert alert-danger">{{ session('error') }}</div>
             @endif
-            <table class="table table-bordered table-striped table-hover table-sm" id="table_jenis">
+            <table class="table table-bordered table-striped table-hover table-sm" id="table_vendor">
                 <thead>
                     <tr>
                         <th>No</th>
-                        <th>Nama Jenis</th>
-                        <th>Deskripsi</th>
+                        <th>Nama Vendor</th>
+                        <th>Alamat</th>
+                        <th>Kota</th>
                         <th>Aksi</th>
                     </tr>
                 </thead>
@@ -71,13 +72,13 @@
             });
         }
 
-        var datajenis;
+        var datavendor;
         $(document).ready(function() {
-            datajenis = $('#table_jenis').DataTable({
+            datavendor = $('#table_vendor').DataTable({
                 // serverSide: true, jika ingin menggunakan server side processing
                 serverSide: true,
                 ajax: {
-                    "url": "{{ url('jenis/list') }}",
+                    "url": "{{ url('vendor/sertifikasi/list') }}",
                     "dataType": "json",
                     "type": "POST",
                 },
@@ -89,22 +90,29 @@
                         searchable: false
                     },
                     {
-                        data: "nama_jenis_sertifikasi",
+                        data: "nama_vendor_sertifikasi",
                         className: "",
                         orderable: true,
                         searchable: true
                     },
                     {
-                        data: "deskripsi_pendek",
+                        data: "alamat_vendor_sertifikasi",
                         className: "",
                         orderable: false,
+                        searchable: true
+                    },
+                    {
+                        data: "kota_vendor_sertifikasi",
+                        className: "",
+                        orderable: true,
                         searchable: true
                     },
                     {
                         data: "aksi",
                         className: "",
                         orderable: false,
-                        searchable: false
+                        searchable: false,
+                        className: "text-center"
                     }
                 ]
             });
