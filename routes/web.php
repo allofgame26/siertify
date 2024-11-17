@@ -21,6 +21,7 @@ Route::post('/jenis/ajax', [JenisPelatihanSertifikasiController::class, 'store_a
 
 Route::get('/jenis/{id}/edit_ajax', [JenisPelatihanSertifikasiController::class,'edit_ajax']); //menampilkan halaman form edit jenis ajax
 Route::put('/jenis/{id}/update_ajax', [JenisPelatihanSertifikasiController::class,'update_ajax']);   //menyimpan halaman form edit jenis ajax
+
 Route::get('/jenis/{id}/delete_ajax', [JenisPelatihanSertifikasiController::class, 'confirm_ajax']); //tampil form confirm delete jenis ajax
 Route::delete('/jenis/{id}/delete_ajax', [JenisPelatihanSertifikasiController::class, 'delete_ajax']);  //hapus data jenis
 
@@ -34,6 +35,10 @@ Route::get('/datapengguna', [datapenggunaSuperadminController::class, 'index']);
 Route::POST('/datapengguna/list', [datapenggunaSuperadminController::class, 'list']);
 
 Route::get('/datapengguna/create', [datapenggunaSuperadminController::class, 'create']);
-Route::POST('/datapengguna/proses', [datapenggunaSuperadminController::class, 'store']);
+Route::post('/datapengguna/proses', [datapenggunaSuperadminController::class, 'store'])->name('datapengguna.store');
 
+Route::get('/datapengguna/{id}/edit', [datapenggunaSuperadminController::class,'edit']);
+Route::put('/datapengguna/{id}/update', [datapenggunaSuperadminController::class,'update']);
 
+Route::get('/datapengguna/{id}/confirm', [datapenggunaSuperadminController::class,'confirm']);
+Route::delete('/datapengguna/{id}/delete', [datapenggunaSuperadminController::class, 'delete']);

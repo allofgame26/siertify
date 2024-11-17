@@ -36,8 +36,8 @@ class datapenggunaSuperadminController extends Controller
         return DataTables::of($identitas)
             ->addIndexColumn() // menambahkan kolom index / nomor urut
             ->addColumn('aksi', function ($identitas) {
-                $btn = '<button onclick="modalAction(\'' . url('/jenis/' . $identitas->id_identitas . '/edit_ajax') . '\')" class="btn btn-warning btn-sm"><i class="fa fa-pencil"></i>Edit</button> ';
-                $btn .= '<button onclick="modalAction(\'' . url('/jenis/' . $identitas->id_identitas . '/delete_ajax') . '\')" class="btn btn-danger btn-sm">Hapus</button> ';
+                $btn = '<button onclick="modalAction(\'' . url('/datapengguna/' . $identitas->id_identitas . '/edit') . '\')" class="btn btn-warning btn-sm"><i class="fa fa-pencil"></i>Edit</button> ';
+                $btn .= '<button onclick="modalAction(\'' . url('/datapengguna/' . $identitas->id_identitas . '/confirm') . '\')" class="btn btn-danger btn-sm">Hapus</button> ';
             
                 return $btn;
             })
@@ -58,7 +58,7 @@ class datapenggunaSuperadminController extends Controller
                 'nama_lengkap' => 'required|string|min:10|max:100',
                 'NIP' => 'required|string|min:10|max:20',
                 'tempat_lahir' => 'required|string|min:5|max:10',
-                'tanggal_lahir' => 'required|date|before:today',
+                'tanggal_lahir' => 'required|date',
                 'jenis_kelamin' => 'required|string|in:laki,perempuan',
                 'alamat' => 'required|string|min:10|max:100',
                 'no_telp' => 'required|string|min:10|max:15',
@@ -74,12 +74,96 @@ class datapenggunaSuperadminController extends Controller
                     'msgField' => $validator->errors() // pesan error validasi
                 ]);
             }
-            identitasmodel::create($request->all());
+            $datapengguna = identitasmodel::create([
+                'nama_lengkap' => $request->nama_lengkap,
+                'NIP' => $request->NIP,
+                'tempat_lahir' => $request->tempat_lahir,
+                'tanggal_lahir' => $request->tanggal_lahir,
+                'jenis_kelamin' => $request->jenis_kelamin,
+                'alamat' => $request->alamat,
+                'no_telp' => $request->no_telp,
+                'email' => $request->email
+            ]);
+
+            if($datapengguna){
+                return response()->json([
+                    'status'    => true,
+                    'message'   => 'Data user berhasil disimpan'
+                ], 200);
+            }
+
+
             return response()->json([
                 'status' => true,
                 'message' => 'Data Jenis berhasil disimpan'
             ]);
         }
         return redirect('/datapengguna');
+    }
+
+    public function edit(string $id){
+        $datapengguna = identitasmodel::find($id);
+        return view('superadmin.data.edit', ['datapengguna' => $datapengguna]);
+    }
+
+    public function update(Request $request,$id){
+        if ($request->ajax() || $request->wantsJson()) {
+            $rules = [
+            'nama_lengkap' => 'required|string|min:10|max:100',
+                'NIP' => 'required|string|min:10|max:20',
+                'tempat_lahir' => 'required|string|min:5|max:10',
+                'tanggal_lahir' => 'required|date|before:today',
+                'jenis_kelamin' => 'required|string|in:laki,perempuan',
+                'alamat' => 'required|string|min:10|max:100',
+                'no_telp' => 'required|string|min:10|max:15',
+                'email' => 'required|string|min:10|max:50',
+            ];
+            // use Illuminate\Support\Facades\Validator;
+            $validator = Validator::make($request->all(), $rules);
+            if ($validator->fails()) {
+                return response()->json([
+                    'status' => false, // respon json, true: berhasil, false: gagal
+                    'message' => 'Validasi gagal.',
+                    'msgField' => $validator->errors() // menunjukkan field mana yang error
+                ]);
+            }
+            $check = identitasmodel::find($id);
+            if ($check) {
+                $check->update($request->all());
+                return response()->json([
+                    'status' => true,
+                    'message' => 'Data berhasil diupdate'
+                ]);
+            } else {
+                return response()->json([
+                    'status' => false,
+                    'message' => 'Data tidak ditemukan'
+                ]);
+            }
+        }
+        return redirect('/datapengguna');
+    }
+    public function delete(Request $request,$id){
+        if ($request->ajax() || $request->wantsJson()) {
+            $datapengguna = identitasmodel::find($id);
+            if ($datapengguna) {
+                $datapengguna->delete();
+                return response()->json([
+                    'status' => true,
+                    'message' => 'Data berhasil dihapus'
+                ]);
+            } else {
+                return response()->json([
+                    'status' => false,
+                    'message' => 'Data tidak ditemukan'
+                ]);
+            }
+        }
+        return redirect('/datapengguna');
+    }
+
+    public function confirm(string $id){
+        $datapengguna = identitasmodel::find($id);
+        return view('superadmin.data.delete', ['datapengguna' => $datapengguna]);
     }
 }

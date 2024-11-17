@@ -84,6 +84,13 @@
 
 <script>
     $(document).ready(function() {
+        // Setup CSRF token untuk setiap AJAX request
+        $.ajaxSetup({
+                headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            }
+        }); 
+
         $("#form-tambah-datapengguna").validate({
             rules: {
                 nama_lengkap: {
@@ -104,11 +111,9 @@
                 tanggal_lahir: {
                     required: true,
                     date: true,
-                    max: new Date().toISOString().split("T")[0] // memastikan tanggal lahir sebelum hari ini
                 },
                 jenis_kelamin: {
                     required: true,
-                    enum: ["laki", "perempuan"] // jika menggunakan custom validation untuk enum
                 },
                 alamat: {
                     required: true,
@@ -128,33 +133,64 @@
                 }
             },
             submitHandler: function(form) {
+                console.log('Validasi Berhasil, Form akan disubmit');
                 $.ajax({
-                    url: form.action,
-                    type: form.method,
-                    data: $(form).serialize(),
+                    url: $(form).attr('action'), // URL dari atribut action form
+                    type: 'POST', // Metode POST
+                    data: $(form).serialize(), // Serialize form untuk data request
+                    dataType: 'json', // Format data yang diharapkan
+                    beforeSend: function() {
+                        // Disable tombol submit sebelum proses selesai
+                        $('button[type="submit"]').prop('disabled', true);
+                    },
                     success: function(response) {
                         if (response.status) {
+                            // Tutup modal
                             $('#myModal').modal('hide');
+                            // Reset form
+                            $(form)[0].reset();
+                            // Tampilkan pesan sukses
                             Swal.fire({
                                 icon: 'success',
                                 title: 'Berhasil',
                                 text: response.message
                             });
-                            datajenis.ajax.reload();
+
+                            // Reload DataTable jika instance tersedia
+                            if (typeof datapengguna !== 'undefined') {
+                                datapengguna.ajax.reload(null, false); // Reload tabel tanpa mengubah posisi halaman
+                            }
                         } else {
+                            // Reset error message
                             $('.error-text').text('');
-                            $.each(response.msgField, function(prefix, val) {
-                                $('#error-' + prefix).text(val[0]);
-                            });
+                            // Tampilkan pesan error jika ada
+                            if (response.msgField) {
+                                $.each(response.msgField, function(prefix, val) {
+                                    $('#error-' + prefix).text(val[0]);
+                                });
+                            }
+                            // Tampilkan alert error
                             Swal.fire({
                                 icon: 'error',
                                 title: 'Terjadi Kesalahan',
                                 text: response.message
                             });
                         }
+                    },
+                    error: function(xhr, status, error) {
+                        console.error('Error:', xhr.responseJSON);
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Terjadi Kesalahan',
+                            text: xhr.responseJSON?.message || 'Gagal menyimpan data. Silakan coba lagi.'
+                        });
+                    },
+                    complete: function() {
+                        // Aktifkan kembali tombol submit setelah proses selesai
+                        $('button[type="submit"]').prop('disabled', false);
                     }
                 });
-                return false;
+                return false; // Mencegah form submit secara default
             },
             errorElement: 'span',
             errorPlacement: function(error, element) {

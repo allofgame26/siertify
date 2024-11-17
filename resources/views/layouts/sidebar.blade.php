@@ -75,19 +75,19 @@
             <!-- Fitur Super Admin-->
             <li class="nav-header">Kelola Pengguna</li>
             <li class="nav-item">
-                <a href="{{ url('/jenis-user') }}" class="nav-link {{ $activeMenu == 'jenis-user' ? 'active' : '' }} ">
+                <a href="{{ url('/jenispengguna') }}" class="nav-link {{ $activeMenu == 'jenispengguna' ? 'active' : '' }} ">
                     <i class="nav-icon fas fa-user-alt"></i>
                     <p>Jenis Pengguna</p>
                 </a>
             </li>
             <li class="nav-item">
-                <a href="{{ url('/akun-user') }}" class="nav-link {{ $activeMenu == 'akun-user' ? 'active' : '' }} ">
+                <a href="{{ url('/dataakun') }}" class="nav-link {{ $activeMenu == 'dataakun' ? 'active' : '' }} ">
                     <i class="nav-icon 	fas fa-unlock-alt"></i>
                     <p>Data Akun Pengguna</p>
                 </a>
             </li>
             <li class="nav-item">
-                <a href="{{ url('/datapengguna') }}" class="nav-link {{ $activeMenu == 'data-user' ? 'active' : '' }} ">
+                <a href="{{ url('/datapengguna') }}" class="nav-link {{ $activeMenu == 'datapengguna' ? 'active' : '' }} ">
                     <i class="nav-icon fas fa-user-friends"></i>
                     <p>Data Pengguna</p>
                 </a>

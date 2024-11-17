@@ -43,11 +43,14 @@
 
 <script>
     $(document).ready(function() {
+        // Setup CSRF token untuk setiap AJAX request
         $.ajaxSetup({
             headers: {
                 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
             }
         });
+
+        // Validasi dan submit form
         $("#form-tambah-jenis").validate({
             rules: {
                 nama_jenis_sertifikasi: {
@@ -56,42 +59,49 @@
                     maxlength: 50
                 },
                 deskripsi_pendek: {
-                    minlength: 1,
-                    maxlength: 255,
                     required: true,
+                    minlength: 1,
+                    maxlength: 255
                 },
-
             },
             submitHandler: function(form) {
                 console.log('Validasi Berhasil, Form akan disubmit');
                 $.ajax({
-                    url: $(form).attr('action'),
-                    type: 'POST',
-                    data: $(form).serialize(),
-                    dataType: 'json',
+                    url: $(form).attr('action'), // URL dari atribut action form
+                    type: 'POST', // Metode POST
+                    data: $(form).serialize(), // Serialize form untuk data request
+                    dataType: 'json', // Format data yang diharapkan
                     beforeSend: function() {
-                        // Disable submit button
+                        // Disable tombol submit sebelum proses selesai
                         $('button[type="submit"]').prop('disabled', true);
                     },
                     success: function(response) {
                         if (response.status) {
+                            // Tutup modal
                             $('#myModal').modal('hide');
+                            // Reset form
                             $(form)[0].reset();
+                            // Tampilkan pesan sukses
                             Swal.fire({
                                 icon: 'success',
                                 title: 'Berhasil',
                                 text: response.message
                             });
-                            if (typeof tableUser !== 'undefined') {
-                                tableUser.ajax.reload();
+
+                            // Reload DataTable jika instance tersedia
+                            if (typeof datajenis !== 'undefined') {
+                                datajenis.ajax.reload(null, false); // Reload tabel tanpa mengubah posisi halaman
                             }
                         } else {
+                            // Reset error message
                             $('.error-text').text('');
+                            // Tampilkan pesan error jika ada
                             if (response.msgField) {
                                 $.each(response.msgField, function(prefix, val) {
                                     $('#error-' + prefix).text(val[0]);
                                 });
                             }
+                            // Tampilkan alert error
                             Swal.fire({
                                 icon: 'error',
                                 title: 'Terjadi Kesalahan',
@@ -108,11 +118,11 @@
                         });
                     },
                     complete: function() {
-                        // Enable submit button
+                        // Aktifkan kembali tombol submit setelah proses selesai
                         $('button[type="submit"]').prop('disabled', false);
                     }
                 });
-                return false;
+                return false; // Mencegah form submit secara default
             },
             errorElement: 'span',
             errorPlacement: function(error, element) {
@@ -128,3 +138,4 @@
         });
     });
 </script>
+
