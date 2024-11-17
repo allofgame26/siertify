@@ -53,7 +53,7 @@ Route::post('/vendor/sertifikasi/list', [VendorSertifikasiController::class, 'li
 Route::get('/vendor/sertifikasi/create_ajax', [VendorSertifikasiController::class, 'create_ajax']); //Menampilkan halaman form tambah vendor/sertifikasi Ajax
 Route::post('/vendor/sertifikasi/ajax', [VendorSertifikasiController::class, 'store_ajax']); // Menyimpan data vendor/sertifikasi baru Ajax 
 
-Route::get('/vendor/sertifikasi/{id}', [VendorSertifikasiController::class, 'show']);       //menampilkan detai user
+Route::get('/vendor/sertifikasi/{id}/show', [VendorSertifikasiController::class, 'show']);       //menampilkan detai user
 
 Route::get('/vendor/sertifikasi/{id}/edit_ajax', [VendorSertifikasiController::class,'edit_ajax']); //menampilkan halaman form edit vendor/sertifikasi ajax
 Route::put('/vendor/sertifikasi/{id}/update_ajax', [VendorSertifikasiController::class,'update_ajax']);   //menyimpan halaman form edit vendor/sertifikasi ajax

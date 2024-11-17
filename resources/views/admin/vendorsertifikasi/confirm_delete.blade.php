@@ -12,12 +12,12 @@
                     <h5><i class="icon fas fa-ban"></i> Kesalahan!!!</h5>
                     Data yang anda cari tidak ditemukan
                 </div>
-                <a href="{{ url('/vendor/pelatihan/') }}" class="btn btn-warning">Kembali</a>
+                <a href="{{ url('/vendor/sertifikasi/') }}" class="btn btn-warning">Kembali</a>
             </div>
         </div>
     </div>
 @else
-    <form action="{{ url('/vendor/pelatihan/' . $vendor->id_vendor_pelatihan . '/delete_ajax') }}" method="POST" id="form-delete-vendor">
+    <form action="{{ url('/vendor/sertifikasi/' . $vendor->id_vendor_sertifikasi . '/delete_ajax') }}" method="POST" id="form-delete-vendor">
         @csrf
         @method('DELETE')
         <div id="modal-master" class="modal-dialog modal-lg" role="document">
@@ -36,27 +36,27 @@
                     <table class="table table-sm table-bordered table-striped">
                         <tr>
                             <th class="text-right col-3">ID:</th>
-                            <td class="col-9">{{ $vendor->id_vendor_pelatihan}}</td>
+                            <td class="col-9">{{ $vendor->id_vendor_sertifikasi}}</td>
                         </tr>
                         <tr>
                             <th class="text-right col-3">Nama vendor :</th>
-                            <td class="col-9">{{ $vendor->nama_vendor_pelatihan}}</td>
+                            <td class="col-9">{{ $vendor->nama_vendor_sertifikasi}}</td>
                         </tr>
                         <tr>
                             <th class="text-right col-3">Alamat :</th>
-                            <td class="col-9">{{ $vendor->alamat_vendor_pelatihan }}</td>
+                            <td class="col-9">{{ $vendor->alamat_vendor_sertifikasi }}</td>
                         </tr>
                         <tr>
                             <th class="text-right col-3">Kota :</th>
-                            <td class="col-9">{{ $vendor->kota_vendor_pelatihan }}</td>
+                            <td class="col-9">{{ $vendor->kota_vendor_sertifikasi }}</td>
                         </tr>
                         <tr>
                             <th class="text-right col-3">Nomor Telepon :</th>
-                            <td class="col-9">{{ $vendor->notelp_vendor_pelatihan }}</td>
+                            <td class="col-9">{{ $vendor->notelp_vendor_sertifikasi }}</td>
                         </tr>
                         <tr>
                             <th class="text-right col-3">Alamat Website :</th>
-                            <td class="col-9">{{ $vendor->web_vendor_pelatihan }}</td>
+                            <td class="col-9">{{ $vendor->web_vendor_sertifikasi }}</td>
                         </tr>
                     </table>
                 </div>

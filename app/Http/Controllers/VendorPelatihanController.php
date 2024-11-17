@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\vendorpelathihanmodel;
+use App\Models\vendorpelatihanmodel;
 use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
@@ -30,7 +30,7 @@ class VendorPelatihanController extends Controller
 
     public function list(Request $request)
     {
-        $vendorPelatihan = vendorpelathihanmodel::select(
+        $vendorPelatihan = vendorpelatihanmodel::select(
             'id_vendor_pelatihan',
             'nama_vendor_pelatihan',
             'alamat_vendor_pelatihan',
@@ -80,7 +80,7 @@ class VendorPelatihanController extends Controller
                     'msgField' => $validator->errors(), // pesan error validasi
                 ]);
             }
-            vendorpelathihanmodel::create($request->all());
+            vendorpelatihanmodel::create($request->all());
             return response()->json([
                 'status' => true,
                 'message' => 'Data Jenis berhasil disimpan',
@@ -91,7 +91,7 @@ class VendorPelatihanController extends Controller
 
     public function edit_ajax(string $id)
     {
-        $vendor = vendorpelathihanmodel::find($id);
+        $vendor = vendorpelatihanmodel::find($id);
         return view('admin.vendorpelatihan.edit', ['vendor' => $vendor]);
     }
 
@@ -116,7 +116,7 @@ class VendorPelatihanController extends Controller
                     'msgField' => $validator->errors(), // menunjukkan field mana yang error
                 ]);
             }
-            $check = vendorpelathihanmodel::find($id);
+            $check = vendorpelatihanmodel::find($id);
             if ($check) {
                 $check->update($request->all());
                 return response()->json([
@@ -137,13 +137,13 @@ class VendorPelatihanController extends Controller
 
     public function show(string $id)
     {
-        $vendor = vendorpelathihanmodel::find($id);
+        $vendor = vendorpelatihanmodel::find($id);
         return view('admin.vendorpelatihan.show', ['vendor' => $vendor]);
     }
 
     public function confirm_ajax(string $id)
     {
-        $vendor = vendorpelathihanmodel::find($id);
+        $vendor = vendorpelatihanmodel::find($id);
         return view('admin.vendorpelatihan.confirm_delete', ['vendor' => $vendor]);
     }
 
@@ -152,7 +152,7 @@ class VendorPelatihanController extends Controller
     {
         // cek apakah request dari ajax
         if ($request->ajax() || $request->wantsJson()) {
-            $vendor = vendorpelathihanmodel::find($id);
+            $vendor = vendorpelatihanmodel::find($id);
             if ($vendor) {
                 $vendor->delete();
                 return response()->json([
@@ -211,7 +211,7 @@ class VendorPelatihanController extends Controller
                 }
                 if (count($insert) > 0) {
                     // insert data ke database, jika data sudah ada, maka diabaikan
-                    vendorpelathihanmodel::insertOrIgnore($insert);
+                    vendorpelatihanmodel::insertOrIgnore($insert);
                 }
                 return response()->json([
                     'status' => true,
@@ -230,7 +230,7 @@ class VendorPelatihanController extends Controller
     public function export_excel()
     {
         //ambil data yang akan di export
-        $vendor = vendorpelathihanmodel::select(
+        $vendor = vendorpelatihanmodel::select(
                 'id_vendor_pelatihan',
                 'nama_vendor_pelatihan',
                 'alamat_vendor_pelatihan',
@@ -290,7 +290,7 @@ class VendorPelatihanController extends Controller
     public function export_pdf()
     {
         //ambil data yang akan di export
-        $vendor = vendorpelathihanmodel::select(
+        $vendor = vendorpelatihanmodel::select(
                 'id_vendor_pelatihan',
                 'nama_vendor_pelatihan',
                 'alamat_vendor_pelatihan',
