@@ -11,9 +11,9 @@ class vendorpelathihanmodel extends Model
     use HasFactory;
 
     protected $table = 'm_vendor_pelatihan';
-    protected $primaryKey = 'id_vendor_pealtihan';
+    protected $primaryKey = 'id_vendor_pelatihan';
 
-    protected $fillable = ['nama_vendor_pelatihan','alamat_vendor_pealtihan','kota_vendor_pelatihan','notelp_vendor_pelatihan','web_vendor_pelatihan','web_vendor_pelatihan'];
+    protected $fillable = ['nama_vendor_pelatihan','alamat_vendor_pelatihan','kota_vendor_pelatihan','notelp_vendor_pelatihan','web_vendor_pelatihan'];
 
     public function pelatihan():HasMany{
         return $this->hasMany(pelatihanmodel::class);
