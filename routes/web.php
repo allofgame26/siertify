@@ -42,3 +42,9 @@ Route::put('/datapengguna/{id}/update', [datapenggunaSuperadminController::class
 
 Route::get('/datapengguna/{id}/confirm', [datapenggunaSuperadminController::class,'confirm']);
 Route::delete('/datapengguna/{id}/delete', [datapenggunaSuperadminController::class, 'delete']);
+
+Route::get('/datapengguna/import' , [datapenggunaSuperadminController::class , 'import']);
+Route::post('/datapengguna/import_proses' , [datapenggunaSuperadminController::class, 'import_proses']);
+
+Route::get('/datapengguna/export_excel' , [datapenggunaSuperadminController::class, 'export_excel']);
+Route::get('/datapengguna/export_pdf' , [datapenggunaSuperadminController::class, 'export_pdf']);
