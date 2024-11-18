@@ -3,6 +3,7 @@
 // web.php
 
 use App\Http\Controllers\datapenggunaSuperadminController;
+use App\Http\Controllers\JenispenggunaSuperadminController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\WelcomeController;
 use App\Http\Controllers\JenisPelatihanSertifikasiController;
@@ -31,6 +32,26 @@ Route::get('/jenis/export_excel', [JenisPelatihanSertifikasiController::class, '
 Route::get('/jenis/export_pdf', [JenisPelatihanSertifikasiController::class, 'export_pdf']); //export pdf
 
 // data pengguna super admin
+Route::get('/datapengguna', [datapenggunaSuperadminController::class, 'index']);
+Route::POST('/datapengguna/list', [datapenggunaSuperadminController::class, 'list']);
+
+Route::get('/datapengguna/create', [datapenggunaSuperadminController::class, 'create']);
+Route::post('/datapengguna/proses', [datapenggunaSuperadminController::class, 'store'])->name('datapengguna.store');
+
+Route::get('/datapengguna/{id}/edit', [datapenggunaSuperadminController::class,'edit']);
+Route::put('/datapengguna/{id}/update', [datapenggunaSuperadminController::class,'update']);
+
+Route::get('/datapengguna/{id}/confirm', [datapenggunaSuperadminController::class,'confirm']);
+Route::delete('/datapengguna/{id}/delete', [datapenggunaSuperadminController::class, 'delete']);
+
+Route::get('/datapengguna/import' , [datapenggunaSuperadminController::class , 'import']);
+Route::post('/datapengguna/import_proses' , [datapenggunaSuperadminController::class, 'import_proses']);
+
+Route::get('/datapengguna/export_excel' , [datapenggunaSuperadminController::class, 'export_excel']);
+Route::get('/datapengguna/export_pdf' , [datapenggunaSuperadminController::class, 'export_pdf']);
+
+// jenis pengguna super admin
+
 Route::get('/datapengguna', [datapenggunaSuperadminController::class, 'index']);
 Route::POST('/datapengguna/list', [datapenggunaSuperadminController::class, 'list']);
 
