@@ -52,6 +52,24 @@ Route::get('/datapengguna/export_pdf' , [datapenggunaSuperadminController::class
 
 // jenis pengguna super admin
 
+Route::get('/datapengguna', [JenispenggunaSuperadminController::class, 'index']);
+Route::POST('/datapengguna/list', [JenispenggunaSuperadminController::class, 'list']);
+
+Route::get('/datapengguna/create', [JenispenggunaSuperadminController::class, 'create']);
+Route::post('/datapengguna/proses', [JenispenggunaSuperadminController::class, 'store'])->name('datapengguna.store');
+
+Route::get('/datapengguna/{id}/edit', [JenispenggunaSuperadminController::class,'edit']);
+Route::put('/datapengguna/{id}/update', [JenispenggunaSuperadminController::class,'update']);
+
+Route::get('/datapengguna/{id}/confirm', [JenispenggunaSuperadminController::class,'confirm']);
+Route::delete('/datapengguna/{id}/delete', [JenispenggunaSuperadminController::class, 'delete']);
+
+Route::get('/datapengguna/import' , [JenispenggunaSuperadminController::class , 'import']);
+Route::post('/datapengguna/import_proses' , [JenispenggunaSuperadminController::class, 'import_proses']);
+
+Route::get('/datapengguna/export_excel' , [JenispenggunaSuperadminController::class, 'export_excel']);
+Route::get('/datapengguna/export_pdf' , [JenispenggunaSuperadminController::class, 'export_pdf']);
+
 Route::get('/jenispenguna', [JenispenggunaSuperadminController::class, 'index']);
 Route::POST('/jenispenguna/list', [JenispenggunaSuperadminController::class, 'list']);
 
@@ -106,4 +124,3 @@ Route::delete('/vendor/sertifikasi/{id}/delete_ajax', [VendorSertifikasiControll
 Route::get('/vendor/sertifikasi/import', [VendorSertifikasiController::class, 'import']); //ajax form upolad
 Route::post('/vendor/sertifikasi/import_ajax', [VendorSertifikasiController::class, 'import_ajax']); //ajax import exvel)
 Route::get('/vendor/sertifikasi/export_excel', [VendorSertifikasiController::class, 'export_excel']);  //export excel
-Route::get('/vendor/sertifikasi/export_pdf', [VendorSertifikasiController::class, 'export_pdf']); //export pdf
