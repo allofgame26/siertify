@@ -1,7 +1,7 @@
-@empty($datapengguna)
+@empty($jenispengguna)
     <div id="modal-master" class="modal-dialog modal-lg" role="document">
         <div class="modal-content">
-            <div class="modal-header">
+            <div class="modal-header bg-warning">
                 <h5 class="modal-title" id="exampleModalLabel">Kesalahan</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
@@ -10,63 +10,78 @@
             <div class="modal-body">
                 <div class="alert alert-danger">
                     <h5><i class="icon fas fa-ban"></i> Kesalahan!!!</h5>
-                    Data yang anda cari tidak ditemukan
+                    Data jenis yang anda cari tidak ditemukan
                 </div>
-                <a href="{{ url('/datapengguna') }}" class="btn btn-warning">Kembali</a>
+                <a href="{{ url('/jenis') }}" class="btn btn-warning">Kembali</a>
             </div>
         </div>
     </div>
 @else
-    <form action="{{ url('/datapengguna/' . $datapengguna->id_identitas . '/delete') }}" method="POST" id="form-delete-datapengguna">
+    <form action="{{ url('/jenispengguna/' . $jenispengguna->id_jenis_pengguna. '/update') }}" method="POST" id="form-edit">
         @csrf
-        @method('DELETE')
+        @method('PUT')
         <div id="modal-master" class="modal-dialog modal-lg" role="document">
             <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLabel">Hapus Data jenis</h5>
+                <div class="modal-header bg-warning">
+                    <h5 class="modal-title" id="exampleModalLabel">Edit Data jenis</h5>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
                 <div class="modal-body">
-                    <div class="alert alert-danger">
-                        <h5><i class="icon fas fa-ban"></i> Konfirmasi !!!</h5>
-                        Apakah Anda ingin menghapus data seperti di bawah ini?
+                    <div class="form-group">
+                        <label>Nama Jenis Pengguna</label>
+                        <input value="{{ $jenispengguna->nama_jenis_pengguna }}" type="text" name="nama_jenis_pengguna" id="nama_jenis_pengguna" class="form-control" placeholder="Enter Nama Jenis Pengguna" required>
+                        <small id="error-nama_jenis_pengguna" class="error-text form-text text-danger"></small>
                     </div>
-                    <table class="table table-sm table-bordered table-striped">
-                        <tr>
-                            <th class="text-right col-3">ID:</th>
-                            <td class="col-9">{{ $datapengguna->id_identitas}}</td>
-                        </tr>
-                        <tr>
-                            <th class="text-right col-3">Nama Lengkap :</th>
-                            <td class="col-9">{{ $datapengguna->nama_lengkap }}</td>
-                        </tr>
-                        <tr>
-                            <th class="text-right col-3">NIP :</th>
-                            <td class="col-9">{{ $datapengguna->NIP }}</td>
-                        </tr>
-                        <tr>
-                            <th class="text-right col-3">Alamat :</th>
-                            <td class="col-9">{{ $datapengguna->alamat }}</td>
-                        </tr>
-                        <tr>
-                            <th class="text-right col-3">E - Mail :</th>
-                            <td class="col-9">{{ $datapengguna->email }}</td>
-                        </tr>
-                    </table>
+                    <div class="form-group">
+                        <label>Kode Jenis Pengguna</label>
+                        <input value="{{ $jenispengguna->kode_jenis_pengguna }}" type="text" name="kode_jenis_pengguna" id="kode_jenis_pengguna"
+                            class="form-control" placeholder="Enter Kode Jenis Pengguna" required>
+                        <small id="error-kode_jenis_pengguna" class="error-text form-text text-danger"></small>
+                    </div>
                 </div>
                 <div class="modal-footer">
                     <button type="button" data-dismiss="modal" class="btn btn-warning">Batal</button>
-                    <button type="submit" class="btn btn-success">Ya, Hapus</button>
+                    <button type="submit" class="btn btn-success">Simpan</button>
                 </div>
             </div>
         </div>
     </form>
+
+    <style>
+        .modal-header {
+            padding: 10px;
+            /* Sesuaikan nilai padding */
+        }
+
+        .modal-content {
+            border-radius: 10px;
+            /* Sesuaikan nilai radius */
+        }
+    </style>
     <script>
         $(document).ready(function() {
-            $("#form-delete-datapengguna").validate({
-                rules: {},
+
+            $.ajaxSetup({
+                headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            }
+        });
+
+            $("#form-edit").validate({
+                rules: {
+                    nama_jenis_pengguna: {
+                    required: true,
+                    minlength: 5,
+                    maxlength: 50
+                },
+                    kode_jenis_pengguna: {
+                    required: true,
+                    minlength: 3,
+                    maxlength: 5
+                }
+                },
                 submitHandler: function(form) {
                     $.ajax({
                         url: form.action,
@@ -80,8 +95,9 @@
                                     title: 'Berhasil',
                                     text: response.message
                                 });
-                                if (typeof datapengguna !== 'undefined') {
-                                    datapengguna.ajax.reload(null, false); // Reload tabel tanpa mengubah posisi halaman
+
+                                if (typeof datajenispengguna !== 'undefined') {
+                                    datajenispengguna.ajax.reload(null, false); // Reload tabel tanpa mengubah posisi halaman
                             }
                             } else {
                                 $('.error-text').text('');

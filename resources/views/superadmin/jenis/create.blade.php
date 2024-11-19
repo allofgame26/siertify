@@ -1,4 +1,4 @@
-<form action="{{ url('/datapengguna/proses') }}" method="post" id="form-tambah-datapengguna">
+<form action="{{ url('/jenispengguna/proses') }}" method="post" id="form-tambah-jenispengguna">
     @csrf
     <div id="modal-master" class="modal-dialog modal-lg" role="document">
         <div class="modal-content">
@@ -10,55 +10,16 @@
             </div>
             <div class="modal-body">
                 <div class="form-group">
-                    <label>Nama Lengkap</label>
-                    <input value="" type="text" name="nama_lengkap" id="nama_lengkap" class="form-control"
-                        placeholder="Enter Nama Lengkap" required>
-                    <small id="error-nama_lengkap" class="error-text form-text text-danger"></small>
+                    <label>Nama Jenis Pengguna</label>
+                    <input value="" type="text" name="nama_jenis_pengguna" id="nama_jenis_pengguna" class="form-control"
+                        placeholder="Enter Nama Jenis Pengguna" required>
+                    <small id="error-nama_jenis_pengguna" class="error-text form-text text-danger"></small>
                 </div>
                 <div class="form-group">
-                    <label>Nomor Induk Pengajar (NIP)</label>
-                    <input value="" type="text" name="NIP" id="NIP"
-                        class="form-control" placeholder="Enter NIP" required>
-                    <small id="error-NIP" class="error-text form-text text-danger"></small>
-                </div>
-                <div class="form-group">
-                    <label>Tempat Lahir</label>
-                    <input value="" type="text" name="tempat_lahir" id="tempat_lahir"
-                        class="form-control" placeholder="Enter Tempat Lahir" required>
-                    <small id="error-tempat_lahir" class="error-text form-text text-danger"></small>
-                </div>
-                <div class="form-group">
-                    <label>Tangal Lahir</label>
-                    <input value="" type="date" name="tanggal_lahir" id="tanggal_lahir"
-                    class="form-control" placeholder="Pilih tanggal" required>
-                    <small id="error-tanggal_lahir" class="error-text form-text text-danger"></small>
-                </div>
-                <div class="form-group">
-                    <label>Jenis Kelamin</label>
-                    <select name="jenis_kelamin" id="jenis_kelamin" class="form-control" required>
-                        <option value="" disabled selected>Pilih Jenis Kelamin</option>
-                        <option value="laki">Laki-Laki</option>
-                        <option value="perempuan">Perempuan</option>
-                    </select>
-                    <small id="error-jenis_kelamin" class="error-text form-text text-danger"></small>
-                </div>
-                <div class="form-group">
-                    <label>Alamat</label>
-                    <input value="" type="text" name="alamat" id="alamat"
-                        class="form-control" placeholder="Enter Alamat" required>
-                    <small id="error-alamat" class="error-text form-text text-danger"></small>
-                </div>
-                <div class="form-group">
-                    <label>Nomor Telepon</label>
-                    <input value="" type="text" name="no_telp" id="no_telp"
-                        class="form-control" placeholder="Enter Nomor Telefon" required>
-                    <small id="error-no_telp" class="error-text form-text text-danger"></small>
-                </div>
-                <div class="form-group">
-                    <label>E-mail</label>
-                    <input value="" type="text" name="email" id="email"
-                        class="form-control" placeholder="Enter E - Mail" required>
-                    <small id="error-email" class="error-text form-text text-danger"></small>
+                    <label>Kode Jenis Pengguna</label>
+                    <input value="" type="text" name="kode_jenis_pengguna" id="kode_jenis_pengguna"
+                        class="form-control" placeholder="Enter Kode Jenis Pengguna" required>
+                    <small id="error-kode_jenis_pengguna" class="error-text form-text text-danger"></small>
                 </div>
     
             </div>
@@ -91,45 +52,17 @@
             }
         }); 
 
-        $("#form-tambah-datapengguna").validate({
+        $("#form-tambah-jenispengguna").validate({
             rules: {
-                nama_lengkap: {
-                    required: true,
-                    minlength: 10,
-                    maxlength: 100
-                },
-                NIP: {
-                    required: true,
-                    minlength: 10,
-                    maxlength: 20
-                },
-                tempat_lahir: {
+                nama_jenis_pengguna: {
                     required: true,
                     minlength: 5,
-                    maxlength: 10
-                },
-                tanggal_lahir: {
-                    required: true,
-                    date: true,
-                },
-                jenis_kelamin: {
-                    required: true,
-                },
-                alamat: {
-                    required: true,
-                    minlength: 10,
-                    maxlength: 100
-                },
-                no_telp: {
-                    required: true,
-                    minlength: 10,
-                    maxlength: 15
-                },
-                email: {
-                    required: true,
-                    email: true,
-                    minlength: 10,
                     maxlength: 50
+                },
+                kode_jenis_pengguna: {
+                    required: true,
+                    minlength: 3,
+                    maxlength: 5
                 }
             },
             submitHandler: function(form) {
@@ -157,9 +90,10 @@
                             });
 
                             // Reload DataTable jika instance tersedia
-                            if (typeof datapengguna !== 'undefined') {
-                                datapengguna.ajax.reload(null, false); // Reload tabel tanpa mengubah posisi halaman
+                            if (typeof datajenispengguna !== 'undefined') {
+                                datajenispengguna.ajax.reload(null, false); // Reload tabel tanpa mengubah posisi halaman
                             }
+
                         } else {
                             // Reset error message
                             $('.error-text').text('');

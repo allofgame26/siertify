@@ -3,11 +3,13 @@
 // web.php
 
 use App\Http\Controllers\datapenggunaSuperadminController;
+use App\Http\Controllers\JenispenggunaSuperadminController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\WelcomeController;
 use App\Http\Controllers\JenisPelatihanSertifikasiController;
-
-
+use App\Http\Controllers\VendorPelatihanController;
+use App\Http\Controllers\VendorSertifikasiController;
+use App\Models\jenispenggunamodel;
 
 // Route::get('/', [WelcomeController::class, 'index']);
 Route::get('/', [WelcomeController::class, 'index']);
@@ -42,3 +44,23 @@ Route::put('/datapengguna/{id}/update', [datapenggunaSuperadminController::class
 
 Route::get('/datapengguna/{id}/confirm', [datapenggunaSuperadminController::class,'confirm']);
 Route::delete('/datapengguna/{id}/delete', [datapenggunaSuperadminController::class, 'delete']);
+
+// Jenis Pengguna
+
+Route::get('/jenispengguna', [JenispenggunaSuperadminController::class, 'index']);
+Route::POST('/jenispengguna/list', [JenispenggunaSuperadminController::class, 'list']);
+
+Route::get('/jenispengguna/create', [JenispenggunaSuperadminController::class, 'create']);
+Route::post('/jenispengguna/proses', [JenispenggunaSuperadminController::class, 'store']);
+
+Route::get('/jenispengguna/{id}/edit', [JenispenggunaSuperadminController::class,'edit']);
+Route::put('/jenispengguna/{id}/update', [JenispenggunaSuperadminController::class,'update']);
+
+Route::get('/jenispengguna/{id}/confirm', [JenispenggunaSuperadminController::class,'confirm']);
+Route::delete('/jenispengguna/{id}/delete', [JenispenggunaSuperadminController::class, 'delete']);
+
+Route::get('/jenispengguna/import' , [JenispenggunaSuperadminController::class , 'import']);
+Route::post('/jenispengguna/import_proses' , [JenispenggunaSuperadminController::class, 'import_proses']);
+
+Route::get('/jenispengguna/export_excel' , [JenispenggunaSuperadminController::class, 'export_excel']);
+Route::get('/jenispengguna/export_pdf' , [JenispenggunaSuperadminController::class, 'export_pdf']);
