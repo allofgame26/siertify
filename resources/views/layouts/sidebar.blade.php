@@ -66,7 +66,7 @@
           </a> 
         </li> 
         <li class="nav-item"> 
-          <a href="{{ url('/level') }}" class="nav-link {{ ($activeMenu == 'level')? 'active' : '' }} "> 
+          <a href="{{ url('/akunpengguna') }}" class="nav-link {{ ($activeMenu == 'akunpengguna')? 'active' : '' }} "> 
             <i class="nav-icon fas fa-layer-group"></i> 
             <p>Data Akun Pengguna</p> 
           </a> 
