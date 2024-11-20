@@ -50,25 +50,7 @@ Route::post('/datapengguna/import_proses' , [datapenggunaSuperadminController::c
 Route::get('/datapengguna/export_excel' , [datapenggunaSuperadminController::class, 'export_excel']);
 Route::get('/datapengguna/export_pdf' , [datapenggunaSuperadminController::class, 'export_pdf']);
 
-// jenis pengguna super admin
-
-Route::get('/datapengguna', [JenispenggunaSuperadminController::class, 'index']);
-Route::POST('/datapengguna/list', [JenispenggunaSuperadminController::class, 'list']);
-
-Route::get('/datapengguna/create', [JenispenggunaSuperadminController::class, 'create']);
-Route::post('/datapengguna/proses', [JenispenggunaSuperadminController::class, 'store'])->name('datapengguna.store');
-
-Route::get('/datapengguna/{id}/edit', [JenispenggunaSuperadminController::class,'edit']);
-Route::put('/datapengguna/{id}/update', [JenispenggunaSuperadminController::class,'update']);
-
-Route::get('/datapengguna/{id}/confirm', [JenispenggunaSuperadminController::class,'confirm']);
-Route::delete('/datapengguna/{id}/delete', [JenispenggunaSuperadminController::class, 'delete']);
-
-Route::get('/datapengguna/import' , [JenispenggunaSuperadminController::class , 'import']);
-Route::post('/datapengguna/import_proses' , [JenispenggunaSuperadminController::class, 'import_proses']);
-
-Route::get('/datapengguna/export_excel' , [JenispenggunaSuperadminController::class, 'export_excel']);
-Route::get('/datapengguna/export_pdf' , [JenispenggunaSuperadminController::class, 'export_pdf']);
+// jenis Pengguna Super Admin
 
 Route::get('/jenispenguna', [JenispenggunaSuperadminController::class, 'index']);
 Route::POST('/jenispenguna/list', [JenispenggunaSuperadminController::class, 'list']);
