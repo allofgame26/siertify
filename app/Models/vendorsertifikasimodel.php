@@ -13,7 +13,7 @@ class vendorsertifikasimodel extends Model
     protected $table = 'm_vendor_sertifikasi';
     protected $primaryKey = 'id_vendor_sertifikasi';
 
-    protected $fillable = ['nama_vendor_sertifikasi','alamat_vendor_pealtihan','kota_vendor_sertifikasi','notelp_vendor_sertifikasi','web_vendor_sertifikasi','web_vendor_sertifikasi'];
+    protected $fillable = ['nama_vendor_sertifikasi','alamat_vendor_sertifikasi','kota_vendor_sertifikasi','notelp_vendor_sertifikasi','web_vendor_sertifikasi'];
 
     public function sertifikasi():HasMany{
         return $this->hasMany(sertifikasimodel::class);

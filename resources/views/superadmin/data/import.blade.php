@@ -1,4 +1,4 @@
-<form action="{{ url('/jenis/import_ajax') }}" method="POST" id="form-import" enctype="multipart/form-data">
+<form action="{{ url('/datapengguna/import_proses') }}" method="POST" id="form-import" enctype="multipart/form-data">
     @csrf
     <div id="modal-master" class="modal-dialog modal-lg" role="document">
         <div class="modal-content">
@@ -9,13 +9,13 @@
             <div class="modal-body">
                 <div class="form-group">
                     <label>Download Template</label>
-                    <a href="{{ asset('template_jenis.xlsx') }}" class="btn btn-info btn-sm" download><i class="fa fa-file-excel"></i>  Download</a>
+                    <a href="{{ asset('template_datapengguna.xlsx') }}" class="btn btn-info btn-sm" download><i class="fa fa-file-excel"></i>  Download</a>
                     <small id="error-kategori_id" class="error-text form-text text-danger"></small>
                 </div>
                 <div class="form-group">
                     <label>Pilih File</label>
-                    <input type="file" name="file_jenis" id="file_jenis" class="formcontrol" required>
-                    <small id="error-file_jenis" class="error-text form-text textdanger"></small>
+                    <input type="file" name="file_datapengguna" id="file_datapengguna" class="formcontrol" required>
+                    <small id="error-file_datapengguna" class="error-text form-text textdanger"></small>
                 </div>
             </div>
             <div class="modal-footer">
@@ -32,6 +32,13 @@
 </style>
 <script>
     $(document).ready(function() {
+
+        $.ajaxSetup({
+                headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            }
+        }); 
+
         $("#form-import").validate({
             rules: {
                 file_jenis: {
@@ -56,14 +63,14 @@
                                 text: response.message
                             }).then(function() {
                                     // Reload halaman atau update data setelah Swal ditutup
-                                    if (typeof tablejenis !== 'undefined') {
-                                        tablejenis.ajax
+                                    if (typeof datapengguna !== 'undefined') {
+                                        datapengguna.ajax
                                     .reload(); // Reload data table jika ada
                                     } else {
                                         location
                                     .reload(); // Reload halaman jika tidak ada tablejenis
                                     }
-                                });
+                                });e
                         } else { // jika error
                             $('.error-text').text('');
                             $.each(response.msgField, function(prefix, val) {

@@ -17,27 +17,27 @@ class jenispelatihansertifikasiseeder extends Seeder
     {
         $data = [
             [
-                'nama_jenis_setifikasi' => 'Data Science',
+                'nama_jenis_sertifikasi' => 'Data Science',
                 'deskripsi_pendek' => 'Pelatihan yang fokus pada analisis data dan pembelajaran mesin.',
                 'created_at' => now(),
             ],
             [
-                'nama_jenis_setifikasi' => 'Data Mining',
+                'nama_jenis_sertifikasi' => 'Data Mining',
                 'deskripsi_pendek' => 'Pelatihan yang mengajarkan teknik untuk mengeksplorasi dan menganalisis data besar.',
                 'created_at' => now(),
             ],
             [
-                'nama_jenis_setifikasi' => 'Machine Learning',
+                'nama_jenis_sertifikasi' => 'Machine Learning',
                 'deskripsi_pendek' => 'Pelatihan tentang algoritma dan teknik untuk membangun model pembelajaran otomatis.',
                 'created_at' => now(),
             ],
             [
-                'nama_jenis_setifikasi' => 'Big Data',
+                'nama_jenis_sertifikasi' => 'Big Data',
                 'deskripsi_pendek' => 'Pelatihan mengenai pengelolaan dan analisis data dalam skala besar.',
                 'created_at' => now(),
             ],
             [
-                'nama_jenis_setifikasi' => 'Artificial Intelligence',
+                'nama_jenis_sertifikasi' => 'Artificial Intelligence',
                 'deskripsi_pendek' => 'Pelatihan tentang pengembangan sistem yang dapat meniru kecerdasan manusia.',
                 'created_at' => now(),
             ],
