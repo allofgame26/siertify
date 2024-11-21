@@ -2,6 +2,7 @@
 
 // web.php
 
+use App\Http\Controllers\DashboardAdminController;
 use App\Http\Controllers\datapenggunaSuperadminController;
 use App\Http\Controllers\JenispenggunaSuperadminController;
 use Illuminate\Support\Facades\Route;
@@ -11,7 +12,8 @@ use App\Http\Controllers\VendorPelatihanController;
 use App\Http\Controllers\VendorSertifikasiController;
 
 // Route::get('/', [WelcomeController::class, 'index']);
-Route::get('/', [WelcomeController::class, 'index']);
+
+Route::get('/admin', [DashboardAdminController::class, 'index']);
 
 // jenis pelatihan dan sertifikasi admin
 Route::get('/jenis', [JenisPelatihanSertifikasiController::class, 'index']);  // menampilkan halaman jenis
