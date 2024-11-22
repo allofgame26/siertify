@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Models\identitasmodel;
+use App\Models\akunusermodel;
 use App\Models\jenispenggunamodel;
 use Illuminate\Support\DB;
 use Yajra\DataTables\Facades\DataTables;
@@ -11,32 +13,36 @@ use PhpOffice\PhpSpreadsheet\IOFactory;
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
 use Barryvdh\DomPDF\Facade\Pdf;
 
-class JenispenggunaSuperadminController extends Controller
+class akunpenggunasuperadmin extends Controller
 {
     public function index(){
         $breadcrumb = (object)[
-            'title' => 'Jenis Pengguna',
-            'list' => ['Selamat Datang','Jenis Pengguna']
+            'title' => 'Akun Pengguna',
+            'list' => ['Selamat Datang','Akun Pengguna']
         ];
 
         $page = (object)[
-            'title' => 'Jenis Pengguna'
+            'title' => 'Akun Pengguna'
         ];
 
-        $activeMenu = 'jenispengguna';
+        $activeMenu = 'akunpengguna';
 
-        return view('superadmin.jenis.index', ['breadcrumb' => $breadcrumb, 'page' => $page, 'activeMenu' => $activeMenu]);
+        $datapengguna = identitasmodel::select('id_identitas','nama_lengkap')->get();
+
+        $jenispengguna = jenispenggunamodel::select('id_jenis_pengguna','nama_jenis_pengguna')->get();
+
+        return view('superadmin.akun.index', ['breadcrumb' => $breadcrumb, 'page' => $page, 'activeMenu' => $activeMenu , 'datapengguna' => $datapengguna, 'jenispengguna' => $jenispengguna]);
     }
 
     public function list(Request $request)
     {
-        $jenispengguna= jenispenggunamodel::select('id_jenis_pengguna','nama_jenis_pengguna','kode_jenis_pengguna');
+        $akunpengguna= akunusermodel::select('id_user','username','id_identitas','id_jenis_pengguna','id_periode');
 
         // Return data untuk DataTables
-        return DataTables::of($jenispengguna)
+        return DataTables::of($akunpengguna)
             ->addIndexColumn() // menambahkan kolom index / nomor urut
-            ->addColumn('aksi', function ($jenispengguna) {
-                $btn = '<button onclick="modalAction(\'' . url('/jenispengguna/' . $jenispengguna->id_jenis_pengguna . '/show') . '\')" class="btn btn-info btn-sm"><i class="fa fa-pencil"></i>Detail</button> ';
+            ->addColumn('aksi', function ($akunpengguna) {
+                $btn = '<button onclick="modalAction(\'' . url('/akunpengguna/' . $akunpengguna->id_user . '/show') . '\')" class="btn btn-info btn-sm"><i class="fa fa-pencil"></i>Detail</button> ';
                 return $btn;
             })
             

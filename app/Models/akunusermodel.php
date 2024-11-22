@@ -24,8 +24,8 @@ class akunusermodel extends Model
         return $this->belongsTo(identitasmodel::class);
     }
 
-    public function  jenis_pengguna():BelongsTo{
-        return $this->belongsTo(identitasmodel::class);
+    public function jenis_pengguna():BelongsTo{
+        return $this->belongsTo(jenispenggunamodel::class);
     }
 
     public function periode():BelongsTo{
