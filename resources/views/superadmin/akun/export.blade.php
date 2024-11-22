@@ -90,11 +90,16 @@
             </td>
         </tr>
     </table>
+<<<<<<< HEAD
     <h3 class="text-center">DAFTAR JENIS PENGGUNA</h4>
+=======
+    <h3 class="text-center">DAFTAR IDENTITAS PENGGUNA</h4>
+>>>>>>> 3a2ea7e6cf5887fb28adc3b8a3e7a744c4e6e93d
         <table class="border-all">
             <thead>
                 <tr>
                     <th>No</th>
+<<<<<<< HEAD
                     <th>Nama Jenis Pengguna</th>
                     <th>Kode Jenis Pengguna</th>
                 </tr>
@@ -105,6 +110,30 @@
                         <td class="text-center">{{ $loop->iteration }}</td>
                         <td>{{ $b->nama_jenis_pengguna }}</td>
                         <td>{{ $b->kode_jenis_pengguna }}</td>
+=======
+                    <th>Nama Lengkap</th>
+                    <th>NIP</th>
+                    <th>Tempat Lahir</th>
+                    <th>Tanggal Lahir</th>
+                    <th>Jenis Kelamin</th>
+                    <th>Alamat</th>
+                    <th>Nomor Telp</th>
+                    <th>E - mail</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach ($datapengguna as $b)
+                    <tr>
+                        <td class="text-center">{{ $loop->iteration }}</td>
+                        <td>{{ $b->nama_lengkap }}</td>
+                        <td>{{ $b->NIP }}</td>
+                        <td>{{ $b->tempat_lahir }}</td>
+                        <td>{{ $b->tanggal_lahir }}</td>
+                        <td>{{ $b->jenis_kelamin }}</td>
+                        <td>{{ $b->alamat }}</td>
+                        <td>{{ $b->no_telp }}</td>
+                        <td>{{ $b->email }}</td>
+>>>>>>> 3a2ea7e6cf5887fb28adc3b8a3e7a744c4e6e93d
                     </tr>
                 @endforeach
             </tbody>

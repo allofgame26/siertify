@@ -14,9 +14,127 @@
 
     <!-- Sidebar Menu -->
     <nav class="mt-2">
+<<<<<<< HEAD
         <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
             <!-- Add icons to the links using the .nav-icon class
            with font-awesome or any other icon font library -->
+=======
+      <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
+        <!-- Add icons to the links using the .nav-icon class
+             with font-awesome or any other icon font library -->
+        <li class="nav-header">Profile</li>
+        <li class="nav-item">
+          <a href="{{ url('/') }}" class="nav-link {{ ($activeMenu == 'dashboard')? 'active' : '' }}">
+            <i class="nav-icon fas fa-tachometer-alt"></i>
+            <p>
+              Dashboard
+              <i class="right fas fa-angle-left"></i>
+            </p>
+          </a>
+        </li>
+        <li class="nav-item">
+            <a href="{{ url('profile') }}" class="nav-link {{ $activeMenu == 'profile' ? 'active' : '' }}">
+                <i class="nav-icon fas fa-user"></i>
+                <p>Edit Profile</p>
+            </a>
+        </li>
+        <!-- Fitur Pimpinan -->
+        <li class="nav-header">Kelola Pelatihan Sertifikasi</li>
+        <li class="nav-item"> 
+          <a href="{{ url('/level') }}" class="nav-link {{ ($activeMenu == 'level')? 'active' : '' }} "> 
+            <i class="nav-icon fas fa-layer-group"></i> 
+            <p>Data Pelatihan & Sertifikasi Dosen</p> 
+          </a> 
+        </li>
+        <li class="nav-item"> 
+          <a href="{{ url('/level') }}" class="nav-link {{ ($activeMenu == 'level')? 'active' : '' }} "> 
+            <i class="nav-icon fas fa-layer-group"></i> 
+            <p>Pengajuan</p> 
+          </a> 
+        </li>
+        <li class="nav-header">Statistik</li>  
+        <li class="nav-item"> 
+          <a href="{{ url('/level') }}" class="nav-link {{ ($activeMenu == 'level')? 'active' : '' }} "> 
+            <i class="nav-icon fas fa-layer-group"></i> 
+            <p>Statistik</p> 
+          </a> 
+        </li>
+        <!-- Fitur Dosen-->
+        <li class="nav-header">Kelola Pelatihan Sertifikasi</li> 
+        <li class="nav-item"> 
+          <a href="{{ url('/level') }}" class="nav-link {{ ($activeMenu == 'level')? 'active' : '' }} "> 
+            <i class="nav-icon fas fa-layer-group"></i> 
+            <p>Pendataan</p> 
+          </a> 
+        </li> 
+        <li class="nav-item"> 
+          <a href="{{ url('/level') }}" class="nav-link {{ ($activeMenu == 'level')? 'active' : '' }} "> 
+            <i class="nav-icon fas fa-layer-group"></i> 
+            <p>Penawaran</p> 
+          </a> 
+        </li> 
+        <!-- Fitur Super Admin-->
+        <li class="nav-header">Kelola Pengguna</li> 
+        <li class="nav-item"> 
+          <a href="{{ url('/level') }}" class="nav-link {{ ($activeMenu == 'level')? 'active' : '' }} "> 
+            <i class="nav-icon fas fa-layer-group"></i> 
+            <p>Jenis Pengguna</p> 
+          </a> 
+        </li> 
+        <li class="nav-item"> 
+          <a href="{{ url('/akunpengguna') }}" class="nav-link {{ ($activeMenu == 'akunpengguna')? 'active' : '' }} "> 
+            <i class="nav-icon fas fa-layer-group"></i> 
+            <p>Data Akun Pengguna</p> 
+          </a> 
+        </li>
+        <li class="nav-item"> 
+          <a href="{{ url('/level') }}" class="nav-link {{ ($activeMenu == 'level')? 'active' : '' }} "> 
+            <i class="nav-icon fas fa-layer-group"></i> 
+            <p>Data Pengguna</p> 
+          </a> 
+        </li>  
+        <!-- Fitur Admin -->
+        <li class="nav-header">Data Pengguna</li>
+        <li class="nav-item"> 
+          <a href="{{ url('/level') }}" class="nav-link {{ ($activeMenu == 'level')? 'active' : '' }} "> 
+            <i class="nav-icon fas fa-layer-group"></i> 
+            <p>Data Dosen</p> 
+          </a> 
+        </li>  
+        <li class="nav-header">Kelola Akademik</li> 
+        <li class="nav-item"> 
+          <a href="{{ url('/level') }}" class="nav-link {{ ($activeMenu == 'level')? 'active' : '' }} "> 
+            <i class="nav-icon fas fa-layer-group"></i> 
+            <p>Periode</p> 
+          </a> 
+        </li>
+        <li class="nav-item"> 
+          <a href="{{ url('/level') }}" class="nav-link {{ ($activeMenu == 'level')? 'active' : '' }} "> 
+            <i class="nav-icon fas fa-layer-group"></i> 
+            <p>Mata Kuliah</p> 
+          </a> 
+        </li>
+        <li class="nav-item"> 
+          <a href="{{ url('/level') }}" class="nav-link {{ ($activeMenu == 'level')? 'active' : '' }} "> 
+            <i class="nav-icon fas fa-layer-group"></i> 
+            <p>Bidang Minat</p> 
+          </a> 
+        </li>   
+        <li class="nav-header">Kelola Pelatihan Sertifikasi</li> 
+        <li class="nav-item"> 
+          <a href="{{ url('/level') }}" class="nav-link {{ ($activeMenu == 'level')? 'active' : '' }} "> 
+            <i class="nav-icon fas fa-layer-group"></i> 
+            <p>Jenis Pelatihan & Sertifikasi</p> 
+          </a> 
+        </li>
+        <li class="nav-item"> 
+          <a href="{{ url('/level') }}" class="nav-link {{ ($activeMenu == 'level')? 'active' : '' }} "> 
+            <i class="nav-icon fas fa-layer-group"></i> 
+            <p>Vendor</p> 
+          </a>
+          <ul class="nav nav-treeview">
+            <!-- Submenu Pelatihan -->
+>>>>>>> 3a2ea7e6cf5887fb28adc3b8a3e7a744c4e6e93d
             <li class="nav-item">
                 <a href="{{ url('/') }}" class="nav-link {{ $activeMenu == 'dashboard' ? 'active' : '' }}">
                     <i class="nav-icon fas fa-tachometer-alt"></i>

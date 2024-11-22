@@ -4,10 +4,17 @@
         <div class="card-header">
             <h3 class="card-title">{{ $page->title }}</h3>
             <div class="card-tools">
+<<<<<<< HEAD
                 <button onclick="modalAction('{{ url('/akunpengguna/import') }}')" class="btn btn-primary btn-sm"><i class="fas fa-upload"></i>Import Data</button>
                 <a href="{{ url('/akunpengguna/export_excel') }}" class="btn btn-indigo btn-sm"><i class="fas fa-file-excel"></i>Export Excel</a>
                 <a href="{{ url('/akunpengguna/export_pdf') }}" class="btn btn-pink btn-sm"><i class="fas fa-file-pdf"></i> Export PDF</a>
                 <button onclick="modalAction('{{ url('akunpengguna/create') }}')" class="btn btn-success btn-sm"><i class="fas fa-plus-square"></i>Tambah Data</button>
+=======
+                <button onclick="modalAction('{{ url('/akunpenguna/import') }}')" class="btn btn-primary btn-sm"><i class="fas fa-upload"></i>Import Data</button>
+                <a href="{{ url('/akunpenguna/export_excel') }}" class="btn btn-indigo btn-sm"><i class="fas fa-file-excel"></i>Export Excel</a>
+                <a href="{{ url('/akunpenguna/export_pdf') }}" class="btn btn-pink btn-sm"><i class="fas fa-file-pdf"></i> Export PDF</a>
+                <button onclick="modalAction('{{ url('/akunpenguna/create') }}')" class="btn btn-success btn-sm"><i class="fas fa-plus-square"></i>Tambah Data</button>
+>>>>>>> 3a2ea7e6cf5887fb28adc3b8a3e7a744c4e6e93d
             </div>
         </div>
         <div class="card-body">
@@ -17,12 +24,22 @@
             @if (session('error'))
                 <div class="alert alert-danger">{{ session('error') }}</div>
             @endif
+<<<<<<< HEAD
             <table class="table table-bordered table-striped table-hover table-sm" id="table_jenispengguna">
                 <thead>
                     <tr>
                         <th>No</th>
                         <th>Nama Jenis Pengguna</th>
                         <th>Kode Jenis Pengguna</th>
+=======
+            <table class="table table-bordered table-striped table-hover table-sm" id="table_akunpengguna">
+                <thead>
+                    <tr>
+                        <th>No</th>
+                        <th>Nama</th>
+                        <th>Jenis Pengguna</th>
+                        <th>Username</th>
+>>>>>>> 3a2ea7e6cf5887fb28adc3b8a3e7a744c4e6e93d
                         <th>Aksi</th>
                     </tr>
                 </thead>
@@ -69,6 +86,7 @@
             });
         }
 
+<<<<<<< HEAD
         var datajenispengguna;
         $(document).ready(function() {
 
@@ -77,6 +95,16 @@
                 serverSide: true,
                 ajax: {
                     "url": "{{ url('jenispengguna/list') }}",
+=======
+        var jenispengguna;
+        $(document).ready(function() {
+
+            jenispengguna = $('#table_akunpengguna').DataTable({
+                // serverSide: true, jika ingin menggunakan server side processing
+                serverSide: true,
+                ajax: {
+                    "url": "{{ url('/akunpengguna/list') }}",
+>>>>>>> 3a2ea7e6cf5887fb28adc3b8a3e7a744c4e6e93d
                     "dataType": "json",
                     "type": "POST",
                 },
@@ -86,6 +114,7 @@
                         className: "text-center",
                         orderable: false,
                         searchable: false
+<<<<<<< HEAD
                     },
                     {
                         data: "nama_jenis_pengguna",
@@ -100,6 +129,24 @@
                         searchable: true
                     },
                     {
+=======
+                    },{
+                        data: "identitas.nama_lengkap",
+                        className: "",
+                        orderable: true,
+                        searchable: true
+                    },{
+                        data: "jenispengguna.nama_jenis_pengguna",
+                        className: "",
+                        orderable: false,
+                        searchable: true
+                    },{
+                        data: "username",
+                        className: "",
+                        orderable: false,
+                        searchable: true
+                    },{
+>>>>>>> 3a2ea7e6cf5887fb28adc3b8a3e7a744c4e6e93d
                         data: "aksi",
                         className: "",
                         orderable: false,

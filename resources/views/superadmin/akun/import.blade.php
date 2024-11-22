@@ -1,4 +1,8 @@
+<<<<<<< HEAD
 <form action="{{ url('/jenispengguna/import_proses') }}" method="POST" id="form-import" enctype="multipart/form-data">
+=======
+<form action="{{ url('/datapengguna/import_proses') }}" method="POST" id="form-import" enctype="multipart/form-data">
+>>>>>>> 3a2ea7e6cf5887fb28adc3b8a3e7a744c4e6e93d
     @csrf
     <div id="modal-master" class="modal-dialog modal-lg" role="document">
         <div class="modal-content">
@@ -9,12 +13,20 @@
             <div class="modal-body">
                 <div class="form-group">
                     <label>Download Template</label>
+<<<<<<< HEAD
                     <a href="{{ asset('template_jenispenggunasuperadmin.xlsx') }}" class="btn btn-info btn-sm" download><i class="fa fa-file-excel"></i>  Download</a>
+=======
+                    <a href="{{ asset('template_datapengguna.xlsx') }}" class="btn btn-info btn-sm" download><i class="fa fa-file-excel"></i>  Download</a>
+>>>>>>> 3a2ea7e6cf5887fb28adc3b8a3e7a744c4e6e93d
                     <small id="error-kategori_id" class="error-text form-text text-danger"></small>
                 </div>
                 <div class="form-group">
                     <label>Pilih File</label>
+<<<<<<< HEAD
                     <input type="file" name="file_jenispengguna" id="file_jenispengguna" class="formcontrol" required>
+=======
+                    <input type="file" name="file_datapengguna" id="file_datapengguna" class="formcontrol" required>
+>>>>>>> 3a2ea7e6cf5887fb28adc3b8a3e7a744c4e6e93d
                     <small id="error-file_datapengguna" class="error-text form-text textdanger"></small>
                 </div>
             </div>
@@ -41,7 +53,11 @@
 
         $("#form-import").validate({
             rules: {
+<<<<<<< HEAD
                 file_jenispengguna: {
+=======
+                file_jenis: {
+>>>>>>> 3a2ea7e6cf5887fb28adc3b8a3e7a744c4e6e93d
                     required: true,
                     extension: "xlsx"
                 },
@@ -63,8 +79,13 @@
                                 text: response.message
                             }).then(function() {
                                     // Reload halaman atau update data setelah Swal ditutup
+<<<<<<< HEAD
                                     if (typeof datajenispengguna !== 'undefined') {
                                         datajenispengguna.ajax
+=======
+                                    if (typeof datapengguna !== 'undefined') {
+                                        datapengguna.ajax
+>>>>>>> 3a2ea7e6cf5887fb28adc3b8a3e7a744c4e6e93d
                                     .reload(); // Reload data table jika ada
                                     } else {
                                         location
