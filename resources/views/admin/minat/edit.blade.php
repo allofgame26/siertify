@@ -71,7 +71,7 @@
         $(document).ready(function() {
             $("#form-edit").validate({
                 rules: {
-                    nama_minat_sertifikasi: {
+                    nama_bd: {
                     required: true,
                     minlength: 3,
                     maxlength: 50
@@ -81,7 +81,7 @@
                     minlength: 1,
                     maxlength: 10
                 },
-                deskripsi_pendek: {
+                deskripsi_bd: {
                     minlength: 1,
                     maxlength: 255,
                     required: true,
