@@ -2,6 +2,7 @@
 
 // web.php
 
+use App\Http\Controllers\BidangMinatController;
 use App\Http\Controllers\DashboardAdminController;
 use App\Http\Controllers\datapenggunaSuperadminController;
 use App\Http\Controllers\JenispenggunaSuperadminController;
@@ -109,3 +110,20 @@ Route::delete('/vendor/sertifikasi/{id}/delete_ajax', [VendorSertifikasiControll
 Route::get('/vendor/sertifikasi/import', [VendorSertifikasiController::class, 'import']); //ajax form upolad
 Route::post('/vendor/sertifikasi/import_ajax', [VendorSertifikasiController::class, 'import_ajax']); //ajax import exvel)
 Route::get('/vendor/sertifikasi/export_excel', [VendorSertifikasiController::class, 'export_excel']);  //export excel
+
+// bidang minat
+Route::get('/minat', [BidangMinatController::class, 'index']);  // menampilkan halaman minat
+Route::post('/minat/list', [BidangMinatController::class, 'list'] );    //menampilkan data minat dalam bentuk json datatables
+
+Route::get('/minat/create_ajax', [BidangMinatController::class, 'create_ajax']); //Menampilkan halaman form tambah minat Ajax
+Route::post('/minat/ajax', [BidangMinatController::class, 'store_ajax']); // Menyimpan data minat baru Ajax 
+
+Route::get('/minat/{id}/edit_ajax', [BidangMinatController::class,'edit_ajax']); //menampilkan halaman form edit minat ajax
+Route::put('/minat/{id}/update_ajax', [BidangMinatController::class,'update_ajax']);   //menyimpan halaman form edit minat ajax
+Route::get('/minat/{id}/delete_ajax', [BidangMinatController::class, 'confirm_ajax']); //tampil form confirm delete minat ajax
+Route::delete('/minat/{id}/delete_ajax', [BidangMinatController::class, 'delete_ajax']);  //hapus data minat
+
+Route::get('/minat/import', [BidangMinatController::class, 'import']); //ajax form upolad
+Route::post('/minat/import_ajax', [BidangMinatController::class, 'import_ajax']); //ajax import exvel)
+Route::get('/minat/export_excel', [BidangMinatController::class, 'export_excel']);  //export excel
+Route::get('/minat/export_pdf', [BidangMinatController::class, 'export_pdf']); //export pdf
