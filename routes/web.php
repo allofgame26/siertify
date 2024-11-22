@@ -45,19 +45,11 @@ Route::put('/datapengguna/{id}/update', [datapenggunaSuperadminController::class
 Route::get('/datapengguna/{id}/confirm', [datapenggunaSuperadminController::class,'confirm']);
 Route::delete('/datapengguna/{id}/delete', [datapenggunaSuperadminController::class, 'delete']);
 
-<<<<<<< HEAD
-Route::get('/datapengguna/import' , [JenispenggunaSuperadminController::class , 'import']);
-Route::post('/datapengguna/import_proses' , [JenispenggunaSuperadminController::class, 'import_proses']);
-
-Route::get('/datapengguna/export_excel' , [JenispenggunaSuperadminController::class, 'export_excel']);
-Route::get('/datapengguna/export_pdf' , [JenispenggunaSuperadminController::class, 'export_pdf']);
-=======
 Route::get('/datapengguna/import' , [datapenggunaSuperadminController::class , 'import']);
 Route::post('/datapengguna/import_proses' , [datapenggunaSuperadminController::class, 'import_proses']);
 
 Route::get('/datapengguna/export_excel' , [datapenggunaSuperadminController::class, 'export_excel']);
 Route::get('/datapengguna/export_pdf' , [datapenggunaSuperadminController::class, 'export_pdf']);
->>>>>>> d113d9ff69079fc652137ddcbc96e95187b82c42
 
 // jenis pengguna super admin
 
@@ -81,7 +73,6 @@ Route::post('/jenispengguna/import_proses' , [JenispenggunaSuperadminController:
 Route::get('/jenispengguna/export_excel' , [JenispenggunaSuperadminController::class, 'export_excel']);
 Route::get('/jenispengguna/export_pdf' , [JenispenggunaSuperadminController::class, 'export_pdf']);
 
-<<<<<<< HEAD
 // Data Akun super admin
 
 Route::get('/akunpengguna', [JenispenggunaSuperadminController::class, 'index']);
@@ -104,8 +95,6 @@ Route::post('/akunpengguna/import_proses' , [JenispenggunaSuperadminController::
 Route::get('/akunpengguna/export_excel' , [JenispenggunaSuperadminController::class, 'export_excel']);
 Route::get('/akunpengguna/export_pdf' , [JenispenggunaSuperadminController::class, 'export_pdf']);
 
-=======
->>>>>>> d113d9ff69079fc652137ddcbc96e95187b82c42
 //vendor pelatihan
 Route::get('/vendor/pelatihan', [VendorPelatihanController::class, 'index']);  // menampilkan halaman vendor/pelatihan
 Route::post('/vendor/pelatihan/list', [VendorPelatihanController::class, 'list'] );    //menampilkan data vendor/pelatihan dalam bentuk json datatables
