@@ -7,6 +7,7 @@ use App\Http\Controllers\JenispenggunaSuperadminController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\WelcomeController;
 use App\Http\Controllers\JenisPelatihanSertifikasiController;
+use App\Http\Controllers\periodeadmincontroller;
 use App\Http\Controllers\VendorPelatihanController;
 use App\Http\Controllers\VendorSertifikasiController;
 use App\Models\jenispenggunamodel;
@@ -29,6 +30,7 @@ Route::delete('/jenis/{id}/delete_ajax', [JenisPelatihanSertifikasiController::c
 
 Route::get('/jenis/import', [JenisPelatihanSertifikasiController::class, 'import']); //ajax form upolad
 Route::post('/jenis/import_ajax', [JenisPelatihanSertifikasiController::class, 'import_ajax']); //ajax import exvel)
+
 Route::get('/jenis/export_excel', [JenisPelatihanSertifikasiController::class, 'export_excel']);  //export excel
 Route::get('/jenis/export_pdf', [JenisPelatihanSertifikasiController::class, 'export_pdf']); //export pdf
 
@@ -107,3 +109,25 @@ Route::delete('/vendor/sertifikasi/{id}/delete_ajax', [VendorSertifikasiControll
 Route::get('/vendor/sertifikasi/import', [VendorSertifikasiController::class, 'import']); //ajax form upolad
 Route::post('/vendor/sertifikasi/import_ajax', [VendorSertifikasiController::class, 'import_ajax']); //ajax import exvel)
 Route::get('/vendor/sertifikasi/export_excel', [VendorSertifikasiController::class, 'export_excel']);  //export excel
+
+// Periode Admin
+
+Route::get('/periode', [periodeadmincontroller::class, 'index']);
+Route::POST('/periode/list', [periodeadmincontroller::class, 'list']);
+
+Route::get('/periode/create', [periodeadmincontroller::class, 'create']);
+Route::post('/periode/proses', [periodeadmincontroller::class, 'store']);
+
+Route::get('/periode/{id}/edit', [periodeadmincontroller::class,'edit']);
+Route::put('/periode/{id}/update', [periodeadmincontroller::class,'update']);
+
+Route::get('/periode/{id}/show', [periodeadmincontroller::class,'show']);
+
+Route::get('/periode/{id}/confirm', [periodeadmincontroller::class,'confirm']);
+Route::delete('/periode/{id}/delete', [periodeadmincontroller::class, 'delete']);
+
+Route::get('/periode/import' , [periodeadmincontroller::class , 'import']);
+Route::post('/periode/import_proses' , [periodeadmincontroller::class, 'import_proses']);
+
+Route::get('/periode/export_excel' , [periodeadmincontroller::class, 'export_excel']);
+Route::get('/periode/export_pdf' , [periodeadmincontroller::class, 'export_pdf']);
