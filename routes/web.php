@@ -2,18 +2,22 @@
 
 // web.php
 
+use App\Http\Controllers\BidangMinatController;
+use App\Http\Controllers\DashboardAdminController;
 use App\Http\Controllers\datapenggunaSuperadminController;
 use App\Http\Controllers\JenispenggunaSuperadminController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\WelcomeController;
 use App\Http\Controllers\JenisPelatihanSertifikasiController;
 use App\Http\Controllers\periodeadmincontroller;
+use App\Http\Controllers\MatkulController;
 use App\Http\Controllers\VendorPelatihanController;
 use App\Http\Controllers\VendorSertifikasiController;
 use App\Models\jenispenggunamodel;
 
 // Route::get('/', [WelcomeController::class, 'index']);
-Route::get('/', [WelcomeController::class, 'index']);
+
+Route::get('/admin', [DashboardAdminController::class, 'index']);
 
 // jenis pelatihan dan sertifikasi admin
 Route::get('/jenis', [JenisPelatihanSertifikasiController::class, 'index']);  // menampilkan halaman jenis
@@ -131,3 +135,44 @@ Route::post('/periode/import_proses' , [periodeadmincontroller::class, 'import_p
 
 Route::get('/periode/export_excel' , [periodeadmincontroller::class, 'export_excel']);
 Route::get('/periode/export_pdf' , [periodeadmincontroller::class, 'export_pdf']);
+
+
+// bidang minat
+Route::get('/minat', [BidangMinatController::class, 'index']);  // menampilkan halaman minat
+Route::post('/minat/list', [BidangMinatController::class, 'list'] );    //menampilkan data minat dalam bentuk json datatables
+
+Route::get('/minat/create_ajax', [BidangMinatController::class, 'create_ajax']); //Menampilkan halaman form tambah minat Ajax
+Route::post('/minat/ajax', [BidangMinatController::class, 'store_ajax']); // Menyimpan data minat baru Ajax 
+
+Route::get('/minat/{id}/edit_ajax', [BidangMinatController::class,'edit_ajax']); //menampilkan halaman form edit minat ajax
+Route::put('/minat/{id}/update_ajax', [BidangMinatController::class,'update_ajax']);   //menyimpan halaman form edit minat ajax
+Route::get('/minat/{id}/delete_ajax', [BidangMinatController::class, 'confirm_ajax']); //tampil form confirm delete minat ajax
+Route::delete('/minat/{id}/delete_ajax', [BidangMinatController::class, 'delete_ajax']);  //hapus data minat
+
+Route::get('/minat/import', [BidangMinatController::class, 'import']); //ajax form upolad
+Route::post('/minat/import_ajax', [BidangMinatController::class, 'import_ajax']); //ajax import exvel)
+Route::get('/minat/export_excel', [BidangMinatController::class, 'export_excel']);  //export excel
+Route::get('/minat/export_pdf', [BidangMinatController::class, 'export_pdf']); //export pdf
+
+Route::get('/vendor/sertifikasi/export_pdf', [VendorSertifikasiController::class, 'export_pdf']); //export pdf
+
+
+// matkul
+Route::get('/matkul', [MatkulController::class, 'index']);  // menampilkan halaman matkul
+Route::post('/matkul/list', [MatkulController::class, 'list'] );    //menampilkan data matkul dalam bentuk json datatables
+
+Route::get('/matkul/create_ajax', [MatkulController::class, 'create_ajax']); //Menampilkan halaman form tambah matkul Ajax
+Route::post('/matkul/ajax', [MatkulController::class, 'store_ajax']); // Menyimpan data matkul baru Ajax 
+
+Route::get('/matkul/{id}/show', [MatkulController::class, 'show']);       //menampilkan detai user
+
+Route::get('/matkul/{id}/edit_ajax', [MatkulController::class,'edit_ajax']); //menampilkan halaman form edit matkul ajax
+Route::put('/matkul/{id}/update_ajax', [MatkulController::class,'update_ajax']);   //menyimpan halaman form edit matkul ajax
+Route::get('/matkul/{id}/delete_ajax', [MatkulController::class, 'confirm_ajax']); //tampil form confirm delete matkul ajax
+Route::delete('/matkul/{id}/delete_ajax', [MatkulController::class, 'delete_ajax']);  //hapus data matkul
+
+Route::get('/matkul/import', [MatkulController::class, 'import']); //ajax form upolad
+Route::post('/matkul/import_ajax', [MatkulController::class, 'import_ajax']); //ajax import exvel)
+Route::get('/matkul/export_excel', [MatkulController::class, 'export_excel']);  //export excel
+Route::get('/matkul/export_pdf', [MatkulController::class, 'export_pdf']); //export pdf
+
