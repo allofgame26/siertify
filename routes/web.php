@@ -9,6 +9,7 @@ use App\Http\Controllers\JenispenggunaSuperadminController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\WelcomeController;
 use App\Http\Controllers\JenisPelatihanSertifikasiController;
+use App\Http\Controllers\MatkulController;
 use App\Http\Controllers\VendorPelatihanController;
 use App\Http\Controllers\VendorSertifikasiController;
 use App\Models\jenispenggunamodel;
@@ -111,6 +112,7 @@ Route::get('/vendor/sertifikasi/import', [VendorSertifikasiController::class, 'i
 Route::post('/vendor/sertifikasi/import_ajax', [VendorSertifikasiController::class, 'import_ajax']); //ajax import exvel)
 Route::get('/vendor/sertifikasi/export_excel', [VendorSertifikasiController::class, 'export_excel']);  //export excel
 
+
 // bidang minat
 Route::get('/minat', [BidangMinatController::class, 'index']);  // menampilkan halaman minat
 Route::post('/minat/list', [BidangMinatController::class, 'list'] );    //menampilkan data minat dalam bentuk json datatables
@@ -127,3 +129,26 @@ Route::get('/minat/import', [BidangMinatController::class, 'import']); //ajax fo
 Route::post('/minat/import_ajax', [BidangMinatController::class, 'import_ajax']); //ajax import exvel)
 Route::get('/minat/export_excel', [BidangMinatController::class, 'export_excel']);  //export excel
 Route::get('/minat/export_pdf', [BidangMinatController::class, 'export_pdf']); //export pdf
+
+Route::get('/vendor/sertifikasi/export_pdf', [VendorSertifikasiController::class, 'export_pdf']); //export pdf
+
+
+// matkul
+Route::get('/matkul', [MatkulController::class, 'index']);  // menampilkan halaman matkul
+Route::post('/matkul/list', [MatkulController::class, 'list'] );    //menampilkan data matkul dalam bentuk json datatables
+
+Route::get('/matkul/create_ajax', [MatkulController::class, 'create_ajax']); //Menampilkan halaman form tambah matkul Ajax
+Route::post('/matkul/ajax', [MatkulController::class, 'store_ajax']); // Menyimpan data matkul baru Ajax 
+
+Route::get('/matkul/{id}/show', [MatkulController::class, 'show']);       //menampilkan detai user
+
+Route::get('/matkul/{id}/edit_ajax', [MatkulController::class,'edit_ajax']); //menampilkan halaman form edit matkul ajax
+Route::put('/matkul/{id}/update_ajax', [MatkulController::class,'update_ajax']);   //menyimpan halaman form edit matkul ajax
+Route::get('/matkul/{id}/delete_ajax', [MatkulController::class, 'confirm_ajax']); //tampil form confirm delete matkul ajax
+Route::delete('/matkul/{id}/delete_ajax', [MatkulController::class, 'delete_ajax']);  //hapus data matkul
+
+Route::get('/matkul/import', [MatkulController::class, 'import']); //ajax form upolad
+Route::post('/matkul/import_ajax', [MatkulController::class, 'import_ajax']); //ajax import exvel)
+Route::get('/matkul/export_excel', [MatkulController::class, 'export_excel']);  //export excel
+Route::get('/matkul/export_pdf', [MatkulController::class, 'export_pdf']); //export pdf
+
