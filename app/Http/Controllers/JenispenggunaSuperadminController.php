@@ -36,9 +36,7 @@ class JenispenggunaSuperadminController extends Controller
         return DataTables::of($jenispengguna)
             ->addIndexColumn() // menambahkan kolom index / nomor urut
             ->addColumn('aksi', function ($jenispengguna) {
-                $btn = '<button onclick="modalAction(\'' . url('/jenispengguna/' . $jenispengguna->id_jenis_pengguna . '/edit') . '\')" class="btn btn-warning btn-sm"><i class="fa fa-pencil"></i>Edit</button> ';
-                $btn .= '<button onclick="modalAction(\'' . url('/jenispengguna/' . $jenispengguna->id_jenis_pengguna . '/confirm') . '\')" class="btn btn-danger btn-sm">Hapus</button> ';
-            
+                $btn = '<button onclick="modalAction(\'' . url('/jenispengguna/' . $jenispengguna->id_jenis_pengguna . '/show') . '\')" class="btn btn-info btn-sm"><i class="fa fa-pencil"></i>Detail</button> ';
                 return $btn;
             })
             
@@ -87,6 +85,11 @@ class JenispenggunaSuperadminController extends Controller
             ]);
         }
         return redirect('/jenispengguna');
+    }
+
+    public function show(string $id){
+        $jenispengguna = jenispenggunamodel::find($id);
+        return view('superadmin.jenis.show', ['jenispengguna' => $jenispengguna]);
     }
 
     public function edit(string $id){

@@ -13,9 +13,10 @@ use App\Http\Controllers\periodeadmincontroller;
 use App\Http\Controllers\MatkulController;
 use App\Http\Controllers\VendorPelatihanController;
 use App\Http\Controllers\VendorSertifikasiController;
+use App\Http\Controllers\akunpenggunacontroller;
 use App\Models\jenispenggunamodel;
 
-// Route::get('/', [WelcomeController::class, 'index']);
+Route::get('/', [WelcomeController::class, 'index']);
 
 Route::get('/admin', [DashboardAdminController::class, 'index']);
 
@@ -68,6 +69,8 @@ Route::post('/jenispengguna/proses', [JenispenggunaSuperadminController::class, 
 Route::get('/jenispengguna/{id}/edit', [JenispenggunaSuperadminController::class,'edit']);
 Route::put('/jenispengguna/{id}/update', [JenispenggunaSuperadminController::class,'update']);
 
+Route::get('/jenispengguna/{id}/show', [JenispenggunaSuperadminController::class, 'show']);
+
 Route::get('/jenispengguna/{id}/confirm', [JenispenggunaSuperadminController::class,'confirm']);
 Route::delete('/jenispengguna/{id}/delete', [JenispenggunaSuperadminController::class, 'delete']);
 
@@ -76,6 +79,28 @@ Route::post('/jenispengguna/import_proses' , [JenispenggunaSuperadminController:
 
 Route::get('/jenispengguna/export_excel' , [JenispenggunaSuperadminController::class, 'export_excel']);
 Route::get('/jenispengguna/export_pdf' , [JenispenggunaSuperadminController::class, 'export_pdf']);
+
+// Data Akun super admin
+
+Route::get('/akunpengguna', [akunpenggunacontroller::class, 'index']);
+Route::POST('/akunpengguna/list', [akunpenggunacontroller::class, 'list']);
+
+Route::get('/akunpengguna/create', [akunpenggunacontroller::class, 'create']);
+Route::post('/akunpengguna/proses', [akunpenggunacontroller::class, 'store']);
+
+Route::get('/akunpengguna/{id}/edit', [akunpenggunacontroller::class,'edit']);
+Route::put('/akunpengguna/{id}/update', [akunpenggunacontroller::class,'update']);
+
+Route::get('/akunpengguna/{id}/show', [akunpenggunacontroller::class, 'show']);
+
+Route::get('/akunpengguna/{id}/confirm', [akunpenggunacontroller::class,'confirm']);
+Route::delete('/akunpengguna/{id}/delete', [akunpenggunacontroller::class, 'delete']);
+
+Route::get('/akunpengguna/import' , [akunpenggunacontroller::class , 'import']);
+Route::post('/akunpengguna/import_proses' , [akunpenggunacontroller::class, 'import_proses']);
+
+Route::get('/akunpengguna/export_excel' , [akunpenggunacontroller::class, 'export_excel']);
+Route::get('/akunpengguna/export_pdf' , [akunpenggunacontroller::class, 'export_pdf']);
 
 //vendor pelatihan
 Route::get('/vendor/pelatihan', [VendorPelatihanController::class, 'index']);  // menampilkan halaman vendor/pelatihan
