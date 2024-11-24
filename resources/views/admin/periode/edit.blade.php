@@ -1,4 +1,4 @@
-@empty($akunpengguna)
+@empty($periode)
     <div id="modal-master" class="modal-dialog modal-lg" role="document">
         <div class="modal-content">
             <div class="modal-header bg-warning">
@@ -10,64 +10,56 @@
             <div class="modal-body">
                 <div class="alert alert-danger">
                     <h5><i class="icon fas fa-ban"></i> Kesalahan!!!</h5>
-                    Data jenis yang anda cari tidak ditemukan
+                    Data Perode yang anda cari tidak ditemukan
                 </div>
-                <a href="{{ url('/akunpengguna') }}" class="btn btn-warning">Kembali</a>
+                <a href="{{ url('/periode') }}" class="btn btn-warning">Kembali</a>
             </div>
         </div>
     </div>
 @else
-    <form action="{{ url('/akunpengguna/' . $akunpengguna->id_user. '/update') }}" method="POST" id="form-edit">
+    <form action="{{ url('/periode/' . $periode->id_periode. '/update') }}" method="POST" id="form-edit">
         @csrf
         @method('PUT')
         <div id="modal-master" class="modal-dialog modal-lg" role="document">
             <div class="modal-content">
                 <div class="modal-header bg-warning">
-                    <h5 class="modal-title" id="exampleModalLabel">Edit Akun Pengguna</h5>
+                    <h5 class="modal-title" id="exampleModalLabel">Edit Data jenis</h5>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
                 <div class="modal-body">
                     <div class="form-group">
-                        <label>Nama Pengguna</label>
-                        <select name="id_identitas" id="id_identitas" class="form-control" required>
-                            <option value="">- Pilih Nama -</option>
-                            @foreach ($identitas as $l)
-                                <option {{ $l->id_identitas == $akunpengguna->id_identitas ? 'selected' : '' }}
-                                value="{{ $l->id_identitas }}">{{ $l->nama_lengkap }}</option>
-                            @endforeach
-                        </select>
-                        <small id="error-id_identitas" class="error-text form-text text-danger"></small>
+                        <label>Nama Periode</label>
+                        <input value="{{ $periode->nama_periode }}" type="text" name="nama_periode" id="nama_periode" class="form-control"
+                            placeholder="Enter Nama Periode" required>
+                        <small id="error-nama_periode" class="error-text form-text text-danger"></small>
                     </div>
                     <div class="form-group">
-                        <label>Jenis Pengguna</label>
-                        <select name="id_jenis_pengguna" id="id_jenis_pengguna" class="form-control" required>
-                            <option value="">- Pilih Jenis Pengguna -</option>
-                            @foreach ($jenispengguna as $l)
-                                <option {{ $l->id_jenis_pengguna == $akunpengguna->id_jenis_pengguna ? 'selected' : '' }} 
-                                value="{{ $l->id_jenis_pengguna }}">{{ $l->nama_jenis_pengguna }}</option>
-                            @endforeach
-                        </select>
-                        <small id="error-id_jenis_pengguna" class="error-text form-text text-danger"></small>
+                        <label>Tanggal Mulai</label>
+                        <input value="{{ $periode->tanggal_mulai }}" type="date" name="tanggal_mulai" id="tanggal_mulai"
+                        class="form-control" placeholder="Pilih tanggal" required>
+                        <small id="error-tanggal_mulai" class="error-text form-text text-danger"></small>
                     </div>
                     <div class="form-group">
-                        <label>Periode</label>
-                        <select name="id_periode" id="id_periode" class="form-control" required>
-                            <option value="">- Pilih Periode -</option>
-                            @foreach ($periode as $l)
-                                <option {{ $l->id_periode == $akunpengguna->id_periode ? 'selected' : '' }} 
-                                value="{{ $l->id_periode }}">{{ $l->nama_periode }}</option>
-                            @endforeach
-                        </select>
-                        <small id="error-id_periode" class="error-text form-text text-danger"></small>
+                        <label>Tanggal Selesai</label>
+                        <input value="{{ $periode->tanggal_selesai }}" type="date" name="tanggal_selesai" id="tanggal_selesai"
+                        class="form-control" placeholder="Pilih tanggal" required>
+                        <small id="error-tanggal_selesai" class="error-text form-text text-danger"></small>
                     </div>
                     <div class="form-group">
-                        <label>Username</label>
-                        <input value="{{ $akunpengguna->username }}" type="text" name="username" id="username"
-                            class="form-control" placeholder="Enter Username" required>
-                        <small id="error-username" class="error-text form-text text-danger"></small>
+                        <label>Tahun Periode</label>
+                        <input value="{{ $periode->tahun_periode }}" type="text" name="tahun_periode" id="tahun_periode"
+                            class="form-control" placeholder="Enter Tahun Periode" required>
+                        <small id="error-tahun_periode" class="error-text form-text text-danger"></small>
                     </div>
+                    <div class="form-group">
+                        <label>Deskripsi Periode</label>
+                        <input value="{{ $periode->deskripsi_periode }}" type="text" name="deskripsi_periode" id="deskripsi_periode"
+                            class="form-control" placeholder="Enter Deskripsi Periode" required>
+                        <small id="error-deskripsi_periode" class="error-text form-text text-danger"></small>
+                    </div>
+        
                 </div>
                 <div class="modal-footer">
                     <button type="button" data-dismiss="modal" class="btn btn-warning">Batal</button>
@@ -90,29 +82,37 @@
     </style>
     <script>
         $(document).ready(function() {
+
+            $.ajaxSetup({
+                headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            }
+        });
+
             $("#form-edit").validate({
                 rules: {
-                    id_identitas: {
-                    required: true,
-                    number: true // Validasi tipe integer
-                },
-                id_jenis_pengguna: {
-                    required: true,
-                    number: true // Validasi tipe integer
-                },
-                id_periode: {
-                    required: true,
-                    number: true // Validasi tipe integer
-                },
-                username: {
-                    required: true,
-                    minlength: 5,
-                    maxlength: 20,
-                },
-                password: {
+                    nama_periode: {
                     required: true,
                     minlength: 8,
-                    maxlength: 255
+                    maxlength: 10
+                },
+                tanggal_mulai: {
+                    required: true,
+                    date: true
+                },
+                tanggal_selesai: {
+                    required: true,
+                    date: true
+                },
+                tahun_periode: {
+                    required: true,
+                    minlength: 8,
+                    maxlength: 20
+                },
+                deskripsi_periode: {
+                    required: true,
+                    minlength: 10,
+                    maxlength: 20
                 }
                 },
                 submitHandler: function(form) {
@@ -129,8 +129,8 @@
                                     text: response.message
                                 });
 
-                                if (typeof datapengguna !== 'undefined') {
-                                    datapengguna.ajax.reload(null, false); // Reload tabel tanpa mengubah posisi halaman
+                                if (typeof dataperiode !== 'undefined') {
+                                    dataperiode.ajax.reload(null, false); // Reload tabel tanpa mengubah posisi halaman
                             }
                             } else {
                                 $('.error-text').text('');

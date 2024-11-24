@@ -1,7 +1,7 @@
-@empty($akunpengguna)
+@empty($minat)
     <div id="modal-master" class="modal-dialog modal-lg" role="document">
         <div class="modal-content">
-            <div class="modal-header">
+            <div class="modal-header bg-warning">
                 <h5 class="modal-title" id="exampleModalLabel">Kesalahan</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
@@ -10,63 +10,83 @@
             <div class="modal-body">
                 <div class="alert alert-danger">
                     <h5><i class="icon fas fa-ban"></i> Kesalahan!!!</h5>
-                    Data yang anda cari tidak ditemukan
+                    Data bidang minat yang anda cari tidak ditemukan
                 </div>
-                <a href="{{ url('/akunpengguna') }}" class="btn btn-warning">Kembali</a>
+                <a href="{{ url('/minat') }}" class="btn btn-warning">Kembali</a>
             </div>
         </div>
     </div>
 @else
-    <form action="{{ url('/akunpengguna/' . $akunpengguna->id_user . '/delete') }}" method="POST" id="form-delete-akunpengguna">
+    <form action="{{ url('/minat/' . $minat->id_bd. '/update_ajax') }}" method="POST" id="form-edit">
         @csrf
-        @method('DELETE')
+        @method('PUT')
         <div id="modal-master" class="modal-dialog modal-lg" role="document">
             <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLabel">Hapus Data jenis</h5>
+                <div class="modal-header bg-warning">
+                    <h5 class="modal-title" id="exampleModalLabel">Edit Data minat</h5>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
                 <div class="modal-body">
-                    <div class="alert alert-danger">
-                        <h5><i class="icon fas fa-ban"></i> Konfirmasi !!!</h5>
-                        Apakah Anda ingin menghapus data seperti di bawah ini?
+                    <div class="form-group">
+                        <label>Nama Bidang Minat</label>
+                        <input value="{{ $minat->nama_bd }}" type="text" name="nama_bd"
+                            id="nama_bd" class="form-control" required>
+                        <small id="error-nama_bd" class="error-text form-text text-danger"></small>
                     </div>
-                    <table class="table table-sm table-bordered table-striped">
-                        <tr>
-                            <th class="text-right col-3">ID:</th>
-                            <td class="col-9">{{ $akunpengguna->id_user}}</td>
-                        </tr>
-                        <tr>
-                            <th class="text-right col-3">Nama Lengkap :</th>
-                            <td class="col-9">{{ $identitas->firstWhere('id_identitas', $akunpengguna->id_identitas)?->nama_lengkap ?? 'Tidak Diketahui' }}</td>
-                        </tr>
-                        <tr>
-                            <th class="text-right col-3">Jenis Pengguna:</th>
-                            <td class="col-9">{{ $jenispengguna->firstWhere('id_jenis_pengguna', $akunpengguna->id_jenis_pengguna)?->nama_jenis_pengguna ?? 'Tidak Diketahui' }}</td>
-                        </tr>
-                        <tr>
-                            <th class="text-right col-3">Periode:</th>
-                            <td class="col-9">{{ $periode->firstWhere('id_periode', $akunpengguna->id_periode)?->nama_periode ?? 'Tidak Diketahui' }}</td>
-                        </tr>
-                        <tr>
-                            <th class="text-right col-3">Username :</th>
-                            <td class="col-9">{{ $akunpengguna->username }}</td>
-                        </tr>
-                    </table>
+                    <div class="form-group">
+                        <label>Kode Bidang Minat</label>
+                        <input value="{{ $minat->kode_bd }}" type="text" name="kode_bd"
+                            id="kode_bd" class="form-control" required>
+                        <small id="error-kode_bd" class="error-text form-text text-danger"></small>
+                    </div>
+                    <div class="form-group">
+                        <label>Deskripsi</label>
+                        <input value="{{ $minat->deskripsi_bd }}" type="text" name="deskripsi_bd" id="deskripsi_bd"
+                            class="form-control" required>
+                        <small id="error-deskripsi_bd" class="error-text form-text text-danger"></small>
+                    </div>
                 </div>
                 <div class="modal-footer">
                     <button type="button" data-dismiss="modal" class="btn btn-warning">Batal</button>
-                    <button type="submit" class="btn btn-success">Ya, Hapus</button>
+                    <button type="submit" class="btn btn-success">Simpan</button>
                 </div>
             </div>
         </div>
     </form>
+
+    <style>
+        .modal-header {
+            padding: 10px;
+            /* Sesuaikan nilai padding */
+        }
+
+        .modal-content {
+            border-radius: 10px;
+            /* Sesuaikan nilai radius */
+        }
+    </style>
     <script>
         $(document).ready(function() {
-            $("#form-delete-akunpengguna").validate({
-                rules: {},
+            $("#form-edit").validate({
+                rules: {
+                    nama_bd: {
+                    required: true,
+                    minlength: 3,
+                    maxlength: 50
+                },
+                kode_bd: {
+                    required: true,
+                    minlength: 1,
+                    maxlength: 10
+                },
+                deskripsi_bd: {
+                    minlength: 1,
+                    maxlength: 255,
+                    required: true,
+                },
+                },
                 submitHandler: function(form) {
                     $.ajax({
                         url: form.action,
@@ -80,9 +100,7 @@
                                     title: 'Berhasil',
                                     text: response.message
                                 });
-                                if (typeof datapengguna !== 'undefined') {
-                                    datapengguna.ajax.reload(null, false); // Reload tabel tanpa mengubah posisi halaman
-                            }
+                                dataminat.ajax.reload();
                             } else {
                                 $('.error-text').text('');
                                 $.each(response.msgField, function(prefix, val) {

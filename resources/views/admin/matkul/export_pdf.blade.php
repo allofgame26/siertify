@@ -90,27 +90,23 @@
             </td>
         </tr>
     </table>
-    <h3 class="text-center">DAFTAR AKUN PENGGUNA</h4>
+    <h3 class="text-center">DAFTAR MATA KULIAH</h4>
         <table class="border-all">
             <thead>
                 <tr>
-                    <th>No</th>
-                    <th>ID Identitas</th>
-                    <th>ID Jenis Pengguna</th>
-                    <th>ID Periode</th>
-                    <th>Username</th>
-                    <th>Password</th>
+                    <th class="text-center">No</th>
+                    <th>Nama</th>
+                    <th>Kode</th>
+                    <th>Deskripsi</th>
                 </tr>
             </thead>
             <tbody>
-                @foreach ($akunpengguna as $b)
+                @foreach ($matkul as $b)
                     <tr>
                         <td class="text-center">{{ $loop->iteration }}</td>
-                        <td>{{ $b->id_identitas }}</td>
-                        <td>{{ $b->id_jenis_pengguna }}</td>
-                        <td>{{ $b->id_periode }}</td>
-                        <td>{{ $b->username }}</td>
-                        <td>{{ $b->password }}</td>
+                        <td>{{ $b->nama_mk }}</td>
+                        <td>{{ $b->kode_mk }}</td>
+                        <td>{{ $b->deskripsi_mk }}</td>
                     </tr>
                 @endforeach
             </tbody>

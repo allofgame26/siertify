@@ -1,54 +1,29 @@
-<form action="{{ url('/akunpengguna/proses') }}" method="post" id="form-tambah-akunpengguna">
+<form action="{{ url('/minat/ajax') }}" method="post" id="form-tambah-minat">
     @csrf
     <div id="modal-master" class="modal-dialog modal-lg" role="document">
         <div class="modal-content">
             <div class="modal-header bg-success">
-                <h5 class="modal-title" id="exampleModalLabel">Tambah Data jenis</h5>
+                <h5 class="modal-title" id="exampleModalLabel">Tambah Data Bidang minat</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span>&times;</span>
                 </button>
             </div>
             <div class="modal-body">
                 <div class="form-group">
-                    <label>Nama Pengguna</label>
-                    <select name="id_identitas" id="id_identitas" class="form-control" required>
-                        <option value="">- Pilih Nama -</option>
-                        @foreach ($identitas as $l)
-                            <option value="{{ $l->id_identitas }}">{{ $l->nama_lengkap }}</option>
-                        @endforeach
-                    </select>
-                    <small id="error-id_identitas" class="error-text form-text text-danger"></small>
+                    <label>Nama Bidang Minat</label>
+                    <input value="" type="text" name="nama_bd" id="nama_bd" class="form-control" placeholder="Enter nama minat" required>
+                    <small id="error-nama_bd" class="error-text form-text text-danger"></small>
+                </div>
+                       <div class="form-group">
+                    <label>Kode Bidang Minat</label>
+                    <input value="" type="text" name="kode_bd" id="kode_bd" class="form-control" placeholder="Enter kode minat" required>
+                    <small id="error-kode_bd" class="error-text form-text text-danger"></small>
                 </div>
                 <div class="form-group">
-                    <label>Jenis Pengguna</label>
-                    <select name="id_jenis_pengguna" id="id_jenis_pengguna" class="form-control" required>
-                        <option value="">- Pilih Jenis Pengguna -</option>
-                        @foreach ($jenispengguna as $l)
-                            <option value="{{ $l->id_jenis_pengguna }}">{{ $l->nama_jenis_pengguna }}</option>
-                        @endforeach
-                    </select>
-                    <small id="error-id_jenis_pengguna" class="error-text form-text text-danger"></small>
-                </div>
-                <div class="form-group">
-                    <label>Periode</label>
-                    <select name="id_periode" id="id_periode" class="form-control" required>
-                        <option value="">- Pilih Periode -</option>
-                        @foreach ($periode as $l)
-                            <option value="{{ $l->id_periode }}">{{ $l->nama_periode }}</option>
-                        @endforeach
-                    </select>
-                    <small id="error-id_periode" class="error-text form-text text-danger"></small>
-                </div>
-                <div class="form-group">
-                    <label>Username</label>
-                    <input value="" type="text" name="username" id="username"
-                        class="form-control" placeholder="Enter Username" required>
-                    <small id="error-username" class="error-text form-text text-danger"></small>
-                </div>
-                <div class="form-group">
-                    <label>Password</label>
-                    <input value="" type="password" name="password" id="password" class="form-control" required>
-                    <small id="error-password" class="error-text form-text text-danger"></small>
+                    <label>Deskripsi</label>
+                    <input value="" type="text" name="deskripsi_bd" id="deskripsi_bd"
+                        class="form-control" placeholder="Enter deskripsi" required>
+                    <small id="error-deskripsi_bd" class="error-text form-text text-danger"></small>
                 </div>
             </div>
             <div class="modal-footer">
@@ -75,35 +50,29 @@
     $(document).ready(function() {
         // Setup CSRF token untuk setiap AJAX request
         $.ajaxSetup({
-                headers: {
+            headers: {
                 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
             }
-        }); 
+        });
 
-        $("#form-tambah-akunpengguna").validate({
+        // Validasi dan submit form
+        $("#form-tambah-minat").validate({
             rules: {
-                id_identitas: {
+                nama_bd: {
                     required: true,
-                    number: true // Validasi tipe integer
+                    minlength: 3,
+                    maxlength: 50
                 },
-                id_jenis_pengguna: {
+                kode_bd: {
                     required: true,
-                    number: true // Validasi tipe integer
+                    minlength: 1,
+                    maxlength: 10
                 },
-                id_periode: {
+                deskripsi_bd: {
                     required: true,
-                    number: true // Validasi tipe integer
-                },
-                username: {
-                    required: true,
-                    minlength: 5,
-                    maxlength: 20,
-                },
-                password: {
-                    required: true,
-                    minlength: 8,
+                    minlength: 1,
                     maxlength: 255
-                }
+                },
             },
             submitHandler: function(form) {
                 console.log('Validasi Berhasil, Form akan disubmit');
@@ -130,10 +99,9 @@
                             });
 
                             // Reload DataTable jika instance tersedia
-                            if (typeof dataakunpengguna !== 'undefined') {
-                                dataakunpengguna.ajax.reload(null, false); // Reload tabel tanpa mengubah posisi halaman
+                            if (typeof dataminat !== 'undefined') {
+                                dataminat.ajax.reload(null, false); // Reload tabel tanpa mengubah posisi halaman
                             }
-
                         } else {
                             // Reset error message
                             $('.error-text').text('');
@@ -180,3 +148,4 @@
         });
     });
 </script>
+

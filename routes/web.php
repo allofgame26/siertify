@@ -2,17 +2,23 @@
 
 // web.php
 
+use App\Http\Controllers\BidangMinatController;
+use App\Http\Controllers\DashboardAdminController;
 use App\Http\Controllers\datapenggunaSuperadminController;
 use App\Http\Controllers\JenispenggunaSuperadminController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\WelcomeController;
 use App\Http\Controllers\JenisPelatihanSertifikasiController;
+use App\Http\Controllers\periodeadmincontroller;
+use App\Http\Controllers\MatkulController;
 use App\Http\Controllers\VendorPelatihanController;
 use App\Http\Controllers\VendorSertifikasiController;
+use App\Http\Controllers\akunpenggunacontroller;
 use App\Models\jenispenggunamodel;
 
-// Route::get('/', [WelcomeController::class, 'index']);
 Route::get('/', [WelcomeController::class, 'index']);
+
+Route::get('/admin', [DashboardAdminController::class, 'index']);
 
 // jenis pelatihan dan sertifikasi admin
 Route::get('/jenis', [JenisPelatihanSertifikasiController::class, 'index']);  // menampilkan halaman jenis
@@ -29,6 +35,7 @@ Route::delete('/jenis/{id}/delete_ajax', [JenisPelatihanSertifikasiController::c
 
 Route::get('/jenis/import', [JenisPelatihanSertifikasiController::class, 'import']); //ajax form upolad
 Route::post('/jenis/import_ajax', [JenisPelatihanSertifikasiController::class, 'import_ajax']); //ajax import exvel)
+
 Route::get('/jenis/export_excel', [JenisPelatihanSertifikasiController::class, 'export_excel']);  //export excel
 Route::get('/jenis/export_pdf', [JenisPelatihanSertifikasiController::class, 'export_pdf']); //export pdf
 
@@ -75,25 +82,25 @@ Route::get('/jenispengguna/export_pdf' , [JenispenggunaSuperadminController::cla
 
 // Data Akun super admin
 
-Route::get('/akunpengguna', [JenispenggunaSuperadminController::class, 'index']);
-Route::POST('/akunpengguna/list', [JenispenggunaSuperadminController::class, 'list']);
+Route::get('/akunpengguna', [akunpenggunacontroller::class, 'index']);
+Route::POST('/akunpengguna/list', [akunpenggunacontroller::class, 'list']);
 
-Route::get('/akunpengguna/create', [JenispenggunaSuperadminController::class, 'create']);
-Route::post('/akunpengguna/proses', [JenispenggunaSuperadminController::class, 'store']);
+Route::get('/akunpengguna/create', [akunpenggunacontroller::class, 'create']);
+Route::post('/akunpengguna/proses', [akunpenggunacontroller::class, 'store']);
 
-Route::get('/akunpengguna/{id}/edit', [JenispenggunaSuperadminController::class,'edit']);
-Route::put('/akunpengguna/{id}/update', [JenispenggunaSuperadminController::class,'update']);
+Route::get('/akunpengguna/{id}/edit', [akunpenggunacontroller::class,'edit']);
+Route::put('/akunpengguna/{id}/update', [akunpenggunacontroller::class,'update']);
 
-Route::get('/akunpengguna/{id}/show', [JenispenggunaSuperadminController::class, 'show']);
+Route::get('/akunpengguna/{id}/show', [akunpenggunacontroller::class, 'show']);
 
-Route::get('/akunpengguna/{id}/confirm', [JenispenggunaSuperadminController::class,'confirm']);
-Route::delete('/akunpengguna/{id}/delete', [JenispenggunaSuperadminController::class, 'delete']);
+Route::get('/akunpengguna/{id}/confirm', [akunpenggunacontroller::class,'confirm']);
+Route::delete('/akunpengguna/{id}/delete', [akunpenggunacontroller::class, 'delete']);
 
-Route::get('/akunpengguna/import' , [JenispenggunaSuperadminController::class , 'import']);
-Route::post('/akunpengguna/import_proses' , [JenispenggunaSuperadminController::class, 'import_proses']);
+Route::get('/akunpengguna/import' , [akunpenggunacontroller::class , 'import']);
+Route::post('/akunpengguna/import_proses' , [akunpenggunacontroller::class, 'import_proses']);
 
-Route::get('/akunpengguna/export_excel' , [JenispenggunaSuperadminController::class, 'export_excel']);
-Route::get('/akunpengguna/export_pdf' , [JenispenggunaSuperadminController::class, 'export_pdf']);
+Route::get('/akunpengguna/export_excel' , [akunpenggunacontroller::class, 'export_excel']);
+Route::get('/akunpengguna/export_pdf' , [akunpenggunacontroller::class, 'export_pdf']);
 
 //vendor pelatihan
 Route::get('/vendor/pelatihan', [VendorPelatihanController::class, 'index']);  // menampilkan halaman vendor/pelatihan
@@ -131,3 +138,66 @@ Route::delete('/vendor/sertifikasi/{id}/delete_ajax', [VendorSertifikasiControll
 Route::get('/vendor/sertifikasi/import', [VendorSertifikasiController::class, 'import']); //ajax form upolad
 Route::post('/vendor/sertifikasi/import_ajax', [VendorSertifikasiController::class, 'import_ajax']); //ajax import exvel)
 Route::get('/vendor/sertifikasi/export_excel', [VendorSertifikasiController::class, 'export_excel']);  //export excel
+
+// Periode Admin
+
+Route::get('/periode', [periodeadmincontroller::class, 'index']);
+Route::POST('/periode/list', [periodeadmincontroller::class, 'list']);
+
+Route::get('/periode/create', [periodeadmincontroller::class, 'create']);
+Route::post('/periode/proses', [periodeadmincontroller::class, 'store']);
+
+Route::get('/periode/{id}/edit', [periodeadmincontroller::class,'edit']);
+Route::put('/periode/{id}/update', [periodeadmincontroller::class,'update']);
+
+Route::get('/periode/{id}/show', [periodeadmincontroller::class,'show']);
+
+Route::get('/periode/{id}/confirm', [periodeadmincontroller::class,'confirm']);
+Route::delete('/periode/{id}/delete', [periodeadmincontroller::class, 'delete']);
+
+Route::get('/periode/import' , [periodeadmincontroller::class , 'import']);
+Route::post('/periode/import_proses' , [periodeadmincontroller::class, 'import_proses']);
+
+Route::get('/periode/export_excel' , [periodeadmincontroller::class, 'export_excel']);
+Route::get('/periode/export_pdf' , [periodeadmincontroller::class, 'export_pdf']);
+
+
+// bidang minat
+Route::get('/minat', [BidangMinatController::class, 'index']);  // menampilkan halaman minat
+Route::post('/minat/list', [BidangMinatController::class, 'list'] );    //menampilkan data minat dalam bentuk json datatables
+
+Route::get('/minat/create_ajax', [BidangMinatController::class, 'create_ajax']); //Menampilkan halaman form tambah minat Ajax
+Route::post('/minat/ajax', [BidangMinatController::class, 'store_ajax']); // Menyimpan data minat baru Ajax 
+
+Route::get('/minat/{id}/edit_ajax', [BidangMinatController::class,'edit_ajax']); //menampilkan halaman form edit minat ajax
+Route::put('/minat/{id}/update_ajax', [BidangMinatController::class,'update_ajax']);   //menyimpan halaman form edit minat ajax
+Route::get('/minat/{id}/delete_ajax', [BidangMinatController::class, 'confirm_ajax']); //tampil form confirm delete minat ajax
+Route::delete('/minat/{id}/delete_ajax', [BidangMinatController::class, 'delete_ajax']);  //hapus data minat
+
+Route::get('/minat/import', [BidangMinatController::class, 'import']); //ajax form upolad
+Route::post('/minat/import_ajax', [BidangMinatController::class, 'import_ajax']); //ajax import exvel)
+Route::get('/minat/export_excel', [BidangMinatController::class, 'export_excel']);  //export excel
+Route::get('/minat/export_pdf', [BidangMinatController::class, 'export_pdf']); //export pdf
+
+Route::get('/vendor/sertifikasi/export_pdf', [VendorSertifikasiController::class, 'export_pdf']); //export pdf
+
+
+// matkul
+Route::get('/matkul', [MatkulController::class, 'index']);  // menampilkan halaman matkul
+Route::post('/matkul/list', [MatkulController::class, 'list'] );    //menampilkan data matkul dalam bentuk json datatables
+
+Route::get('/matkul/create_ajax', [MatkulController::class, 'create_ajax']); //Menampilkan halaman form tambah matkul Ajax
+Route::post('/matkul/ajax', [MatkulController::class, 'store_ajax']); // Menyimpan data matkul baru Ajax 
+
+Route::get('/matkul/{id}/show', [MatkulController::class, 'show']);       //menampilkan detai user
+
+Route::get('/matkul/{id}/edit_ajax', [MatkulController::class,'edit_ajax']); //menampilkan halaman form edit matkul ajax
+Route::put('/matkul/{id}/update_ajax', [MatkulController::class,'update_ajax']);   //menyimpan halaman form edit matkul ajax
+Route::get('/matkul/{id}/delete_ajax', [MatkulController::class, 'confirm_ajax']); //tampil form confirm delete matkul ajax
+Route::delete('/matkul/{id}/delete_ajax', [MatkulController::class, 'delete_ajax']);  //hapus data matkul
+
+Route::get('/matkul/import', [MatkulController::class, 'import']); //ajax form upolad
+Route::post('/matkul/import_ajax', [MatkulController::class, 'import_ajax']); //ajax import exvel)
+Route::get('/matkul/export_excel', [MatkulController::class, 'export_excel']);  //export excel
+Route::get('/matkul/export_pdf', [MatkulController::class, 'export_pdf']); //export pdf
+

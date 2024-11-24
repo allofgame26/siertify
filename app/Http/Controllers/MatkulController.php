@@ -3,46 +3,42 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Models\identitasmodel;
-use App\Models\akunusermodel;
-use App\Models\jenispenggunamodel;
-use Illuminate\Support\DB;
+use App\Models\matakuliahmodel;
+use Illuminate\Support\Facades\DB;
 use Yajra\DataTables\Facades\DataTables;
 use Illuminate\Support\Facades\Validator;
 use PhpOffice\PhpSpreadsheet\IOFactory;
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
 use Barryvdh\DomPDF\Facade\Pdf;
 
-class akunpenggunasuperadmin extends Controller
+class MatkulController extends Controller
 {
     public function index(){
         $breadcrumb = (object)[
-            'title' => 'Akun Pengguna',
-            'list' => ['Selamat Datang','Akun Pengguna']
+            'title' => 'Data Mata Kuliah',
+            'list' => ['Welcome','Mata Kuliah']
         ];
 
         $page = (object)[
-            'title' => 'Akun Pengguna'
+            'title' => 'Mata Kuliah '
         ];
 
-        $activeMenu = 'akunpengguna';
+        $activeMenu = 'matkul';
 
-        $datapengguna = identitasmodel::select('id_identitas','nama_lengkap')->get();
-
-        $jenispengguna = jenispenggunamodel::select('id_jenis_pengguna','nama_jenis_pengguna')->get();
-
-        return view('superadmin.akun.index', ['breadcrumb' => $breadcrumb, 'page' => $page, 'activeMenu' => $activeMenu , 'datapengguna' => $datapengguna, 'jenispengguna' => $jenispengguna]);
+        return view('admin.matkul.index', ['breadcrumb' => $breadcrumb, 'page' => $page, 'activeMenu' => $activeMenu]);
     }
 
     public function list(Request $request)
     {
-        $akunpengguna= akunusermodel::select('id_user','username','id_identitas','id_jenis_pengguna','id_periode');
+        $matkul = matakuliahmodel::select('id_mk','nama_mk','kode_mk', 'deskripsi_mk');
 
         // Return data untuk DataTables
-        return DataTables::of($akunpengguna)
+        return DataTables::of($matkul)
             ->addIndexColumn() // menambahkan kolom index / nomor urut
-            ->addColumn('aksi', function ($akunpengguna) {
-                $btn = '<button onclick="modalAction(\'' . url('/akunpengguna/' . $akunpengguna->id_user . '/show') . '\')" class="btn btn-info btn-sm"><i class="fa fa-pencil"></i>Detail</button> ';
+            ->addColumn('aksi', function ($matkul) {
+                $btn = '<button onclick="modalAction(\'' . url('/matkul/' . $matkul->id_mk . '/edit_ajax') . '\')" class="btn btn-warning btn-sm"><i class="fa fa-pencil"></i>Edit</button> ';
+                $btn .= '<button onclick="modalAction(\'' . url('/matkul/' . $matkul->id_mk . '/delete_ajax') . '\')" class="btn btn-danger btn-sm">Hapus</button> ';
+            
                 return $btn;
             })
             
@@ -51,18 +47,21 @@ class akunpenggunasuperadmin extends Controller
             ->make(true);
     }
 
-    public function create(){
-        return view('superadmin.jenis.create');
+    public function create_ajax()
+    {
+        return view('admin.matkul.create');
     }
 
-    public function store(Request $request){
+    public function store_ajax(Request $request)
+    {
         // cek apakah request berupa ajax
         if ($request->ajax() || $request->wantsJson()) {
             $rules = [
-                'nama_jenis_pengguna' => 'required|string|min:5|max:50',
-                'kode_jenis_pengguna' => 'required|string|min:3|max:5'
+                'nama_mk' => 'required|string|min:3|max:50',
+                'kode_mk' => 'required|string|min:1|max:10',
+                'deskripsi_mk' => 'required|string|min:1|max:255',
             ];
-            // use Illuminate\Support\Facades\Validator;
+            // use Illumatkule\Support\Facades\Validator;
             $validator = Validator::make($request->all(), $rules);
 
             if ($validator->fails()) {
@@ -72,44 +71,45 @@ class akunpenggunasuperadmin extends Controller
                     'msgField' => $validator->errors() // pesan error validasi
                 ]);
             }
-            $jenispengguna = jenispenggunamodel::create([
-                'nama_jenis_pengguna' => $request->nama_jenis_pengguna,
-                'kode_jenis_pengguna' => $request->kode_jenis_pengguna,
+            $jenis = matakuliahmodel::create([
+                'nama_mk' => $request->nama_mk,
+                'kode_mk' => $request->kode_mk,
+                'deskripsi_mk' => $request->deskripsi_mk
             ]);
 
-            if($jenispengguna){
+            if($jenis){
                 return response()->json([
                     'status'    => true,
                     'message'   => 'Data user berhasil disimpan'
                 ], 200);
             }
-
-
+            
+            
             return response()->json([
                 'status' => true,
                 'message' => 'Data Jenis berhasil disimpan'
             ]);
         }
-        return redirect('/jenispengguna');
+        return redirect('/matkul');
     }
 
-    public function show(string $id){
-        $jenispengguna = jenispenggunamodel::find($id);
-        return view('superadmin.jenis.show', ['jenispengguna' => $jenispengguna]);
+    public function edit_ajax(string $id)
+    {
+        $matkul = matakuliahmodel::find($id);
+        return view('admin.matkul.edit', ['matkul' => $matkul]);
     }
 
-    public function edit(string $id){
-        $jenispengguna = jenispenggunamodel::find($id);
-        return view('superadmin.jenis.edit', ['jenispengguna' => $jenispengguna]);
-    }
-
-    public function update(Request $request,$id){
+    // 4. public function update_ajax(Request $request, $id)
+    public function update_ajax(Request $request, $id)
+    {
+        // cek apakah request dari ajax
         if ($request->ajax() || $request->wantsJson()) {
             $rules = [
-                'nama_jenis_pengguna' => 'required|string|min:10|max:50',
-                'kode_jenis_pengguna' => 'required|string|min:3|max:5'
+                'nama_mk' => 'required|string|min:3|max:50',
+                'kode_mk' => 'required|string|min:1|max:10',
+                'deskripsi_mk' => 'required|string|min:1|max:255',
             ];
-            // use Illuminate\Support\Facades\Validator;
+            // use Illumatkule\Support\Facades\Validator;
             $validator = Validator::make($request->all(), $rules);
             if ($validator->fails()) {
                 return response()->json([
@@ -118,7 +118,7 @@ class akunpenggunasuperadmin extends Controller
                     'msgField' => $validator->errors() // menunjukkan field mana yang error
                 ]);
             }
-            $check = jenispenggunamodel::find($id);
+            $check = matakuliahmodel::find($id);
             if ($check) {
                 $check->update($request->all());
                 return response()->json([
@@ -132,13 +132,23 @@ class akunpenggunasuperadmin extends Controller
                 ]);
             }
         }
-        return redirect('/jenispengguna');
+        return redirect('/');
     }
-    public function delete(Request $request,$id){
+
+    public function confirm_ajax(string $id)
+    {
+        $matkul = matakuliahmodel::find($id);
+        return view('admin.matkul.confirm_delete', ['matkul' => $matkul]);
+    }
+
+    // 6. public function delete_ajax(Request $request, $id)
+    public function delete_ajax(Request $request, $id)
+    {
+        // cek apakah request dari ajax
         if ($request->ajax() || $request->wantsJson()) {
-            $jenispengguna = jenispenggunamodel::find($id);
-            if ($jenispengguna) {
-                $jenispengguna->delete();
+            $matkul = matakuliahmodel::find($id);
+            if ($matkul) {
+                $matkul->delete();
                 return response()->json([
                     'status' => true,
                     'message' => 'Data berhasil dihapus'
@@ -150,27 +160,21 @@ class akunpenggunasuperadmin extends Controller
                 ]);
             }
         }
-        return redirect('/jenispengguna');
+        return redirect('/');
     }
 
-    public function confirm(string $id){
-        $jenispengguna = jenispenggunamodel::find($id);
-        return view('superadmin.jenis.delete', ['jenispengguna' => $jenispengguna]);
-    }
-    
     public function import(){
-        return view('superadmin.jenis.import');
+        return view('admin.matkul.import_excel');
     }
 
-    public function import_proses(Request $request)
+    public function import_ajax(Request $request)
     {
         if ($request->ajax() || $request->wantsJson()) {
             $rules = [
         // validasi file harus xls atau xlsx, max 1MB
-                'file_jenispengguna' => ['required', 'mimes:xlsx', 'max:1024'],
+                'file_matkul' => ['required', 'mimes:xlsx', 'max:1024'],
             ];
             $validator = Validator::make($request->all(), $rules);
-
             if ($validator->fails()) {
                 return response()->json([
                     'status' => false,
@@ -179,7 +183,7 @@ class akunpenggunasuperadmin extends Controller
                 ]);
             }
 
-            $file = $request->file('file_jenispengguna'); // ambil file dari request
+            $file = $request->file('file_matkul'); // ambil file dari request
             $reader = IOFactory::createReader('Xlsx'); // load reader file excel
             $reader->setReadDataOnly(true); // hanya membaca data
             $spreadsheet = $reader->load($file->getRealPath()); // load file excel
@@ -190,14 +194,15 @@ class akunpenggunasuperadmin extends Controller
                 foreach ($data as $baris => $value) {
                     if ($baris > 1) { // baris ke 1 adalah header, maka lewati
                         $insert[] = [
-                            'nama_jenis_pengguna' => $value['A'],
-                            'kode_jenis_pengguna' => $value['B'],
+                            'nama_mk' => $value['A'],
+                            'kode_mk' => $value['B'],
+                            'deskripsi_mk' => $value['C'],
                         ];
                     }
                 }
                 if (count($insert) > 0) {
             // insert data ke database, jika data sudah ada, maka diabaikan
-                    jenispenggunamodel::insertOrIgnore($insert);
+                    matakuliahmodel::insertOrIgnore($insert);
                 }
                 return response()->json([
                     'status' => true,
@@ -210,13 +215,14 @@ class akunpenggunasuperadmin extends Controller
                 ]);
             }
         }
-        return redirect('/datapengguna');
+        return redirect('/');
     }
+
     public function export_excel()
     {
         //ambil data yang akan di export
-        $jenispengguna = jenispenggunamodel::select('id_jenis_pengguna', 'nama_jenis_pengguna', 'kode_jenis_pengguna')
-            ->orderBy('id_jenis_pengguna')
+        $matkul = matakuliahmodel::select('id_mk', 'nama_mk', 'kode_mk', 'deskripsi_mk')
+            ->orderBy('id_mk')
             ->get();
 
         //load library
@@ -224,29 +230,31 @@ class akunpenggunasuperadmin extends Controller
         $sheet = $spreadsheet->getActiveSheet();
 
         $sheet->setCellValue('A1', 'No');
-        $sheet->setCellValue('B1', 'Nama Jenis Pengguna');
-        $sheet->setCellValue('C1', 'Kode Jenis Pengguna');
+        $sheet->setCellValue('B1', 'Nama');
+        $sheet->setCellValue('C1', 'Kode');
+        $sheet->setCellValue('D1', 'Deskripsi');
 
-        $sheet->getStyle('A1:C1')->getFont()->setBold(true); //bold header
+        $sheet->getStyle('A1:D1')->getFont()->setBold(true); //bold header
 
         $no = 1;
         $baris = 2;
-        foreach ($jenispengguna as $key => $value) {
+        foreach ($matkul as $key => $value) {
             $sheet->setCellValue('A' . $baris, $no);
-            $sheet->setCellValue('B' . $baris, $value->nama_jenis_pengguna);
-            $sheet->setCellValue('C' . $baris, $value->kode_jenis_pengguna);
+            $sheet->setCellValue('B' . $baris, $value->nama_mk);
+            $sheet->setCellValue('C' . $baris, $value->kode_mk);
+            $sheet->setCellValue('D' . $baris, $value->deskripsi_mk);
             $baris++;
             $no++;
 
         }
 
-        foreach (range('A', 'C') as $columID) {
+        foreach (range('A', 'F') as $columID) {
             $sheet->getColumnDimension($columID)->setAutoSize(true); //set auto size kolom
         }
 
-        $sheet->setTitle('Data Jenis Pengguna');
+        $sheet->setTitle('Data Mata Kuliah');
         $writer = IOFactory::createWriter($spreadsheet, 'Xlsx');
-        $filename = 'Data Jenis Pengguna ' . date('Y-m-d H:i:s') . '.xlsx';
+        $filename = 'Data Mata Kuliah' . date('Y-m-d H:i:s') . '.xlsx';
         header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
         header('Content-Disposition: attachment;filename="' . $filename . '"');
         header('Cache-Control: max-age=0');
@@ -262,16 +270,30 @@ class akunpenggunasuperadmin extends Controller
 
     public function export_pdf(){
          //ambil data yang akan di export
-         $jenispengguna = jenispenggunamodel::select('id_jenis_pengguna', 'nama_jenis_pengguna', 'kode_jenis_pengguna')
-            ->orderBy('id_jenis_pengguna')
-            ->get();
+         $matkul = matakuliahmodel::select('id_mk', 'nama_mk', 'kode_mk', 'deskripsi_mk')
+         ->orderBy('id_mk')
+         ->get();
 
          //use Barruvdh\DomPDF\Facade\\Pdf
-        $pdf = Pdf::loadView('superadmin.jenis.export', ['jenispengguna'=>$jenispengguna]);
+        $pdf = Pdf::loadView('admin.matkul.export_pdf', ['matkul'=>$matkul]);
         $pdf->setPaper('a4', 'potrait');
         $pdf->setOption("isRemoteEnabled", false);
         $pdf->render();
 
-        return $pdf->download('Data Jenis Pengguna '.date('Y-m-d H:i:s').'.pdf');
+        return $pdf->download('Data Mata Kuliah '.date('Y-m-d H:i:s').'.pdf');
     }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 }

@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Models\akunusermodel;
 use App\Models\identitasmodel;
 use App\Models\jenispenggunamodel;
+use App\Models\periodemodel;
 use Illuminate\Support\DB;
 use Yajra\DataTables\Facades\DataTables;
 use Illuminate\Support\Facades\Validator;
@@ -27,48 +28,64 @@ class akunpenggunacontroller extends Controller
 
         $activeMenu = 'akunpengguna';
 
-        $identitas = identitasmodel::select('id_identitas','nama_lengkap');
+        $identitas = identitasmodel::select('id_identitas','nama_lengkap')->get();
 
-        $jenispengguna = jenispenggunamodel::select('id_jenis_pengguna','nama_jenis_pengguna');
+        $jenispengguna = jenispenggunamodel::select('id_jenis_pengguna','nama_jenis_pengguna')->get();
 
-        return view('superadmin.akun.index', ['breadcrumb' => $breadcrumb, 'page' => $page, 'activeMenu' => $activeMenu, 'jenispengguna' => $jenispengguna , 'identitas' => $identitas]);
+        $periode = periodemodel::select('id_periode','nama_periode')->get();
+
+        return view('superadmin.akun.index', ['breadcrumb' => $breadcrumb, 'page' => $page, 'activeMenu' => $activeMenu, 'jenispengguna' => $jenispengguna , 'identitas' => $identitas, 'periode' => $periode]);
     }
 
     public function list(Request $request)
     {
-        $akunpengguna = akunusermodel::select('id_user','id_identitas','id_jenis_pengguna','id_periode','username');
+        $akunpengguna = akunusermodel::select('id_user', 'id_identitas', 'id_jenis_pengguna', 'id_periode', 'username')
+        ->with(['identitas', 'jenis_pengguna', 'periode'])
+        ->get();
 
-        // Return data untuk DataTables
-        return DataTables::of($akunpengguna)
-            ->addIndexColumn() // menambahkan kolom index / nomor urut
-            ->addColumn('aksi', function ($akunpengguna) {
-                $btn = '<button onclick="modalAction(\'' . url('/akunpengguna/' . $akunpengguna->id_user . '/edit') . '\')" class="btn btn-warning btn-sm"><i class="fa fa-pencil"></i>Edit</button> ';
-                $btn .= '<button onclick="modalAction(\'' . url('/akunpengguna/' . $akunpengguna->id_user . '/confirm') . '\')" class="btn btn-danger btn-sm">Hapus</button> ';
-            
-                return $btn;
-            })
-            
+    // Debugging: Periksa data sebelum dikirim ke DataTables
 
-            ->rawColumns(['aksi']) // memberitahu bahwa kolom aksi berisi HTML
-            ->make(true);
+    // Return data untuk DataTables
+    return DataTables::of($akunpengguna)
+        ->addIndexColumn()
+        ->addColumn('nama_lengkap', function ($akunpengguna) {
+            return $akunpengguna->identitas->nama_lengkap ?? '';
+        })
+        ->addColumn('nama_jenis_pengguna', function ($akunpengguna) {
+            return $akunpengguna->jenis_pengguna->nama_jenis_pengguna ?? '';
+        })
+        ->addColumn('aksi', function ($akunpengguna) {
+            $btn = '<button onclick="modalAction(\'' . url('/akunpengguna/' . $akunpengguna->id_user . '/show') . '\')" class="btn btn-info btn-sm"><i class="fa fa-pencil"></i>Detail</button> ';
+            $btn .= '<button onclick="modalAction(\'' . url('/akunpengguna/' . $akunpengguna->id_user . '/edit') . '\')" class="btn btn-warning btn-sm"><i class="fa fa-pencil"></i>Edit</button> ';
+            $btn .= '<button onclick="modalAction(\'' . url('/akunpengguna/' . $akunpengguna->id_user . '/confirm') . '\')" class="btn btn-danger btn-sm">Hapus</button> ';
+            
+            return $btn;
+        })
+        ->rawColumns(['aksi'])
+        ->make(true);
     }
 
     public function create(){
-        return view('superadmin.akun.create');
+
+        $identitas = identitasmodel::select('id_identitas','nama_lengkap')->get();
+
+        $jenispengguna = jenispenggunamodel::select('id_jenis_pengguna','nama_jenis_pengguna')->get();
+
+        $periode = periodemodel::select('id_periode','nama_periode')->get();
+
+
+        return view('superadmin.akun.create')->with(['identitas' => $identitas, 'jenispengguna' => $jenispengguna, 'periode' => $periode]);
     }
 
     public function store(Request $request){
         // cek apakah request berupa ajax
         if ($request->ajax() || $request->wantsJson()) {
             $rules = [
-                'nama_lengkap' => 'required|string|min:10|max:100',
-                'NIP' => 'required|string|min:10|max:20',
-                'tempat_lahir' => 'required|string|min:5|max:10',
-                'tanggal_lahir' => 'required|date',
-                'jenis_kelamin' => 'required|string|in:laki,perempuan',
-                'alamat' => 'required|string|min:10|max:100',
-                'no_telp' => 'required|string|min:10|max:15',
-                'email' => 'required|string|min:10|max:50',
+                'id_identitas' => 'required|integer', // Validasi ID Identitas (harus ada di tabel 'identitas')
+                'id_jenis_pengguna' => 'required|integer', // Validasi ID Jenis Pengguna
+                'id_periode' => 'required|integer', // Validasi ID Periode
+                'username' => 'required|string|min:5|max:20|unique:m_akun_user,username', // Username unik
+                'password' => 'required|string|min:8|max:255',
             ];
             // use Illuminate\Support\Facades\Validator;
             $validator = Validator::make($request->all(), $rules);
@@ -80,18 +97,15 @@ class akunpenggunacontroller extends Controller
                     'msgField' => $validator->errors() // pesan error validasi
                 ]);
             }
-            $datapengguna = identitasmodel::create([
-                'nama_lengkap' => $request->nama_lengkap,
-                'NIP' => $request->NIP,
-                'tempat_lahir' => $request->tempat_lahir,
-                'tanggal_lahir' => $request->tanggal_lahir,
-                'jenis_kelamin' => $request->jenis_kelamin,
-                'alamat' => $request->alamat,
-                'no_telp' => $request->no_telp,
-                'email' => $request->email
+            $akunpengguna = akunusermodel::create([
+                'id_identitas' => $request->id_identitas,
+                'id_jenis_pengguna' => $request->id_jenis_pengguna,
+                'id_periode' => $request->id_periode,
+                'username' => $request->username,
+                'password' => bcrypt($request->password), // Hash password sebelum disimpan
             ]);
 
-            if($datapengguna){
+            if($akunpengguna){
                 return response()->json([
                     'status'    => true,
                     'message'   => 'Data user berhasil disimpan'
@@ -104,25 +118,29 @@ class akunpenggunacontroller extends Controller
                 'message' => 'Data Jenis berhasil disimpan'
             ]);
         }
-        return redirect('/datapengguna');
+        return redirect('/akunpengguna');
     }
 
     public function edit(string $id){
-        $datapengguna = identitasmodel::find($id);
-        return view('superadmin.data.edit', ['datapengguna' => $datapengguna]);
+        $akunpengguna = akunusermodel::find($id);
+
+        $identitas = identitasmodel::select('id_identitas','nama_lengkap')->get();
+
+        $jenispengguna = jenispenggunamodel::select('id_jenis_pengguna','nama_jenis_pengguna')->get();
+
+        $periode = periodemodel::select('id_periode','nama_periode')->get();
+
+        return view('superadmin.akun.edit')->with(['akunpengguna' => $akunpengguna,'identitas' => $identitas, 'jenispengguna' => $jenispengguna, 'periode' => $periode]);
     }
 
     public function update(Request $request,$id){
         if ($request->ajax() || $request->wantsJson()) {
             $rules = [
-                'nama_lengkap' => 'required|string|min:10|max:100',
-                'NIP' => 'required|string|min:10|max:20',
-                'tempat_lahir' => 'required|string|min:5|max:10',
-                'tanggal_lahir' => 'required|date|before:today',
-                'jenis_kelamin' => 'required|string|in:laki,perempuan',
-                'alamat' => 'required|string|min:10|max:100',
-                'no_telp' => 'required|string|min:10|max:15',
-                'email' => 'required|string|min:10|max:50',
+                'id_identitas' => 'required|integer', // Validasi ID Identitas (harus ada di tabel 'identitas')
+                'id_jenis_pengguna' => 'required|integer', // Validasi ID Jenis Pengguna
+                'id_periode' => 'required|integer', // Validasi ID Periode
+                'username' => 'required|string|min:5|max:20|unique:m_akun_user,username', // Username unik
+                'password' => 'required|string|min:8|max:255',
             ];
             // use Illuminate\Support\Facades\Validator;
             $validator = Validator::make($request->all(), $rules);
@@ -133,7 +151,7 @@ class akunpenggunacontroller extends Controller
                     'msgField' => $validator->errors() // menunjukkan field mana yang error
                 ]);
             }
-            $check = identitasmodel::find($id);
+            $check = akunusermodel::find($id);
             if ($check) {
                 $check->update($request->all());
                 return response()->json([
@@ -147,13 +165,13 @@ class akunpenggunacontroller extends Controller
                 ]);
             }
         }
-        return redirect('/datapengguna');
+        return redirect('/akunpengguna');
     }
     public function delete(Request $request,$id){
         if ($request->ajax() || $request->wantsJson()) {
-            $datapengguna = identitasmodel::find($id);
-            if ($datapengguna) {
-                $datapengguna->delete();
+            $akunpengguna = akunusermodel::find($id);
+            if ($akunpengguna) {
+                $akunpengguna->delete();
                 return response()->json([
                     'status' => true,
                     'message' => 'Data berhasil dihapus'
@@ -165,16 +183,35 @@ class akunpenggunacontroller extends Controller
                 ]);
             }
         }
-        return redirect('/datapengguna');
+        return redirect('/akunpengguna');
     }
 
     public function confirm(string $id){
-        $datapengguna = identitasmodel::find($id);
-        return view('superadmin.data.delete', ['datapengguna' => $datapengguna]);
+        $akunpengguna = akunusermodel::find($id);
+
+        $identitas = identitasmodel::select('id_identitas','nama_lengkap')->get();
+
+        $jenispengguna = jenispenggunamodel::select('id_jenis_pengguna','nama_jenis_pengguna')->get();
+
+        $periode = periodemodel::select('id_periode','nama_periode')->get();
+
+        return view('superadmin.akun.delete')->with(['akunpengguna' => $akunpengguna,'identitas' => $identitas, 'jenispengguna' => $jenispengguna, 'periode' => $periode]);
+    }
+
+    public function show(string $id){
+        $akunpengguna = akunusermodel::find($id);
+
+        $identitas = identitasmodel::select('id_identitas','nama_lengkap')->get();
+
+        $jenispengguna = jenispenggunamodel::select('id_jenis_pengguna','nama_jenis_pengguna')->get();
+
+        $periode = periodemodel::select('id_periode','nama_periode')->get();
+
+        return view('superadmin.akun.show')->with(['akunpengguna' => $akunpengguna,'identitas' => $identitas, 'jenispengguna' => $jenispengguna, 'periode' => $periode]);
     }
     
     public function import(){
-        return view('superadmin.data.import');
+        return view('superadmin.akun.import');
     }
 
     public function import_proses(Request $request)
@@ -182,7 +219,7 @@ class akunpenggunacontroller extends Controller
         if ($request->ajax() || $request->wantsJson()) {
             $rules = [
         // validasi file harus xls atau xlsx, max 1MB
-                'file_datapengguna' => ['required', 'mimes:xlsx', 'max:1024'],
+                'file_akunpengguna' => ['required', 'mimes:xlsx', 'max:1024'],
             ];
             $validator = Validator::make($request->all(), $rules);
 
@@ -194,7 +231,7 @@ class akunpenggunacontroller extends Controller
                 ]);
             }
 
-            $file = $request->file('file_datapengguna'); // ambil file dari request
+            $file = $request->file('file_akunpengguna'); // ambil file dari request
             $reader = IOFactory::createReader('Xlsx'); // load reader file excel
             $reader->setReadDataOnly(true); // hanya membaca data
             $spreadsheet = $reader->load($file->getRealPath()); // load file excel
@@ -205,20 +242,17 @@ class akunpenggunacontroller extends Controller
                 foreach ($data as $baris => $value) {
                     if ($baris > 1) { // baris ke 1 adalah header, maka lewati
                         $insert[] = [
-                            'nama_lengkap' => $value['A'],
-                            'NIP' => $value['B'],
-                            'tempat_lahir' => $value['C'],
-                            'tanggal_lahir' => $value['D'],
-                            'jenis_kelamin' => $value['E'],
-                            'alamat' => $value['F'],
-                            'no_telp' => $value['G'],
-                            'email' => $value['H'],
+                            'id_identitas' => $value['A'],
+                            'id_jenis_pengguna' => $value['B'],
+                            'id_periode' => $value['C'],
+                            'username' => $value['D'],
+                            'password' => $value['E'],
                         ];
                     }
                 }
                 if (count($insert) > 0) {
             // insert data ke database, jika data sudah ada, maka diabaikan
-                    identitasmodel::insertOrIgnore($insert);
+                    akunusermodel::insertOrIgnore($insert);
                 }
                 return response()->json([
                     'status' => true,
@@ -231,13 +265,13 @@ class akunpenggunacontroller extends Controller
                 ]);
             }
         }
-        return redirect('/datapengguna');
+        return redirect('/akunpengguna');
     }
     public function export_excel()
     {
         //ambil data yang akan di export
-        $datapengguna = identitasmodel::select('id_identitas', 'nama_lengkap', 'NIP', 'tempat_lahir','tanggal_lahir','jenis_kelamin', 'alamat','no_telp','email')
-            ->orderBy('id_identitas')
+        $akunpengguna = akunusermodel::select('id_user', 'id_identitas', 'id_jenis_pengguna', 'id_periode','username','password')
+            ->orderBy('id_user')
             ->get();
 
         //load library
@@ -245,39 +279,33 @@ class akunpenggunacontroller extends Controller
         $sheet = $spreadsheet->getActiveSheet();
 
         $sheet->setCellValue('A1', 'No');
-        $sheet->setCellValue('B1', 'Nama Lengkap');
-        $sheet->setCellValue('C1', 'NIP');
-        $sheet->setCellValue('D1', 'Tempat Lahir');
-        $sheet->setCellValue('E1', 'Tanggal Lahir');
-        $sheet->setCellValue('F1', 'Jenis Kelamin');
-        $sheet->setCellValue('G1', 'Alamat');
-        $sheet->setCellValue('H1', 'Nomor Telefon');
-        $sheet->setCellValue('I1', 'E - Mail');
+        $sheet->setCellValue('B1', 'ID Identitas');
+        $sheet->setCellValue('C1', 'ID Jenis Pengguna');
+        $sheet->setCellValue('D1', 'ID Periode');
+        $sheet->setCellValue('E1', 'Username');
+        $sheet->setCellValue('F1', 'Password');
 
-        $sheet->getStyle('A1:I1')->getFont()->setBold(true); //bold header
+        $sheet->getStyle('A1:F1')->getFont()->setBold(true); //bold header
 
         $no = 1;
         $baris = 2;
-        foreach ($datapengguna as $key => $value) {
+        foreach ($akunpengguna as $key => $value) {
             $sheet->setCellValue('A' . $baris, $no);
-            $sheet->setCellValue('B' . $baris, $value->nama_lengkap);
-            $sheet->setCellValue('C' . $baris, $value->NIP);
-            $sheet->setCellValue('D' . $baris, $value->tempat_lahir);
-            $sheet->setCellValue('E' . $baris, $value->tanggal_lahir);
-            $sheet->setCellValue('F' . $baris, $value->jenis_kelamin);
-            $sheet->setCellValue('G' . $baris, $value->alamat);
-            $sheet->setCellValue('H' . $baris, $value->no_telp);
-            $sheet->setCellValue('I' . $baris, $value->email);
+            $sheet->setCellValue('B' . $baris, $value->id_identitas);
+            $sheet->setCellValue('C' . $baris, $value->id_jenis_pengguna);
+            $sheet->setCellValue('D' . $baris, $value->id_periode);
+            $sheet->setCellValue('E' . $baris, $value->username);
+            $sheet->setCellValue('F' . $baris, $value->password);
             $baris++;
             $no++;
 
         }
 
-        foreach (range('A', 'I') as $columID) {
+        foreach (range('A', 'F') as $columID) {
             $sheet->getColumnDimension($columID)->setAutoSize(true); //set auto size kolom
         }
 
-        $sheet->setTitle('Data Identitas Pengguna');
+        $sheet->setTitle('Data Akun Pengguna');
         $writer = IOFactory::createWriter($spreadsheet, 'Xlsx');
         $filename = 'Data Identitas Pengguna ' . date('Y-m-d H:i:s') . '.xlsx';
         header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
@@ -295,16 +323,16 @@ class akunpenggunacontroller extends Controller
 
     public function export_pdf(){
          //ambil data yang akan di export
-         $datapengguna = identitasmodel::select('id_identitas', 'nama_lengkap', 'NIP', 'tempat_lahir','tanggal_lahir','jenis_kelamin', 'alamat','no_telp','email')
-            ->orderBy('id_identitas')
+         $akunpengguna = akunusermodel::select('id_user', 'id_identitas', 'id_jenis_pengguna', 'id_periode','username','password')
+            ->orderBy('id_user')
             ->get();
 
          //use Barruvdh\DomPDF\Facade\\Pdf
-        $pdf = Pdf::loadView('superadmin.data.export', ['datapengguna'=>$datapengguna]);
+        $pdf = Pdf::loadView('superadmin.akun.export', ['akunpengguna'=>$akunpengguna]);
         $pdf->setPaper('a4', 'potrait');
         $pdf->setOption("isRemoteEnabled", false);
         $pdf->render();
 
-        return $pdf->download('Data Pengguna '.date('Y-m-d H:i:s').'.pdf');
+        return $pdf->download('Data Akun Pengguna '.date('Y-m-d H:i:s').'.pdf');
     }
 }

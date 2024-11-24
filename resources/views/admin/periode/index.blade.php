@@ -4,10 +4,10 @@
         <div class="card-header">
             <h3 class="card-title">{{ $page->title }}</h3>
             <div class="card-tools">
-                <button onclick="modalAction('{{ url('/akunpengguna/import') }}')" class="btn btn-primary btn-sm"><i class="fas fa-upload"></i>Import Data</button>
-                <a href="{{ url('/akunpengguna/export_excel') }}" class="btn btn-indigo btn-sm"><i class="fas fa-file-excel"></i>Export Excel</a>
-                <a href="{{ url('/akunpengguna/export_pdf') }}" class="btn btn-pink btn-sm"><i class="fas fa-file-pdf"></i> Export PDF</a>
-                <button onclick="modalAction('{{ url('akunpengguna/create') }}')" class="btn btn-success btn-sm"><i class="fas fa-plus-square"></i>Tambah Data</button>
+                <button onclick="modalAction('{{ url('/periode/import') }}')" class="btn btn-primary btn-sm"><i class="fas fa-upload"></i>Import Data</button>
+                <a href="{{ url('/periode/export_excel') }}" class="btn btn-indigo btn-sm"><i class="fas fa-file-excel"></i>Export Excel</a>
+                <a href="{{ url('/periode/export_pdf') }}" class="btn btn-pink btn-sm"><i class="fas fa-file-pdf"></i> Export PDF</a>
+                <button onclick="modalAction('{{ url('periode/create') }}')" class="btn btn-success btn-sm"><i class="fas fa-plus-square"></i>Tambah Data</button>
             </div>
         </div>
         <div class="card-body">
@@ -17,13 +17,13 @@
             @if (session('error'))
                 <div class="alert alert-danger">{{ session('error') }}</div>
             @endif
-            <table class="table table-bordered table-striped table-hover table-sm" id="table_akunpengguna">
+            <table class="table table-bordered table-striped table-hover table-sm" id="table_periode">
                 <thead>
                     <tr>
                         <th>No</th>
-                        <th>Nama Pengguna</th>
-                        <th>Jenis Pengguna</th>
-                        <th>Username</th>
+                        <th>Nama Periode</th>
+                        <th>Tanggal Mulai</th>
+                        <th>Tanggal Selesai</th>
                         <th>Aksi</th>
                     </tr>
                 </thead>
@@ -70,20 +70,16 @@
             });
         }
 
-        var akunpengguna;
+        var dataperiode;
         $(document).ready(function() {
 
-            akunpengguna = $('#table_akunpengguna').DataTable({
+            dataperiode = $('#table_periode').DataTable({
                 // serverSide: true, jika ingin menggunakan server side processing
                 serverSide: true,
                 ajax: {
-                    "url": "{{ url('/akunpengguna/list') }}",
+                    "url": "{{ url('/periode/list') }}",
                     "dataType": "json",
                     "type": "POST",
-                    dataSrc: function (json) {
-                        console.log(json); // Memeriksa data yang diterima
-                        return json.data;
-                    }
                 },
                 columns: [{
                         // nomor urut dari laravel datatable addIndexColumn()
@@ -91,22 +87,26 @@
                         className: "text-center",
                         orderable: false,
                         searchable: false
-                    },{
-                        data: "nama_lengkap",
+                    },
+                    {
+                        data: "nama_periode",
                         className: "",
                         orderable: true,
                         searchable: true
-                    },{
-                        data: "nama_jenis_pengguna",
-                        className: "",
-                        orderable: true,
-                        searchable: true
-                    },{
-                        data: "username",
+                    },
+                    {
+                        data: "tanggal_mulai",
                         className: "",
                         orderable: false,
                         searchable: true
-                    },{
+                    },
+                    {
+                        data: "tanggal_selesai",
+                        className: "",
+                        orderable: false,
+                        searchable: true
+                    },
+                    {
                         data: "aksi",
                         className: "",
                         orderable: false,

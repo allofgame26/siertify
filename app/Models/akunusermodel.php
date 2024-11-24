@@ -21,15 +21,15 @@ class akunusermodel extends Model
     protected $casts = ['password' => 'hashed'];
 
     public function identitas():BelongsTo{
-        return $this->belongsTo(identitasmodel::class);
+        return $this->belongsTo(identitasmodel::class, 'id_identitas', 'id_identitas');
     }
 
     public function jenis_pengguna():BelongsTo{
-        return $this->belongsTo(jenispenggunamodel::class);
+        return $this->belongsTo(jenispenggunamodel::class, 'id_jenis_pengguna', 'id_jenis_pengguna');
     }
 
     public function periode():BelongsTo{
-        return $this->belongsTo(periodemodel::class);
+        return $this->belongsTo(periodemodel::class, 'id_periode', 'id_periode');
     }
 
     public function pesertapelatihan():HasMany{

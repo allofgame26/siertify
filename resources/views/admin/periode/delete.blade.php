@@ -1,4 +1,4 @@
-@empty($akunpengguna)
+@empty($periode)
     <div id="modal-master" class="modal-dialog modal-lg" role="document">
         <div class="modal-content">
             <div class="modal-header">
@@ -12,18 +12,18 @@
                     <h5><i class="icon fas fa-ban"></i> Kesalahan!!!</h5>
                     Data yang anda cari tidak ditemukan
                 </div>
-                <a href="{{ url('/akunpengguna') }}" class="btn btn-warning">Kembali</a>
+                <a href="{{ url('/periode') }}" class="btn btn-warning">Kembali</a>
             </div>
         </div>
     </div>
 @else
-    <form action="{{ url('/akunpengguna/' . $akunpengguna->id_user . '/delete') }}" method="POST" id="form-delete-akunpengguna">
+    <form action="{{ url('/periode/' . $periode->id_jenis_pengguna . '/delete') }}" method="POST" id="form-delete-periode">
         @csrf
         @method('DELETE')
         <div id="modal-master" class="modal-dialog modal-lg" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLabel">Hapus Data jenis</h5>
+                    <h5 class="modal-title" id="exampleModalLabel">Hapus Data jenis Pengguna</h5>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
@@ -36,23 +36,15 @@
                     <table class="table table-sm table-bordered table-striped">
                         <tr>
                             <th class="text-right col-3">ID:</th>
-                            <td class="col-9">{{ $akunpengguna->id_user}}</td>
+                            <td class="col-9">{{ $periode->id_periode}}</td>
                         </tr>
                         <tr>
-                            <th class="text-right col-3">Nama Lengkap :</th>
-                            <td class="col-9">{{ $identitas->firstWhere('id_identitas', $akunpengguna->id_identitas)?->nama_lengkap ?? 'Tidak Diketahui' }}</td>
+                            <th class="text-right col-3">Nama Periode :</th>
+                            <td class="col-9">{{ $periode->nama_periode }}</td>
                         </tr>
                         <tr>
-                            <th class="text-right col-3">Jenis Pengguna:</th>
-                            <td class="col-9">{{ $jenispengguna->firstWhere('id_jenis_pengguna', $akunpengguna->id_jenis_pengguna)?->nama_jenis_pengguna ?? 'Tidak Diketahui' }}</td>
-                        </tr>
-                        <tr>
-                            <th class="text-right col-3">Periode:</th>
-                            <td class="col-9">{{ $periode->firstWhere('id_periode', $akunpengguna->id_periode)?->nama_periode ?? 'Tidak Diketahui' }}</td>
-                        </tr>
-                        <tr>
-                            <th class="text-right col-3">Username :</th>
-                            <td class="col-9">{{ $akunpengguna->username }}</td>
+                            <th class="text-right col-3">Deskripsi Periode :</th>
+                            <td class="col-9">{{ $periode->deskripsi_periode }}</td>
                         </tr>
                     </table>
                 </div>
@@ -65,7 +57,14 @@
     </form>
     <script>
         $(document).ready(function() {
-            $("#form-delete-akunpengguna").validate({
+
+            $.ajaxSetup({
+                headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            }
+        });
+
+            $("#form-delete-periode").validate({
                 rules: {},
                 submitHandler: function(form) {
                     $.ajax({
@@ -80,9 +79,11 @@
                                     title: 'Berhasil',
                                     text: response.message
                                 });
-                                if (typeof datapengguna !== 'undefined') {
-                                    datapengguna.ajax.reload(null, false); // Reload tabel tanpa mengubah posisi halaman
+
+                                if (typeof dataperiode !== 'undefined') {
+                                    dataperiode.ajax.reload(null, false); // Reload tabel tanpa mengubah posisi halaman
                             }
+
                             } else {
                                 $('.error-text').text('');
                                 $.each(response.msgField, function(prefix, val) {

@@ -1,21 +1,21 @@
-<form action="{{ url('/datapengguna/import_proses') }}" method="POST" id="form-import" enctype="multipart/form-data">
+<form action="{{ url('/minat/import_ajax') }}" method="POST" id="form-import" enctype="multipart/form-data">
     @csrf
     <div id="modal-master" class="modal-dialog modal-lg" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel">Import Data jenis</h5>
+                <h5 class="modal-title" id="exampleModalLabel">Import Data Bidang Minat</h5>
                 <button type="button" class="close" data-dismiss="modal" arialabel="Close"><span aria-hidden="true">&times;</span></button>
             </div>
             <div class="modal-body">
                 <div class="form-group">
                     <label>Download Template</label>
-                    <a href="{{ asset('template_akunpengguna.xlsx') }}" class="btn btn-info btn-sm" download><i class="fa fa-file-excel"></i>  Download</a>
+                    <a href="{{ asset('template_minat.xlsx') }}" class="btn btn-info btn-sm" download><i class="fa fa-file-excel"></i>  Download</a>
                     <small id="error-kategori_id" class="error-text form-text text-danger"></small>
                 </div>
                 <div class="form-group">
                     <label>Pilih File</label>
-                    <input type="file" name="file_akunpengguna" id="file_akunpengguna" class="formcontrol" required>
-                    <small id="error-file_akunpengguna" class="error-text form-text textdanger"></small>
+                    <input type="file" name="file_minat" id="file_minat" class="formcontrol" required>
+                    <small id="error-file_minat" class="error-text form-text textdanger"></small>
                 </div>
             </div>
             <div class="modal-footer">
@@ -32,16 +32,9 @@
 </style>
 <script>
     $(document).ready(function() {
-
-        $.ajaxSetup({
-                headers: {
-                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-            }
-        }); 
-
         $("#form-import").validate({
             rules: {
-                file_jenispengguna: {
+                file_minat: {
                     required: true,
                     extension: "xlsx"
                 },
@@ -63,14 +56,14 @@
                                 text: response.message
                             }).then(function() {
                                     // Reload halaman atau update data setelah Swal ditutup
-                                    if (typeof datapengguna !== 'undefined') {
-                                        datapengguna.ajax
+                                    if (typeof tableminat !== 'undefined') {
+                                        tableminat.ajax
                                     .reload(); // Reload data table jika ada
                                     } else {
                                         location
-                                    .reload(); // Reload halaman jika tidak ada tablejenis
+                                    .reload(); // Reload halaman jika tidak ada tableminat
                                     }
-                                });e
+                                });
                         } else { // jika error
                             $('.error-text').text('');
                             $.each(response.msgField, function(prefix, val) {

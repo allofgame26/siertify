@@ -18,7 +18,7 @@
             <!-- Add icons to the links using the .nav-icon class
            with font-awesome or any other icon font library -->
             <li class="nav-item">
-                <a href="{{ url('/') }}" class="nav-link {{ $activeMenu == 'dashboard' ? 'active' : '' }}">
+                <a href="{{ url('/admin') }}" class="nav-link {{ $activeMenu == 'dashboard' ? 'active' : '' }}">
                     <i class="nav-icon fas fa-tachometer-alt"></i>
                     <p>
                         Dashboard
@@ -81,7 +81,7 @@
                 </a>
             </li>
             <li class="nav-item">
-                <a href="{{ url('/dataakun') }}" class="nav-link {{ $activeMenu == 'dataakun' ? 'active' : '' }} ">
+                <a href="{{ url('/akunpengguna') }}" class="nav-link {{ $activeMenu == 'dataakun' ? 'active' : '' }} ">
                     <i class="nav-icon 	fas fa-unlock-alt"></i>
                     <p>Data Akun Pengguna</p>
                 </a>
