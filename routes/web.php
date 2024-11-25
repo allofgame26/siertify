@@ -17,6 +17,7 @@ use App\Http\Controllers\akunpenggunacontroller;
 use App\Models\jenispenggunamodel;
 
 Route::get('/', [WelcomeController::class, 'index']);
+Route::get('/landingpage', [WelcomeController::class, 'landingpage']);
 
 Route::get('/admin', [DashboardAdminController::class, 'index']);
 

@@ -17,4 +17,8 @@ class WelcomeController extends Controller
 
         return view('welcome', ['breadcrumb' => $breadcrumb, 'activeMenu' => $activeMenu]);
     }
+
+    public function landingpage(){
+        return view('landingpage');
+    }
 }
