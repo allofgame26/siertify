@@ -33,6 +33,7 @@
             </li>
 
             <!-- Fitur Pimpinan -->
+            @if (Auth::user()->getRole() == 'PMP')
             <li class="nav-header">Kelola Pelatihan Sertifikasi</li>
             <li class="nav-item">
                 <a href="{{ url('/data-pelatihan-sertifikasi') }}" class="nav-link {{ $activeMenu == 'data-pelatihan-sertifikasi' ? 'active' : '' }} ">
@@ -53,9 +54,11 @@
                     <p>Statistik</p>
                 </a>
             </li>
+            @endif
 
 
             <!-- Fitur Dosen-->
+            @if(Auth::user()->getRole() == 'DSN')
             <li class="nav-header">Kelola Pelatihan Sertifikasi</li>
             <li class="nav-item">
                 <a href="{{ url('/pendataan') }}" class="nav-link {{ $activeMenu == 'pendataan' ? 'active' : '' }} ">
@@ -69,10 +72,11 @@
                     <p>Penawaran</p>
                 </a>
             </li>
-
+            @endif
 
 
             <!-- Fitur Super Admin-->
+            @if(Auth::user()->getRole() == 'SDM')
             <li class="nav-header">Kelola Pengguna</li>
             <li class="nav-item">
                 <a href="{{ url('/jenispengguna') }}" class="nav-link {{ $activeMenu == 'jenispengguna' ? 'active' : '' }} ">
@@ -92,9 +96,11 @@
                     <p>Data Pengguna</p>
                 </a>
             </li>
+            @endif
 
 
             <!-- Fitur Admin -->
+            @if(Auth::user()->getRole() == 'ADM')
             <li class="nav-header">Data Pengguna</li>
             <li class="nav-item">
                 <a href="{{ url('/data-dosen') }}" class="nav-link {{ $activeMenu == 'data-dosen' ? 'active' : '' }} ">
@@ -166,6 +172,7 @@
                     <p>Statistik</p>
                 </a>
             </li>
+            @endif
         </ul>
     </nav>
     <!-- /.sidebar-menu -->

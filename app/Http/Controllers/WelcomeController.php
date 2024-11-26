@@ -21,4 +21,8 @@ class WelcomeController extends Controller
     public function landingpage(){
         return view('landingpage');
     }
+
+    public function login(){
+        return view('auth.login');
+    }
 }

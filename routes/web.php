@@ -3,6 +3,7 @@
 // web.php
 
 use App\Http\Controllers\BidangMinatController;
+use App\Http\Controllers\AuthController;
 use App\Http\Controllers\DashboardAdminController;
 use App\Http\Controllers\datapenggunaSuperadminController;
 use App\Http\Controllers\JenispenggunaSuperadminController;
@@ -16,8 +17,17 @@ use App\Http\Controllers\VendorSertifikasiController;
 use App\Http\Controllers\akunpenggunacontroller;
 use App\Models\jenispenggunamodel;
 
-Route::get('/', [WelcomeController::class, 'index']);
+Route::pattern('id','[0-9]+');
+
+Route::get('/login', [AuthController::class, 'login']);
+Route::post('/postlogin', [AuthController::class, 'postlogin']);
+Route::post('/logout', [AuthController::class, 'logout']);
+
+
 Route::get('/landingpage', [WelcomeController::class, 'landingpage']);
+Route::get('/', [WelcomeController::class, 'login']);
+
+Route::get('/dashboard', [WelcomeController::class, 'index']);
 
 Route::get('/admin', [DashboardAdminController::class, 'index']);
 

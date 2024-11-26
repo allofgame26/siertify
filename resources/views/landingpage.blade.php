@@ -121,16 +121,14 @@
                 </div>
             </div>
         </div>
-        <!-- Copyright Bar -->
-        <div class="bg-[#0E7182] py-3">
-            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-                <p class="text-center text-sm">
-                    Copyright © 2014-2021 <span class="font-medium">SIERTIFY</span>. All rights reserved.
-                </p>
-            </div>
-        </div>
     </footer>
-    
+    <!-- Copyright Bar -->
+    <div class="w-full text-center py-3 bg-[#0D313F]">
+        <p class="text-[#869099]">
+          Copyright © 2014-2021
+          <span class="text-white font-bold">SIERTIFY</span> All rights reserved.
+        </p>
+    </div> 
 </body>
 </html>
 <!-- jQuery -->

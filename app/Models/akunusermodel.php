@@ -6,8 +6,10 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Foundation\Auth\User as Authenticatable;
 
-class akunusermodel extends Model
+
+class akunusermodel extends Authenticatable
 {
     use HasFactory;
 
@@ -38,5 +40,18 @@ class akunusermodel extends Model
 
     public function pesertasertifikasi():HasMany{
         return $this->hasMany(pesertasertifikasimodel::class);
+    }
+
+    // Mendapatkan nama Role
+    public function getRoleName(): String{
+        return $this->jenis_pengguna->nama_jenis_pengguna;
+    }
+
+    public function hasRole($role): bool{
+        return $this->jenis_pengguna->kode_jenis_pengguna == $role;
+    }
+
+    public function getRole(){
+        return $this->jenis_pengguna->kode_jenis_pengguna;
     }
 }
