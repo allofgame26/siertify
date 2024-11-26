@@ -11,6 +11,7 @@ use App\Http\Controllers\WelcomeController;
 use App\Http\Controllers\JenisPelatihanSertifikasiController;
 use App\Http\Controllers\periodeadmincontroller;
 use App\Http\Controllers\MatkulController;
+use App\Http\Controllers\ProfilController;
 use App\Http\Controllers\VendorPelatihanController;
 use App\Http\Controllers\VendorSertifikasiController;
 use App\Models\jenispenggunamodel;
@@ -175,4 +176,11 @@ Route::get('/matkul/import', [MatkulController::class, 'import']); //ajax form u
 Route::post('/matkul/import_ajax', [MatkulController::class, 'import_ajax']); //ajax import exvel)
 Route::get('/matkul/export_excel', [MatkulController::class, 'export_excel']);  //export excel
 Route::get('/matkul/export_pdf', [MatkulController::class, 'export_pdf']); //export pdf
+
+// profil admin
+// harus dikasih kondisi klo rolenya admin nampilin admin
+Route::get('/admin/profil', [ProfilController::class, 'profil_admin']);
+Route::get('/admin/edit', [ProfilController::class,'edit_admin']); //menampilkan halaman form edit matkul ajax
+Route::put('/admin/{id}/update_ajax', [ProfilController::class,'update_ajax']);   //menyimpan halaman form edit matkul ajax
+
 
