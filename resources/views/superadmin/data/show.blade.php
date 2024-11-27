@@ -1,7 +1,7 @@
 @empty($datapengguna)
     <div id="modal-master" class="modal-dialog modal-lg" role="document">
         <div class="modal-content">
-            <div class="modal-header bg-warning">
+            <div class="modal-header bg-info">
                 <h5 class="modal-title" id="exampleModalLabel">Kesalahan</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
@@ -17,13 +17,13 @@
         </div>
     </div>
 @else
-    <form action="{{ url('/datapengguna/' . $datapengguna->id_identitas . '/update') }}" method="POST" id="form-edit"
+    <form action="" method="POST" id="form-edit"
         enctype="multipart/form-data">>
         @csrf
         @method('PUT')
         <div id="modal-master" class="modal-dialog modal-lg" role="document">
             <div class="modal-content">
-                <div class="modal-header bg-warning">
+                <div class="modal-header bg-info">
                     <h5 class="modal-title" id="exampleModalLabel">Edit Data jenis</h5>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
@@ -34,19 +34,18 @@
                         <label>Foto Profil</label><br>
                         <!-- Foto profil yang akan diubah langsung -->
                         <img id="current-foto_profil" src="{{ asset('img/' . $datapengguna->foto_profil) }}" class="img-foto_profil mb-2" alt="Foto Profil Saat Ini" style="width: 100px; height: 100px; object-fit: cover;"><br>
-                        <input type="file" name="foto_profil" id="foto_profil"  value="{{ $datapengguna->foto_profil }}" class="form-control" accept="image/*">
                         <small id="error-foto_profil" class="error-text form-text text-danger"></small>
                     </div>
                     <div class="form-group">
                         <label>Nama Lengkap</label>
                         <input value="{{ $datapengguna->nama_lengkap }}" type="text" name="nama_lengkap"
-                            id="nama_lengkap" class="form-control" placeholder="Enter Nama Lengkap" required>
+                            id="nama_lengkap" class="form-control" placeholder="Enter Nama Lengkap" required readonly>
                         <small id="error-nama_lengkap" class="error-text form-text text-danger"></small>
                     </div>
                     <div class="form-group">
                         <label>Nomor Induk Pengajar (NIP)</label>
                         <input value="{{ $datapengguna->NIP }}" type="text" name="NIP" id="NIP"
-                            class="form-control" placeholder="Enter NIP" required>
+                            class="form-control" placeholder="Enter NIP" required readonly>
                         <small id="error-NIP" class="error-text form-text text-danger"></small>
                     </div>
                     <div class="row">
@@ -54,7 +53,7 @@
                             <div class="form-group">
                                 <label>Tempat Lahir</label>
                                 <input value="{{ $datapengguna->tempat_lahir }}" type="text" name="tempat_lahir"
-                                    id="tempat_lahir" class="form-control" placeholder="Enter Tempat Lahir" required>
+                                    id="tempat_lahir" class="form-control" placeholder="Enter Tempat Lahir" required readonly>
                                 <small id="error-tempat_lahir" class="error-text form-text text-danger"></small>
                             </div>
                         </div>
@@ -62,14 +61,14 @@
                             <div class="form-group">
                                 <label>Tangal Lahir</label>
                                 <input value="{{ $datapengguna->tanggal_lahir }}" type="date" name="tanggal_lahir"
-                                    id="tanggal_lahir" class="form-control" placeholder="Pilih tanggal" required>
+                                    id="tanggal_lahir" class="form-control" placeholder="Pilih tanggal" required readonly> 
                                 <small id="error-tanggal_lahir" class="error-text form-text text-danger"></small>
                             </div>
                         </div>
                         <div class="col-md-4">
                             <div class="form-group">
                                 <label>Jenis Kelamin</label>
-                                <select name="jenis_kelamin" id="jenis_kelamin" class="form-control" required>
+                                <select name="jenis_kelamin" id="jenis_kelamin" class="form-control" required readonly >
                                     <option value="{{ $datapengguna->jenis_kelamin }}" disabled selected>Pilih Jenis Kelamin
                                     </option>
                                     <option value="laki">Laki-Laki</option>
@@ -82,7 +81,7 @@
                     <div class="form-group">
                         <label>Alamat</label>
                         <input value="{{ $datapengguna->alamat }}" type="text" name="alamat" id="alamat"
-                            class="form-control" placeholder="Enter Alamat" required>
+                            class="form-control" placeholder="Enter Alamat" required readonly>
                         <small id="error-alamat" class="error-text form-text text-danger"></small>
                     </div>
                     <div class="row">
@@ -90,7 +89,7 @@
                             <div class="form-group">
                                 <label>Nomor Telepon</label>
                                 <input value="{{ $datapengguna->no_telp }}" type="text" name="no_telp" id="no_telp"
-                                    class="form-control" placeholder="Enter Nomor Telefon" required>
+                                    class="form-control" placeholder="Enter Nomor Telefon" required readonly>
                                 <small id="error-no_telp" class="error-text form-text text-danger"></small>
                             </div>
                         </div>
@@ -98,15 +97,14 @@
                             <div class="form-group">
                                 <label>E-mail</label>
                                 <input value="{{ $datapengguna->email }}" type="text" name="email" id="email"
-                                    class="form-control" placeholder="Enter E - Mail" required>
+                                    class="form-control" placeholder="Enter E - Mail" required readonly>
                                 <small id="error-email" class="error-text form-text text-danger"></small>
                             </div>
                         </div>
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" data-dismiss="modal" class="btn btn-warning">Batal</button>
-                    <button type="submit" class="btn btn-success">Simpan</button>
+                    <button type="button" data-dismiss="modal" class="btn btn-warning">Kembali</button>
                 </div>
             </div>
         </div>
@@ -121,6 +119,17 @@
         .modal-content {
             border-radius: 10px;
             /* Sesuaikan nilai radius */
+        }
+
+        .form-control[readonly] {
+            background-color: #fff;
+            /* Tetap putih */
+            color: #495057;
+            /* Warna teks default AdminLTE */
+            opacity: 1;
+            /* Hilangkan efek transparansi */
+            cursor: not-allowed;
+            /* Tunjukkan bahwa elemen ini tidak dapat diedit */
         }
     </style>
     <script>

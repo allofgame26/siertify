@@ -77,7 +77,7 @@
                             <div class="form-group">
                                 <label for="jenis_kelamin">Jenis Kelamin</label>
                                 <select name="jenis_kelamin" id="jenis_kelamin" class="form-control" required>
-                                    <option value="">-- Pilih Jenis Kelamin --</option>
+                                    <option value="$user->jenis_kelamin" disabled selected>-- Pilih Jenis Kelamin --</option>
                                     <option value="laki" {{ old('jenis_kelamin', $user->jenis_kelamin) === 'laki' ? 'selected' : '' }}>Laki-laki</option>
                                     <option value="perempuan" {{ old('jenis_kelamin', $user->jenis_kelamin) === 'perempuan' ? 'selected' : '' }}>Perempuan</option>
                                 </select>

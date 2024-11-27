@@ -51,17 +51,15 @@ class ProfilController extends Controller
     public function update_admin(Request $request, $id)
 {
     $rules = [
-        'nama_lengkap' => 'required|max:50',
-        'NIP' => 'required|max:20|unique:m_identitas,NIP,' . $id . ',id_identitas',
-        'tempat_lahir' => 'required|max:30',
-        'tanggal_lahir' => 'required|date',
-        'jenis_kelamin' => 'required|in:L,P',
-        'alamat' => 'required|max:100',
-        'no_telp' => 'required|max:15',
-        'email' => 'required|email|max:50',
-        'username' => 'required|max:20|min:3',
-        'password' => 'nullable|min:5|max:20',
-        'foto_profil' => 'nullable|image|mimes:jpeg,png,jpg|max:2048',
+        'nama_lengkap' => 'required|string|min:10|max:100',
+        'NIP' => 'required|string|min:10|max:20|unique:m_identitas,NIP,'.$id.',id_identitas',
+        'tempat_lahir' => 'required|string|min:5|max:10',
+        'tanggal_lahir' => 'required|date|before:today',
+        'jenis_kelamin' => 'required|string|in:laki,perempuan',
+        'alamat' => 'required|string|min:10|max:100',
+        'no_telp' => 'required|string|min:10|max:15',
+        'email' => 'required|string|min:10|max:50',
+        'foto_profil' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048'
     ];
 
     $validator = Validator::make($request->all(), $rules);
@@ -94,11 +92,11 @@ class ProfilController extends Controller
         // Simpan file dengan hashName
         $file = $request->file('foto_profil');
         $fileName = $file->hashName(); // Nama file yang di-hash
-        $file->storeAs('public/gambar', $fileName); // Simpan di folder 'storage/app/public/gambar'
+        $file->storeAs('public/img', $fileName); // Simpan di folder 'storage/app/public/img'
 
         // Hapus file lama jika ada
-        if ($user->identitas->avatar && Storage::exists('public/gambar/' . $user->identitas->avatar)) {
-            Storage::delete('public/gambar/' . $user->identitas->avatar);
+        if ($user->identitas->avatar && Storage::exists('public/img/' . $user->identitas->avatar)) {
+            Storage::delete('public/img/' . $user->identitas->avatar);
         }
 
         $dataIdentitas['avatar'] = $fileName; // Update kolom avatar dengan hashName
