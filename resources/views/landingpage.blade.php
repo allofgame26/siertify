@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>SIERTIFY - Sistem Informasi Pendataan Sertifikasi dan Pelatihan Dosen JTI</title>
+    <link rel="icon" href="{{ asset('logo.png') }}" type="image/png" />
 
     <link href="https://cdnjs.cloudflare.com/ajax/libs/tailwindcss/2.2.19/tailwind.min.css" rel="stylesheet">
     <!-- Google Font: Source Sans Pro -->

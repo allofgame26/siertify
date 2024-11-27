@@ -10,6 +10,7 @@ use Illuminate\Support\Facades\Validator;
 use PhpOffice\PhpSpreadsheet\IOFactory;
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
 use Barryvdh\DomPDF\Facade\Pdf;
+use Illuminate\Support\Facades\Storage;
 
 class datapenggunaSuperadminController extends Controller
 {
@@ -30,20 +31,32 @@ class datapenggunaSuperadminController extends Controller
 
     public function list(Request $request)
     {
-        $identitas= identitasmodel::select('id_identitas','nama_lengkap','NIP','jenis_kelamin','alamat','no_telp');
+        $identitas= identitasmodel::select('id_identitas','nama_lengkap','NIP','jenis_kelamin','alamat','email','no_telp','foto_profil');
+
+             //Filter data user berdasarkan level_id
+             if ($request->id_jenis_pengguna) {
+                $identitas->where('id_jenis_pengguna', $request->id_jenis_pengguna);
+            }
 
         // Return data untuk DataTables
         return DataTables::of($identitas)
             ->addIndexColumn() // menambahkan kolom index / nomor urut
+            ->editColumn('foto_profil', function ($identitas) {
+                // Cek apakah foto_profil ada atau gunakan gambar default jika kosong
+                $foto_profil = $identitas->foto_profil ? asset('img/' . $identitas->foto_profil) : asset('img/profil-pic.png');
+            
+                return '<img src="' . $foto_profil . '" style="width: 70px; height: 70px;" />';
+            })
             ->addColumn('aksi', function ($identitas) {
-                $btn = '<button onclick="modalAction(\'' . url('/datapengguna/' . $identitas->id_identitas . '/edit') . '\')" class="btn btn-warning btn-sm"><i class="fa fa-pencil"></i>Edit</button> ';
+                $btn = '<button onclick="modalAction(\'' . url('/datapengguna/' . $identitas->id_identitas . '/show') . '\')" class="btn btn-info btn-sm"><i class="fa fa-pencil"></i>Detail</button> ';
+                $btn .= '<button onclick="modalAction(\'' . url('/datapengguna/' . $identitas->id_identitas . '/edit') . '\')" class="btn btn-warning btn-sm"><i class="fa fa-pencil"></i>Edit</button> ';
                 $btn .= '<button onclick="modalAction(\'' . url('/datapengguna/' . $identitas->id_identitas . '/confirm') . '\')" class="btn btn-danger btn-sm">Hapus</button> ';
             
                 return $btn;
             })
             
 
-            ->rawColumns(['aksi']) // memberitahu bahwa kolom aksi berisi HTML
+            ->rawColumns(['foto_profil','aksi']) // memberitahu bahwa kolom aksi berisi HTML
             ->make(true);
     }
 
@@ -63,6 +76,7 @@ class datapenggunaSuperadminController extends Controller
                 'alamat' => 'required|string|min:10|max:100',
                 'no_telp' => 'required|string|min:10|max:15',
                 'email' => 'required|string|min:10|max:50',
+                'foto_profil' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
             ];
             // use Illuminate\Support\Facades\Validator;
             $validator = Validator::make($request->all(), $rules);
@@ -74,6 +88,7 @@ class datapenggunaSuperadminController extends Controller
                     'msgField' => $validator->errors() // pesan error validasi
                 ]);
             }
+
             $datapengguna = identitasmodel::create([
                 'nama_lengkap' => $request->nama_lengkap,
                 'NIP' => $request->NIP,
@@ -82,8 +97,23 @@ class datapenggunaSuperadminController extends Controller
                 'jenis_kelamin' => $request->jenis_kelamin,
                 'alamat' => $request->alamat,
                 'no_telp' => $request->no_telp,
-                'email' => $request->email
+                'email' => $request->email,
+                'foto_profil' => 'profil-pic.png',
             ]);
+
+    
+            // Jika fot_profil ada, proses penyimpanan gambar
+            if ($request->hasFile('foto_profil')) {
+                // Gunakan ID user yang baru dibuat untuk nama file
+                $fileName = 'profile_' . $datapengguna->id_identitas . '.' . $request->foto_profil->getClientOriginalExtension();
+    
+                // Simpan gambar di direktori 'gambar'
+                $request->foto_profil->move(public_path('gambar'), $fileName);
+    
+                // Update datapengguna dengan nama file foto_profil baru
+                $datapengguna->foto_profil = $fileName;
+                $datapengguna->save(); // Simpan perubahan ke database
+            }
 
             if($datapengguna){
                 return response()->json([
@@ -110,13 +140,15 @@ class datapenggunaSuperadminController extends Controller
         if ($request->ajax() || $request->wantsJson()) {
             $rules = [
                 'nama_lengkap' => 'required|string|min:10|max:100',
-                'NIP' => 'required|string|min:10|max:20',
+                'NIP' => 'required|string|min:10|max:20|unique:m_identitas,NIP,'.$id.',id_identitas',
                 'tempat_lahir' => 'required|string|min:5|max:10',
                 'tanggal_lahir' => 'required|date|before:today',
                 'jenis_kelamin' => 'required|string|in:laki,perempuan',
                 'alamat' => 'required|string|min:10|max:100',
                 'no_telp' => 'required|string|min:10|max:15',
                 'email' => 'required|string|min:10|max:50',
+                'foto_profil' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048'
+
             ];
             // use Illuminate\Support\Facades\Validator;
             $validator = Validator::make($request->all(), $rules);
@@ -127,13 +159,43 @@ class datapenggunaSuperadminController extends Controller
                     'msgField' => $validator->errors() // menunjukkan field mana yang error
                 ]);
             }
+
             $check = identitasmodel::find($id);
             if ($check) {
-                $check->update($request->all());
+
+                if ($request->hasFile('foto_profil')) {
+
+                    $fileName = 'profile_' . $check->id_identitas . '.' . $request->foto_profil->getClientOriginalExtension();
+    
+                    // Check if an existing profile picture exists and delete it
+                    $oldFile = public_path('img/'. $fileName);
+                    if (Storage::disk('public')->exists($oldFile)) {
+                        Storage::disk('public')->delete($oldFile);
+                    }
+    
+                    $request->foto_profil->move(public_path('img'), $fileName);
+
+                } else {
+                    $fileName = 'profil-pic.png'; // default foto_profil
+                }
+
+                identitasmodel::find($id)->update([
+                    'nama_lengkap' => $request->nama_lengkap,
+                    'NIP' => $request->NIP,
+                    'tempat_lahir' => $request->tempat_lahir,
+                    'tanggal_lahir' => $request->tanggal_lahir,
+                    'jenis_kelamin' => $request->jenis_kelamin,
+                    'alamat' => $request->alamat,
+                    'no_telp' => $request->no_telp,
+                    'email' => $request->email,
+                    'foto_profil' => $fileName,
+                ]);
+
                 return response()->json([
                     'status' => true,
                     'message' => 'Data berhasil diupdate'
                 ]);
+
             } else {
                 return response()->json([
                     'status' => false,
@@ -143,6 +205,7 @@ class datapenggunaSuperadminController extends Controller
         }
         return redirect('/datapengguna');
     }
+
     public function delete(Request $request,$id){
         if ($request->ajax() || $request->wantsJson()) {
             $datapengguna = identitasmodel::find($id);
@@ -160,6 +223,12 @@ class datapenggunaSuperadminController extends Controller
             }
         }
         return redirect('/datapengguna');
+    }
+
+    public function show(string $id)
+    {
+        $datapengguna = identitasmodel::find($id);
+        return view('superadmin.data.show', ['datapen$datapengguna' => $datapengguna]);
     }
 
     public function confirm(string $id){

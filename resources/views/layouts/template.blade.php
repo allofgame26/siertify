@@ -5,7 +5,8 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="csrf-token" content="{{ csrf_token() }}">
-    <title>{{ config('app.name', 'SIERTIFY') }}</title>
+    <title>SIERTIFY - Sistem Informasi Pendataan Sertifikasi dan Pelatihan Dosen JTI</title>
+    <link rel="icon" href="{{ asset('logo.png') }}" type="image/png" />
 
     <!-- Google Font: Source Sans Pro -->
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">

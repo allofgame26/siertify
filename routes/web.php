@@ -22,7 +22,7 @@ Route::pattern('id','[0-9]+');
 
 Route::get('/login', [AuthController::class, 'login']);
 Route::post('/postlogin', [AuthController::class, 'postlogin']);
-Route::post('/logout', [AuthController::class, 'logout']);
+Route::get('/logout', [AuthController::class, 'logout']);
 
 
 Route::get('/landingpage', [WelcomeController::class, 'landingpage']);
@@ -57,6 +57,8 @@ Route::POST('/datapengguna/list', [datapenggunaSuperadminController::class, 'lis
 
 Route::get('/datapengguna/create', [datapenggunaSuperadminController::class, 'create']);
 Route::post('/datapengguna/proses', [datapenggunaSuperadminController::class, 'store'])->name('datapengguna.store');
+
+Route::get('/datapengguna/{id}/show', [datapenggunaSuperadminController::class, 'show']);       //menampilkan detai user
 
 Route::get('/datapengguna/{id}/edit', [datapenggunaSuperadminController::class,'edit']);
 Route::put('/datapengguna/{id}/update', [datapenggunaSuperadminController::class,'update']);

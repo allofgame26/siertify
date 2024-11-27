@@ -4,10 +4,14 @@
         <div class="card-header">
             <h3 class="card-title">{{ $page->title }}</h3>
             <div class="card-tools">
-                <button onclick="modalAction('{{ url('/datapengguna/import') }}')" class="btn btn-primary btn-sm"><i class="fas fa-upload"></i>Import Data</button>
-                <a href="{{ url('/datapengguna/export_excel') }}" class="btn btn-indigo btn-sm"><i class="fas fa-file-excel"></i>Export Excel</a>
-                <a href="{{ url('/datapengguna/export_pdf') }}" class="btn btn-pink btn-sm"><i class="fas fa-file-pdf"></i> Export PDF</a>
-                <button onclick="modalAction('{{ url('/datapengguna/create') }}')" class="btn btn-success btn-sm"><i class="fas fa-plus-square"></i>Tambah Data</button>
+                <button onclick="modalAction('{{ url('/datapengguna/import') }}')" class="btn btn-primary btn-sm"><i
+                        class="fas fa-upload"></i>Import Data</button>
+                <a href="{{ url('/datapengguna/export_excel') }}" class="btn btn-indigo btn-sm"><i
+                        class="fas fa-file-excel"></i>Export Excel</a>
+                <a href="{{ url('/datapengguna/export_pdf') }}" class="btn btn-pink btn-sm"><i class="fas fa-file-pdf"></i>
+                    Export PDF</a>
+                <button onclick="modalAction('{{ url('/datapengguna/create') }}')" class="btn btn-success btn-sm"><i
+                        class="fas fa-plus-square"></i>Tambah Data</button>
             </div>
         </div>
         <div class="card-body">
@@ -21,11 +25,10 @@
                 <thead>
                     <tr>
                         <th>No</th>
+                        <th>Foto Profil</th>
                         <th>Nama Lengkap</th>
                         <th>NIP</th>
-                        <th>Jenis Kelamin</th>
-                        <th>Alamat</th>
-                        <th>Nomor Telp</th>
+                        <th>Email</th>
                         <th>Aksi</th>
                     </tr>
                 </thead>
@@ -34,33 +37,31 @@
     </div>
 
     <!-- Modal -->
-    <div id="myModal" class="modal fade animate shake" tabindex="-1" role="dialog" data-backdrop="static" data-keyboard="false" data-width="75%" aria-hidden="true"></div>
+    <div id="myModal" class="modal fade animate shake" tabindex="-1" role="dialog" data-backdrop="static"
+        data-keyboard="false" data-width="75%" aria-hidden="true"></div>
 @endsection
 
 @push('css')
-<style>
+    <style>
+        .btn-pink {
+            background-color: #d81b60;
+            color: white;
+        }
 
-.btn-pink {
-    background-color: #d81b60;
-    color:white;
-}
+        .btn-indigo {
+            background-color: indigo;
+            color: white;
+        }
 
-.btn-indigo {
-    background-color: indigo;
-    color: white;
-}
+        .btn-teal {
+            background-color: #39cccc;
+            color: white
+        }
 
-.btn-teal {
-    background-color: #39cccc;
-    color: white
-}
-
-.card-tools .btn i {
-    margin-right: 8px;
-}
-
-</style>
-
+        .card-tools .btn i {
+            margin-right: 8px;
+        }
+    </style>
 @endpush
 
 @push('js')
@@ -88,32 +89,28 @@
                         className: "text-center",
                         orderable: false,
                         searchable: false
-                    },{
+                    },
+                        data: "foto_profil",
+                        className: "",
+                        orderable: false,
+                        searchable: false, 
+                    {
                         data: "nama_lengkap",
                         className: "",
                         orderable: true,
                         searchable: true
-                    },{
+                    }, {
                         data: "NIP",
                         className: "",
                         orderable: false,
                         searchable: true
-                    },{
-                        data: "jenis_kelamin",
+                    }, {
+                        data: "email",
                         className: "",
                         orderable: false,
                         searchable: true
-                    },{
-                        data: "alamat",
-                        className: "",
-                        orderable: false,
-                        searchable: true
-                    },{
-                        data: "no_telp",
-                        className: "",
-                        orderable: false,
-                        searchable: true
-                    },{
+                    }, 
+                    {
                         data: "aksi",
                         className: "",
                         orderable: false,
