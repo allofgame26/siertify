@@ -27,12 +27,8 @@ Route::get('/logout', [AuthController::class, 'logout']);
 
 Route::get('/landingpage', [WelcomeController::class, 'landingpage']);
 Route::get('/', [WelcomeController::class, 'login']);
-
-Route::get('/dashboard', [WelcomeController::class, 'index']);
-
-Route::get('/admin', [DashboardAdminController::class, 'index']);
-
-// jenis pelatihan dan sertifikasi admin
+    
+    // jenis pelatihan dan sertifikasi admin
 Route::get('/jenis', [JenisPelatihanSertifikasiController::class, 'index']);  // menampilkan halaman jenis
 Route::post('/jenis/list', [JenisPelatihanSertifikasiController::class, 'list'] );    //menampilkan data jenis dalam bentuk json datatables
 
@@ -56,7 +52,7 @@ Route::get('/datapengguna', [datapenggunaSuperadminController::class, 'index']);
 Route::POST('/datapengguna/list', [datapenggunaSuperadminController::class, 'list']);
 
 Route::get('/datapengguna/create', [datapenggunaSuperadminController::class, 'create']);
-Route::post('/datapengguna/proses', [datapenggunaSuperadminController::class, 'store'])->name('datapengguna.store');
+Route::post('/datapengguna/proses', [datapenggunaSuperadminController::class, 'store']);
 
 Route::get('/datapengguna/{id}/show', [datapenggunaSuperadminController::class, 'show']);       //menampilkan detai user
 
@@ -220,5 +216,9 @@ Route::get('/matkul/export_pdf', [MatkulController::class, 'export_pdf']); //exp
 Route::get('/admin/profil', [ProfilController::class, 'profil_admin']);
 Route::get('/admin/edit', [ProfilController::class,'edit_admin']); //menampilkan halaman form edit matkul ajax
 Route::put('/admin/{id}/update_ajax', [ProfilController::class,'update_ajax']);   //menyimpan halaman form edit matkul ajax
+
+Route::get('/dashboard', [WelcomeController::class, 'index']);
+
+Route::get('/admin', [DashboardAdminController::class, 'index']);
 
 

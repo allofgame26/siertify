@@ -85,7 +85,7 @@
                 </a>
             </li>
             <li class="nav-item">
-                <a href="{{ url('/akunpengguna') }}" class="nav-link {{ $activeMenu == 'dataakun' ? 'active' : '' }} ">
+                <a href="{{ url('/akunpengguna') }}" class="nav-link {{ $activeMenu == 'akunpengguna' ? 'active' : '' }} ">
                     <i class="nav-icon 	fas fa-unlock-alt"></i>
                     <p>Data Akun Pengguna</p>
                 </a>

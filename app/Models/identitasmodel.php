@@ -20,10 +20,4 @@ class identitasmodel extends Model
         return $this->hasMany(akunusermodel::class);
     }
 
-    protected function foto_profil(): Attribute{
-        return Attribute::make(
-            get: fn ($foto_profil) => url('/img/' . $foto_profil),
-        );
-    }
-
 }

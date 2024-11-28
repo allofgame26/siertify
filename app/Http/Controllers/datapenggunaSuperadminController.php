@@ -45,7 +45,7 @@ class datapenggunaSuperadminController extends Controller
                 // Cek apakah foto_profil ada atau gunakan gambar default jika kosong
                 $foto_profil = $identitas->foto_profil ? asset('img/' . $identitas->foto_profil) : asset('img/profil-pic.png');
             
-                return '<img src="' . $foto_profil . '" style="width: 70px; height: 70px;" />';
+                return '<img src="' . $identitas->foto_profil . '" style="width: 70px; height: 70px;" />';
             })
             ->addColumn('aksi', function ($identitas) {
                 $btn = '<button onclick="modalAction(\'' . url('/datapengguna/' . $identitas->id_identitas . '/show') . '\')" class="btn btn-info btn-sm"><i class="fa fa-pencil"></i>Detail</button> ';
@@ -98,22 +98,22 @@ class datapenggunaSuperadminController extends Controller
                 'alamat' => $request->alamat,
                 'no_telp' => $request->no_telp,
                 'email' => $request->email,
-                'foto_profil' => 'profil-pic.png',
+                'foto_profil' => $request->foto_profil,
             ]);
 
     
             // Jika fot_profil ada, proses penyimpanan gambar
-            if ($request->hasFile('foto_profil')) {
-                // Gunakan ID user yang baru dibuat untuk nama file
-                $fileName = 'profile_' . $datapengguna->id_identitas . '.' . $request->foto_profil->getClientOriginalExtension();
+            // if ($request->hasFile('foto_profil')) {
+            //     // Gunakan ID user yang baru dibuat untuk nama file
+            //     $fileName = 'profile_' . $datapengguna->id_identitas . '.' . $request->foto_profil->getClientOriginalExtension();
     
-                // Simpan gambar di direktori 'gambar'
-                $request->foto_profil->move(public_path('gambar'), $fileName);
+            //     // Simpan gambar di direktori 'gambar'
+            //     $request->foto_profil->move(public_path('gambar'), $fileName);
     
-                // Update datapengguna dengan nama file foto_profil baru
-                $datapengguna->foto_profil = $fileName;
-                $datapengguna->save(); // Simpan perubahan ke database
-            }
+            //     // Update datapengguna dengan nama file foto_profil baru
+            //     $datapengguna->foto_profil = $fileName;
+            //     $datapengguna->save(); // Simpan perubahan ke database
+            // }
 
             if($datapengguna){
                 return response()->json([

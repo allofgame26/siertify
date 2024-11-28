@@ -173,6 +173,8 @@
                     type: 'POST', // Metode POST
                     data: formData,
                     dataType: 'json', // Format data yang diharapkan
+                    // contentType: false,
+                    // processData: false:
                     beforeSend: function() {
                         // Disable tombol submit sebelum proses selesai
                         $('button[type="submit"]').prop('disabled', true);

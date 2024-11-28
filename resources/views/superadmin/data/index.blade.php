@@ -4,14 +4,10 @@
         <div class="card-header">
             <h3 class="card-title">{{ $page->title }}</h3>
             <div class="card-tools">
-                <button onclick="modalAction('{{ url('/datapengguna/import') }}')" class="btn btn-primary btn-sm"><i
-                        class="fas fa-upload"></i>Import Data</button>
-                <a href="{{ url('/datapengguna/export_excel') }}" class="btn btn-indigo btn-sm"><i
-                        class="fas fa-file-excel"></i>Export Excel</a>
-                <a href="{{ url('/datapengguna/export_pdf') }}" class="btn btn-pink btn-sm"><i class="fas fa-file-pdf"></i>
-                    Export PDF</a>
-                <button onclick="modalAction('{{ url('/datapengguna/create') }}')" class="btn btn-success btn-sm"><i
-                        class="fas fa-plus-square"></i>Tambah Data</button>
+                <button onclick="modalAction('{{ url('/datapengguna/import') }}')" class="btn btn-primary btn-sm"><i class="fas fa-upload"></i>Import Data</button>
+                <a href="{{ url('/datapengguna/export_excel') }}" class="btn btn-indigo btn-sm"><i class="fas fa-file-excel"></i>Export Excel</a>
+                <a href="{{ url('/datapengguna/export_pdf') }}" class="btn btn-pink btn-sm"><i class="fas fa-file-pdf"></i> Export PDF</a>
+                <button onclick="modalAction('{{ url('/datapengguna/create') }}')" class="btn btn-success btn-sm"><i class="fas fa-plus-square"></i>Tambah Data</button>
             </div>
         </div>
         <div class="card-body">
@@ -82,6 +78,9 @@
                     "url": "{{ url('/datapengguna/list') }}",
                     "dataType": "json",
                     "type": "POST",
+                    headers: {
+                        'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                    }
                 },
                 columns: [{
                         // nomor urut dari laravel datatable addIndexColumn()
@@ -89,12 +88,12 @@
                         className: "text-center",
                         orderable: false,
                         searchable: false
-                    },
+                    },{
                         data: "foto_profil",
                         className: "",
                         orderable: false,
                         searchable: false, 
-                    {
+                    },{
                         data: "nama_lengkap",
                         className: "",
                         orderable: true,

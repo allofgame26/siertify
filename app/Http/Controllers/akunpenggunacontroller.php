@@ -43,7 +43,6 @@ class akunpenggunacontroller extends Controller
         ->with(['identitas', 'jenis_pengguna', 'periode'])
         ->get();
 
-    // Debugging: Periksa data sebelum dikirim ke DataTables
 
     // Return data untuk DataTables
     return DataTables::of($akunpengguna)
