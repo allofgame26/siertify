@@ -56,7 +56,7 @@ Route::get('/datapengguna', [datapenggunaSuperadminController::class, 'index']);
 Route::POST('/datapengguna/list', [datapenggunaSuperadminController::class, 'list']);
 
 Route::get('/datapengguna/create', [datapenggunaSuperadminController::class, 'create']);
-Route::post('/datapengguna/proses', [datapenggunaSuperadminController::class, 'store'])->name('datapengguna.store');
+Route::post('/datapengguna/proses', [datapenggunaSuperadminController::class, 'store']);
 
 Route::get('/datapengguna/{id}/show', [datapenggunaSuperadminController::class, 'show']);       //menampilkan detai user
 

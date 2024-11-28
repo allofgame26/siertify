@@ -109,15 +109,15 @@
             }
         });
 
-        // Mengganti foto profil langsung ketika memilih file baru
-        $("#foto_profil").change(function() {
-            const reader = new FileReader();
-            reader.onload = function(e) {
-                $('#current-foto_profil').attr('src', e.target
-                .result); // Mengganti src gambar profil saat ini
-            }
-            reader.readAsDataURL(this.files[0]);
-        });
+        // // Mengganti foto profil langsung ketika memilih file baru
+        // $("#foto_profil").change(function() {
+        //     const reader = new FileReader();
+        //     reader.onload = function(e) {
+        //         $('#current-foto_profil').attr('src', e.target
+        //         .result); // Mengganti src gambar profil saat ini
+        //     }
+        //     reader.readAsDataURL(this.files[0]);
+        // });
 
         $("#form-tambah-datapengguna").validate({
             rules: {
@@ -169,9 +169,11 @@
                 console.log('Validasi Berhasil, Form akan disubmit');
 
                 $.ajax({
-                    url: $(form).attr('action'), // URL dari atribut action form
-                    type: 'POST', // Metode POST
+                    url: form.action, // URL dari atribut action form
+                    type: form.method, // Metode POST
                     data: formData,
+                    contentType: false,
+                processData: false,
                     dataType: 'json', // Format data yang diharapkan
                     beforeSend: function() {
                         // Disable tombol submit sebelum proses selesai
@@ -191,11 +193,9 @@
                             }).then(function() {
                                 // Reload halaman atau update data setelah Swal ditutup
                                 if (typeof datapengguna !== 'undefined') {
-                                    datapengguna.ajax
-                                .reload(); // Reload data table jika ada
+                                    datapengguna.ajax.reload(); // Reload data table jika ada
                                 } else {
-                                    location
-                                .reload(); // Reload halaman jika tidak ada dataUser
+                                    location.reload(); // Reload halaman jika tidak ada dataUser
                                 }
                             });
                         } else {
