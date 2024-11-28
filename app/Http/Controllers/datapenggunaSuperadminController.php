@@ -90,7 +90,7 @@ class datapenggunaSuperadminController extends Controller
                 'alamat' => $request->alamat,
                 'no_telp' => $request->no_telp,
                 'email' => $request->email,
-                'foto_profil' => 'profil-pic.png',]);
+                'foto_profil' => 'profil-pic.png',
             ]);
     
         // Simpan foto jika ada

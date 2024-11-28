@@ -185,6 +185,10 @@
         padding: 8px;
         font-size: 14px;
         letter-spacing: 0.35px;
+        height: 100vh;
+        /* display: flex;
+        flex-direction: column;
+        justify-content: space-between; */
     }
 
     .sidebar .nav-link {
@@ -193,6 +197,8 @@
         transition: all 0.3s ease;
         padding: 8px 16px;
         color: #ffffff;
+        flex-grow: 1; /* Allow the nav-links to take up the available space */
+        overflow-y: auto; /* Add vertical scrolling if the nav-links exceed the available space */
     }
 
     .sidebar .nav-link:hover {
