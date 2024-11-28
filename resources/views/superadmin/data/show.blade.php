@@ -68,14 +68,11 @@
                         <div class="col-md-4">
                             <div class="form-group">
                                 <label>Jenis Kelamin</label>
-                                <select name="jenis_kelamin" id="jenis_kelamin" class="form-control" required readonly >
-                                    <option value="{{ $datapengguna->jenis_kelamin }}" disabled selected>Pilih Jenis Kelamin
-                                    </option>
-                                    <option value="laki">Laki-Laki</option>
-                                    <option value="perempuan">Perempuan</option>
-                                </select>
+                                <input value="{{ $datapengguna->jenis_kelamin == 'laki' ? 'Laki-laki' : ($datapengguna->jenis_kelamin == 'perempuan' ? 'Perempuan' : '') }}"
+                                       type="text" name="jenis_kelamin" id="jenis_kelamin" class="form-control" placeholder="Pilih jenis kelamin" required readonly>
                                 <small id="error-jenis_kelamin" class="error-text form-text text-danger"></small>
                             </div>
+                            
                         </div>
                     </div>
                     <div class="form-group">

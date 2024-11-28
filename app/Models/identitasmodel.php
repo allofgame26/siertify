@@ -14,10 +14,16 @@ class identitasmodel extends Model
     protected $table = 'm_identitas_diri';
     protected $primaryKey = 'id_identitas';
 
-    protected $fillable = ['nama_lengkap','NIP','tempat_lahir','tanggal_lahir','jenis_kelamin','alamat','no_telp','email','foto_profil'];
+    protected $fillable = ['nama_lengkap', 'NIP', 'tempat_lahir', 'tanggal_lahir', 'jenis_kelamin',
+        'alamat', 'no_telp', 'email', 'foto_profil'];
 
     public function akun():HasMany{
         return $this->hasMany(akunusermodel::class);
     }
 
+    // protected function foto_profil(): Attribute{
+    //     return Attribute::make(
+    //         get: fn ($foto_profil) => url('/img/' . $foto_profil),
+    //     );
+    // }
 }

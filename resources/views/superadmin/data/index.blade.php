@@ -17,6 +17,7 @@
             @if (session('error'))
                 <div class="alert alert-danger">{{ session('error') }}</div>
             @endif
+            
             <table class="table table-bordered table-striped table-hover table-sm" id="table_datapengguna">
                 <thead>
                     <tr>
@@ -34,7 +35,7 @@
 
     <!-- Modal -->
     <div id="myModal" class="modal fade animate shake" tabindex="-1" role="dialog" data-backdrop="static"
-        data-keyboard="false" data-width="75%" aria-hidden="true"></div>
+        data-keyboard="false" data-width="75%"></div>
 @endsection
 
 @push('css')
@@ -88,11 +89,12 @@
                         className: "text-center",
                         orderable: false,
                         searchable: false
-                    },{
+
+                    }, {
                         data: "foto_profil",
                         className: "",
                         orderable: false,
-                        searchable: false, 
+                        searchable: false,
                     },{
                         data: "nama_lengkap",
                         className: "",
@@ -108,7 +110,7 @@
                         className: "",
                         orderable: false,
                         searchable: true
-                    }, 
+                    },
                     {
                         data: "aksi",
                         className: "",

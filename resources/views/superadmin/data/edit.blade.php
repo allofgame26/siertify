@@ -70,14 +70,14 @@
                             <div class="form-group">
                                 <label>Jenis Kelamin</label>
                                 <select name="jenis_kelamin" id="jenis_kelamin" class="form-control" required>
-                                    <option value="{{ $datapengguna->jenis_kelamin }}" disabled selected>Pilih Jenis Kelamin
-                                    </option>
-                                    <option value="laki">Laki-Laki</option>
-                                    <option value="perempuan">Perempuan</option>
+                                    <option value="">- Pilih Jenis Kelamin -</option>
+                                    <option value="laki" {{ ($datapengguna->jenis_kelamin == 'laki') ? 'selected' : '' }}>Laki-laki</option>
+                                    <option value="perempuan" {{ ($datapengguna->jenis_kelamin == 'perempuan') ? 'selected' : '' }}>Perempuan</option>
                                 </select>
                                 <small id="error-jenis_kelamin" class="error-text form-text text-danger"></small>
                             </div>
                         </div>
+                        
                     </div>
                     <div class="form-group">
                         <label>Alamat</label>
@@ -188,6 +188,8 @@
                         url: form.action,
                         type: form.method,
                         data: formData,
+                        contentType: false,
+                processData: false,
                         success: function(response) {
                             if (response.status) {
                                 $('#myModal').modal('hide');

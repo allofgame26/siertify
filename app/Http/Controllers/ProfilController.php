@@ -89,17 +89,19 @@ class ProfilController extends Controller
     ];
 
     if ($request->hasFile('foto_profil')) {
-        // Simpan file dengan hashName
-        $file = $request->file('foto_profil');
-        $fileName = $file->hashName(); // Nama file yang di-hash
-        $file->storeAs('public/img', $fileName); // Simpan di folder 'storage/app/public/img'
 
-        // Hapus file lama jika ada
-        if ($user->identitas->avatar && Storage::exists('public/img/' . $user->identitas->avatar)) {
-            Storage::delete('public/img/' . $user->identitas->avatar);
+        $fileName = 'profile_' . $user->id_identitas . '.' . $request->foto_profil->getClientOriginalExtension();
+
+        // Check if an existing profile picture exists and delete it
+        $oldFile = public_path('img/'. $fileName);
+        if (Storage::disk('public')->exists($oldFile)) {
+            Storage::disk('public')->delete($oldFile);
         }
 
-        $dataIdentitas['avatar'] = $fileName; // Update kolom avatar dengan hashName
+        $request->foto_profil->move(public_path('img'), $fileName);
+
+    } else {
+        $fileName = 'profil-pic.png'; // default foto_profil
     }
 
     $user->identitas->update($dataIdentitas);

@@ -63,34 +63,26 @@ class datapenggunaSuperadminController extends Controller
     public function create(){
         return view('superadmin.data.create');
     }
-
-    public function store(Request $request){
-        // cek apakah request berupa ajax
-        if ($request->ajax() || $request->wantsJson()) {
-            $rules = [
-                'nama_lengkap' => 'required|string|min:10|max:100',
-                'NIP' => 'required|string|min:10|max:20',
-                'tempat_lahir' => 'required|string|min:5|max:10',
-                'tanggal_lahir' => 'required|date',
-                'jenis_kelamin' => 'required|string|in:laki,perempuan',
-                'alamat' => 'required|string|min:10|max:100',
-                'no_telp' => 'required|string|min:10|max:15',
-                'email' => 'required|string|min:10|max:50',
-                'foto_profil' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
-            ];
-            // use Illuminate\Support\Facades\Validator;
-            $validator = Validator::make($request->all(), $rules);
-
-            if ($validator->fails()) {
-                return response()->json([
-                    'status' => false, // response status, false: error/gagal, true: berhasil
-                    'message' => 'Validasi Gagal',
-                    'msgField' => $validator->errors() // pesan error validasi
-                ]);
-            }
-
-            $datapengguna = identitasmodel::create([
-                'nama_lengkap' => $request->nama_lengkap,
+    public function store(Request $request) {
+        // Validasi bahwa hanya AJAX yang diterima
+        if (!$request->ajax() && !$request->wantsJson()) {
+            return response()->json(['status' => false, 'message' => 'Hanya menerima request AJAX'], 400);
+        }
+    
+        // Validasi data
+        $rules = [/*...*/];
+        $validator = Validator::make($request->all(), $rules);
+    
+        if ($validator->fails()) {
+            return response()->json([
+                'status' => false,
+                'message' => 'Validasi Gagal',
+                'msgField' => $validator->errors()
+            ]);
+        }
+    
+        // Simpan data
+        $datapengguna = identitasmodel::create(['nama_lengkap' => $request->nama_lengkap,
                 'NIP' => $request->NIP,
                 'tempat_lahir' => $request->tempat_lahir,
                 'tanggal_lahir' => $request->tanggal_lahir,
@@ -98,38 +90,24 @@ class datapenggunaSuperadminController extends Controller
                 'alamat' => $request->alamat,
                 'no_telp' => $request->no_telp,
                 'email' => $request->email,
-                'foto_profil' => $request->foto_profil,
+                'foto_profil' => 'profil-pic.png',]);
             ]);
-
     
-            // Jika fot_profil ada, proses penyimpanan gambar
-            if ($request->hasFile('foto_profil')) {
-                // Gunakan ID user yang baru dibuat untuk nama file
-                $fileName = 'profile_' . $datapengguna->id_identitas . '.' . $request->foto_profil->getClientOriginalExtension();
-    
-                // Simpan gambar di direktori 'gambar'
-                $request->foto_profil->move(public_path('gambar'), $fileName);
-    
-                // Update datapengguna dengan nama file foto_profil baru
-                $datapengguna->foto_profil = $fileName;
-                $datapengguna->save(); // Simpan perubahan ke database
-            }
-
-            if($datapengguna){
-                return response()->json([
-                    'status'    => true,
-                    'message'   => 'Data user berhasil disimpan'
-                ], 200);
-            }
-
-
-            return response()->json([
-                'status' => true,
-                'message' => 'Data Jenis berhasil disimpan'
-            ]);
+        // Simpan foto jika ada
+        if ($request->hasFile('foto_profil')) {
+            // Simpan file dan update database
+            $fileName = 'profile_' . $datapengguna->id_identitas . '.' . $request->foto_profil->getClientOriginalExtension();
+            $request->foto_profil->move(public_path('img'), $fileName);
+            $datapengguna->foto_profil = $fileName;
+            $datapengguna->save();
         }
-        return redirect('/datapengguna');
+    
+        return response()->json([
+            'status' => true,
+            'message' => 'Data user berhasil disimpan'
+        ], 200);
     }
+    
 
     public function edit(string $id){
         $datapengguna = identitasmodel::find($id);
@@ -140,10 +118,10 @@ class datapenggunaSuperadminController extends Controller
         if ($request->ajax() || $request->wantsJson()) {
             $rules = [
                 'nama_lengkap' => 'required|string|min:10|max:100',
-                'NIP' => 'required|string|min:10|max:20|unique:m_identitas,NIP,'.$id.',id_identitas',
+                'NIP' => 'required|string|min:10|max:20|unique:m_identitas_diri,NIP,'.$id.',id_identitas',
                 'tempat_lahir' => 'required|string|min:5|max:10',
                 'tanggal_lahir' => 'required|date|before:today',
-                'jenis_kelamin' => 'required|string|in:laki,perempuan',
+                'jenis_kelamin' => 'required|string',
                 'alamat' => 'required|string|min:10|max:100',
                 'no_telp' => 'required|string|min:10|max:15',
                 'email' => 'required|string|min:10|max:50',
@@ -166,30 +144,31 @@ class datapenggunaSuperadminController extends Controller
                 if ($request->hasFile('foto_profil')) {
 
                     $fileName = 'profile_' . $check->id_identitas . '.' . $request->foto_profil->getClientOriginalExtension();
-    
-                    // Check if an existing profile picture exists and delete it
+                
+                    // Hapus foto lama jika ada
                     $oldFile = public_path('img/'. $fileName);
                     if (Storage::disk('public')->exists($oldFile)) {
                         Storage::disk('public')->delete($oldFile);
                     }
-    
+                
                     $request->foto_profil->move(public_path('img'), $fileName);
-
+                
                 } else {
-                    $fileName = 'profil-pic.png'; // default foto_profil
+                    // Gunakan foto yang ada di database jika tidak ada file baru
+                    $fileName = $check->foto_profil ?? 'profil-pic.png'; // Gunakan default hanya jika tidak ada foto sebelumnya
                 }
 
-                identitasmodel::find($id)->update([
-                    'nama_lengkap' => $request->nama_lengkap,
-                    'NIP' => $request->NIP,
-                    'tempat_lahir' => $request->tempat_lahir,
-                    'tanggal_lahir' => $request->tanggal_lahir,
-                    'jenis_kelamin' => $request->jenis_kelamin,
-                    'alamat' => $request->alamat,
-                    'no_telp' => $request->no_telp,
-                    'email' => $request->email,
-                    'foto_profil' => $fileName,
-                ]);
+                            identitasmodel::find($id)->update([
+                'nama_lengkap' => $request->nama_lengkap,
+                'NIP' => $request->NIP,
+                'tempat_lahir' => $request->tempat_lahir,
+                'tanggal_lahir' => $request->tanggal_lahir,
+                'jenis_kelamin' => $request->jenis_kelamin,
+                'alamat' => $request->alamat,
+                'no_telp' => $request->no_telp,
+                'email' => $request->email,
+                'foto_profil' => $fileName,
+            ]);
 
                 return response()->json([
                     'status' => true,
@@ -203,7 +182,7 @@ class datapenggunaSuperadminController extends Controller
                 ]);
             }
         }
-        return redirect('/datapengguna');
+        return redirect('/');
     }
 
     public function delete(Request $request,$id){
@@ -228,7 +207,7 @@ class datapenggunaSuperadminController extends Controller
     public function show(string $id)
     {
         $datapengguna = identitasmodel::find($id);
-        return view('superadmin.data.show', ['datapen$datapengguna' => $datapengguna]);
+        return view('superadmin.data.show', ['datapengguna' => $datapengguna]);
     }
 
     public function confirm(string $id){
