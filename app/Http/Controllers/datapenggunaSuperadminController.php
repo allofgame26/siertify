@@ -103,17 +103,17 @@ class datapenggunaSuperadminController extends Controller
 
     
             // Jika fot_profil ada, proses penyimpanan gambar
-            // if ($request->hasFile('foto_profil')) {
-            //     // Gunakan ID user yang baru dibuat untuk nama file
-            //     $fileName = 'profile_' . $datapengguna->id_identitas . '.' . $request->foto_profil->getClientOriginalExtension();
+            if ($request->hasFile('foto_profil')) {
+                // Gunakan ID user yang baru dibuat untuk nama file
+                $fileName = 'profile_' . $datapengguna->id_identitas . '.' . $request->foto_profil->getClientOriginalExtension();
     
-            //     // Simpan gambar di direktori 'gambar'
-            //     $request->foto_profil->move(public_path('gambar'), $fileName);
+                // Simpan gambar di direktori 'gambar'
+                $request->foto_profil->move(public_path('gambar'), $fileName);
     
-            //     // Update datapengguna dengan nama file foto_profil baru
-            //     $datapengguna->foto_profil = $fileName;
-            //     $datapengguna->save(); // Simpan perubahan ke database
-            // }
+                // Update datapengguna dengan nama file foto_profil baru
+                $datapengguna->foto_profil = $fileName;
+                $datapengguna->save(); // Simpan perubahan ke database
+            }
 
             if($datapengguna){
                 return response()->json([
