@@ -12,7 +12,7 @@
                     <h5><i class="icon fas fa-ban"></i> Kesalahan!!!</h5>
                     Data jenis yang anda cari tidak ditemukan
                 </div>
-                <a href="{{ url('/jenis') }}" class="btn btn-warning">Kembali</a>
+                <a href="{{ url('/datapengguna') }}" class="btn btn-warning">Kembali</a>
             </div>
         </div>
     </div>
@@ -24,7 +24,7 @@
         <div id="modal-master" class="modal-dialog modal-lg" role="document">
             <div class="modal-content">
                 <div class="modal-header bg-info">
-                    <h5 class="modal-title" id="exampleModalLabel">Edit Data jenis</h5>
+                    <h5 class="modal-title" id="exampleModalLabel">Detail Data jenis</h5>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>

@@ -1,4 +1,4 @@
-<form action="{{ url('/akunpengguna/proses') }}" method="post" id="form-tambah-akunpengguna">
+<form action="{{ url('/akunpengguna/proses') }}" method="POST" id="form-tambah-akunpengguna">
     @csrf
     <div id="modal-master" class="modal-dialog modal-lg" role="document">
         <div class="modal-content">

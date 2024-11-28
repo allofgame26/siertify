@@ -175,6 +175,8 @@
                     contentType: false,
                 processData: false,
                     dataType: 'json', // Format data yang diharapkan
+                    // contentType: false,
+                    // processData: false:
                     beforeSend: function() {
                         // Disable tombol submit sebelum proses selesai
                         $('button[type="submit"]').prop('disabled', true);

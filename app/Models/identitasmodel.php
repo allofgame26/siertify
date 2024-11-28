@@ -26,5 +26,4 @@ class identitasmodel extends Model
     //         get: fn ($foto_profil) => url('/img/' . $foto_profil),
     //     );
     // }
-
 }
