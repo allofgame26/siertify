@@ -45,7 +45,7 @@ class datapenggunaSuperadminController extends Controller
                 // Cek apakah foto_profil ada atau gunakan gambar default jika kosong
                 $foto_profil = $identitas->foto_profil ? asset('img/' . $identitas->foto_profil) : asset('img/profil-pic.png');
             
-                return '<img src="' . $identitas->foto_profil . '" style="width: 70px; height: 70px;" />';
+                return '<img src="' . $foto_profil . '" style="width: 70px; height: 70px;" />';
             })
             ->addColumn('aksi', function ($identitas) {
                 $btn = '<button onclick="modalAction(\'' . url('/datapengguna/' . $identitas->id_identitas . '/show') . '\')" class="btn btn-info btn-sm"><i class="fa fa-pencil"></i>Detail</button> ';

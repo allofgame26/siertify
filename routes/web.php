@@ -27,6 +27,11 @@ Route::get('/logout', [AuthController::class, 'logout']);
 
 Route::get('/landingpage', [WelcomeController::class, 'landingpage']);
 Route::get('/', [WelcomeController::class, 'login']);
+
+// profil
+Route::get('/profil', [ProfilController::class, 'index']);
+Route::get('/profil/{id}/edit', [ProfilController::class, 'edit']);
+Route::put('/profil/{id}/update', [ProfilController::class, 'update']);
     
     // jenis pelatihan dan sertifikasi admin
 Route::get('/jenis', [JenisPelatihanSertifikasiController::class, 'index']);  // menampilkan halaman jenis
