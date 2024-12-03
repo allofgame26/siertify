@@ -219,6 +219,9 @@ Route::put('/admin/{id}/update_ajax', [ProfilController::class,'update_ajax']); 
 
 // Route::get('/dashboard', [WelcomeController::class, 'index']);
 
+
 Route::get('/dashboard', [DashboardAdminController::class, 'index']);
+
+
 
 
