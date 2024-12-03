@@ -54,9 +54,17 @@
                     <div class="form-group">
                         <label>Username</label>
                         <input value="{{ $akunpengguna->username }}" type="text" name="username" id="username"
-                            class="form-control" placeholder="Enter Username" readonly>
+                            class="form-control" placeholder="Enter Username">
                         <small id="error-username" class="error-text form-text text-danger"></small>
                     </div>  
+                    <div class="form-group">
+                        <label>Password</label>
+                        <input value="" type="password" name="password" id="password"
+                            class="form-control" placeholder="">
+                        <small id="error-password" class="error-text form-text text-danger"></small>
+                        <small class="form-text text-muted">Abaikan (jangan diisi) jika tidak ingin
+                            mengganti password user.</small>
+                    </div> 
                     <div class="form-group">
                         <label>Periode</label>
                         <select name="id_periode" id="id_periode" class="form-control" required>
@@ -110,7 +118,6 @@
                     maxlength: 20,
                 },
                 password: {
-                    required: true,
                     minlength: 8,
                     maxlength: 255
                 }

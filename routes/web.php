@@ -25,8 +25,8 @@ Route::post('/postlogin', [AuthController::class, 'postlogin']);
 Route::post('/logout', [AuthController::class, 'logout']);
 
 
-Route::get('/landingpage', [WelcomeController::class, 'landingpage']);
-Route::get('/', [WelcomeController::class, 'login']);
+// Route::get('/landingpage', [WelcomeController::class, 'landingpage']);
+Route::get('/', [WelcomeController::class, 'landingpage']);
     
     // jenis pelatihan dan sertifikasi admin
 Route::get('/jenis', [JenisPelatihanSertifikasiController::class, 'index']);  // menampilkan halaman jenis
