@@ -13,12 +13,13 @@ class detailbddosen extends Model
     protected $table = 't_detailbddosen';
     protected $primaryKey = 'id_detailbd';
 
-    protected $fillable = ['id_dosen','id_bd'];
+    protected $fillable = ['id_user','id_bd'];
 
     public function dosen(): BelongsTo{
-        return $this->belongsTo(dosenmodel::class, 'id_dosen', 'id_dosen');
+        return $this->belongsTo(akunusermodel::class, 'id_user', 'id_user');
     
     }
+
     public function bidangminat(): BelongsTo{
         return $this->belongsTo(bidangminatmodel::class, 'id_bd', 'id_bd');
     }

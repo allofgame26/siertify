@@ -20,7 +20,7 @@ class detailmkdosen extends Model
     
     }
     public function matakuliah(): BelongsTo{
-        return $this->belongsTo(akunusermodel::class, 'id_user', 'id_user');
+        return $this->belongsTo(matakuliahmodel::class, 'id_mk', 'id_mk');
     }
 
 }
