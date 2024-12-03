@@ -22,7 +22,7 @@ Route::pattern('id','[0-9]+');
 
 Route::get('/login', [AuthController::class, 'login']);
 Route::post('/postlogin', [AuthController::class, 'postlogin']);
-Route::get('/logout', [AuthController::class, 'logout']);
+Route::post('/logout', [AuthController::class, 'logout']);
 
 
 Route::get('/landingpage', [WelcomeController::class, 'landingpage']);
@@ -217,8 +217,8 @@ Route::get('/admin/profil', [ProfilController::class, 'profil_admin']);
 Route::get('/admin/edit', [ProfilController::class,'edit_admin']); //menampilkan halaman form edit matkul ajax
 Route::put('/admin/{id}/update_ajax', [ProfilController::class,'update_ajax']);   //menyimpan halaman form edit matkul ajax
 
-Route::get('/dashboard', [WelcomeController::class, 'index']);
+// Route::get('/dashboard', [WelcomeController::class, 'index']);
 
-Route::get('/admin', [DashboardAdminController::class, 'index']);
+Route::get('/dashboard', [DashboardAdminController::class, 'index']);
 
 

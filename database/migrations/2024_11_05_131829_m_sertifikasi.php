@@ -21,7 +21,6 @@ return new class extends Migration
 
             $table->foreign('id_vendor_sertifikasi')->references('id_vendor_sertifikasi')->on('m_vendor_sertifikasi');
             $table->foreign('id_jenis_pelatihan_sertifikasi')->references('id_jenis_pelatihan_sertifikasi')->on('m_jenis_pelatihan_sertifikasi');
-            $table->foreign('id_periode')->references('id_periode')->on('m_periode');
         });
     }
 

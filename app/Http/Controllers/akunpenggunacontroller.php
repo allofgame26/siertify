@@ -138,8 +138,8 @@ class akunpenggunacontroller extends Controller
                 'id_identitas' => 'required|integer', // Validasi ID Identitas (harus ada di tabel 'identitas')
                 'id_jenis_pengguna' => 'required|integer', // Validasi ID Jenis Pengguna
                 'id_periode' => 'required|integer', // Validasi ID Periode
-                'username' => 'required|string|min:5|max:20|unique:m_akun_user,username', // Username unik
-                'password' => 'required|string|min:8|max:255',
+                'username' => 'required|string|min:5|max:20', // Username unik
+                'password' => 'string|min:8|max:255',
             ];
             // use Illuminate\Support\Facades\Validator;
             $validator = Validator::make($request->all(), $rules);

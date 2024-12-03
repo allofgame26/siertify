@@ -52,6 +52,12 @@
                         <small id="error-id_jenis_pengguna" class="error-text form-text text-danger"></small>
                     </div>
                     <div class="form-group">
+                        <label>Username</label>
+                        <input value="{{ $akunpengguna->username }}" type="text" name="username" id="username"
+                            class="form-control" placeholder="Enter Username" readonly>
+                        <small id="error-username" class="error-text form-text text-danger"></small>
+                    </div>  
+                    <div class="form-group">
                         <label>Periode</label>
                         <select name="id_periode" id="id_periode" class="form-control" required>
                             <option value="">- Pilih Periode -</option>
@@ -61,12 +67,6 @@
                             @endforeach
                         </select>
                         <small id="error-id_periode" class="error-text form-text text-danger"></small>
-                    </div>
-                    <div class="form-group">
-                        <label>Username</label>
-                        <input value="{{ $akunpengguna->username }}" type="text" name="username" id="username"
-                            class="form-control" placeholder="Enter Username" required>
-                        <small id="error-username" class="error-text form-text text-danger"></small>
                     </div>
                 </div>
                 <div class="modal-footer">
