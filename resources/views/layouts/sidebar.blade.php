@@ -31,7 +31,7 @@
           </a> 
         </li>
         <li class="nav-item"> 
-          <a href="{{ url('/level') }}" class="nav-link {{ ($activeMenu == 'level')? 'active' : '' }} "> 
+          <a href="{{ url('/pengajuan') }}" class="nav-link {{ ($activeMenu == 'pengajuan')? 'active' : '' }} "> 
             <i class="nav-icon fas fa-layer-group"></i> 
             <p>Pengajuan</p> 
           </a> 
