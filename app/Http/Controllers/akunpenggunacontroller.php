@@ -139,7 +139,7 @@ class akunpenggunacontroller extends Controller
                 'id_jenis_pengguna' => 'required|integer', // Validasi ID Jenis Pengguna
                 'id_periode' => 'required|integer', // Validasi ID Periode
                 'username' => 'required|string|min:5|max:20', // Username unik
-                'password' => 'string|min:8|max:255',
+                'password' => 'nullable|string|min:8|max:255',
             ];
             // use Illuminate\Support\Facades\Validator;
             $validator = Validator::make($request->all(), $rules);
@@ -150,8 +150,16 @@ class akunpenggunacontroller extends Controller
                     'msgField' => $validator->errors() // menunjukkan field mana yang error
                 ]);
             }
+
             $check = akunusermodel::find($id);
+
             if ($check) {
+
+                // Jika password tidak diisi, hapus dari request agar tidak di-update
+                if (!$request->filled('password')) {
+                    $request->request->remove('password');
+                }
+                
                 $check->update($request->all());
                 return response()->json([
                     'status' => true,
@@ -166,6 +174,8 @@ class akunpenggunacontroller extends Controller
         }
         return redirect('/akunpengguna');
     }
+
+
     public function delete(Request $request,$id){
         if ($request->ajax() || $request->wantsJson()) {
             $akunpengguna = akunusermodel::find($id);

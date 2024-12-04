@@ -18,7 +18,9 @@
 <body class="bg-gray-50">
     <!-- Header -->
     <header class="mt-14 pt-1 mx-20 px-2.5 flex items-center">
-        <img class="w-10" src="{{ asset('logo.png') }}" alt="Logo SIERTIFY" />
+        <a href="{{ url('/') }}">
+            <img class="w-10" src="{{ asset('logo.png') }}" alt="Logo SIERTIFY" />
+        </a>
         <h1 class="ml-2 text-2xl font-extrabold text-[#17A2B8]">SIERTIFY</h1>
     </header>
 
