@@ -7,11 +7,13 @@ use Illuminate\Http\Request;
 use Illuminate\support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Validator;
+use Yajra\DataTables\Facades\DataTables;
 use Illuminate\Support\Facades\DB;
 use App\Models\bidangminatmodel;
 use App\Models\detailbddosen;
 use App\Models\detailmkdosen;
 use App\Models\matakuliahmodel;
+use App\Models\identitasmodel;
 
 class ProfilController extends Controller
 {
@@ -33,14 +35,20 @@ class ProfilController extends Controller
 
         $id = Auth::user()->id_user;
 
-        $user = akunusermodel::with(['identitas', 'jenis_pengguna', 'periode', 'bidangminat', 'matakuliah'])->find($id);
+        $user = akunusermodel::with(['identitas', 'jenis_pengguna', 'periode'])->find($id);
 
+        $bidangminat = detailbddosen::with(['bidangminat'])->find($id);
+
+        $matakuliah = detailmkdosen::with(['matakuliah'])->find($id);
 
         return view('profil.index',
-            ['breadcrumb' => $breadcrumb,
+            [   'breadcrumb' => $breadcrumb,
                 'page' => $page,
                 'activeMenu' => $activeMenu,
-                'user' => $user]);
+                'user' => $user,
+                'bidangminat' => $bidangminat,
+                'matakuliah' => $matakuliah
+            ]);
 
     }
 
@@ -49,16 +57,118 @@ class ProfilController extends Controller
 
         $user = akunusermodel::with(['matakuliah', 'bidangminat'])->find($id);
         $mataKuliah = matakuliahmodel::all(); // Ambil semua data mata kuliah
+        $bidangMinat = bidangminatmodel::all(); // Ambil semua data
         $userMataKuliah = $user->matakuliah->pluck('id')->toArray(); // Ambil ID mata kuliah yang dimiliki user
 
-        return view('profil.edit', ['user' => $user, 'userMataKuliah' => $userMataKuliah, 'mataKuliah' => $mataKuliah]);
+
+        return view('profil.edit', ['user' => $user, 'userMataKuliah' => $userMataKuliah, 'mataKuliah' => $mataKuliah, 'bidangMinat' => $bidangMinat]);
+    }
+
+    public function createbd(string $id) {
+
+        // $id = Auth::user()->id_user;
+
+        $akun = akunusermodel::all();
+
+        $bd = bidangminatmodel::all();
+
+
+        return view('profil.bd', ['akun' => $akun, 'bd' => $bd]);
+    }
+
+    public function storebd(Request $request){
+        // cek apakah request berupa ajax
+        if ($request->ajax() || $request->wantsJson()) {
+            $rules = [
+                'id_user' => 'required|integer', // Validasi ID Identitas (harus ada di tabel 'identitas')
+                'id_bd' => 'required|integer', // Validasi ID Jenis Pengguna
+            ];
+            // use Illuminate\Support\Facades\Validator;
+            $validator = Validator::make($request->all(), $rules);
+
+            if ($validator->fails()) {
+                return response()->json([
+                    'status' => false, // response status, false: error/gagal, true: berhasil
+                    'message' => 'Validasi Gagal',
+                    'msgField' => $validator->errors() // pesan error validasi
+                ]);
+            }
+            $detailbd = detailbddosen::create([
+                'id_user' => $request->id_user,
+                'id_bd' => $request->id_bd,
+            ]);
+
+            if($detailbd){
+                return response()->json([
+                    'status'    => true,
+                    'message'   => 'Data user berhasil disimpan'
+                ], 200);
+            }
+
+
+            return response()->json([
+                'status' => true,
+                'message' => 'Data Jenis berhasil disimpan'
+            ]);
+        }
+        return redirect('/profil');
+    }
+
+    public function matakuliah(string $id) {
+
+        // $id = Auth::user()->id_user;
+
+        $akun = akunusermodel::all();
+
+        $mk = matakuliahmodel::all();
+
+
+        return view('profil.mk', ['akun' => $akun, 'mk' => $mk]);
+    }
+
+    public function storemk(Request $request){
+        // cek apakah request berupa ajax
+        if ($request->ajax() || $request->wantsJson()) {
+            $rules = [
+                'id_user' => 'required|integer', // Validasi ID Identitas (harus ada di tabel 'identitas')
+                'id_mk' => 'required|integer', // Validasi ID Jenis Pengguna
+            ];
+            // use Illuminate\Support\Facades\Validator;
+            $validator = Validator::make($request->all(), $rules);
+
+            if ($validator->fails()) {
+                return response()->json([
+                    'status' => false, // response status, false: error/gagal, true: berhasil
+                    'message' => 'Validasi Gagal',
+                    'msgField' => $validator->errors() // pesan error validasi
+                ]);
+            }
+            $detailmk = detailmkdosen::create([
+                'id_user' => $request->id_user,
+                'id_mk' => $request->id_mk,
+            ]);
+
+            if($detailmk){
+                return response()->json([
+                    'status'    => true,
+                    'message'   => 'Data user berhasil disimpan'
+                ], 200);
+            }
+
+
+            return response()->json([
+                'status' => true,
+                'message' => 'Data Jenis berhasil disimpan'
+            ]);
+        }
+        return redirect('/profil');
     }
 
     public function update(Request $request, $id)
     {
         $rules = [
             'nama_lengkap' => 'required|string|min:10|max:100',
-            'NIP' => 'required|string|min:10|max:20|unique:m_identitas,NIP,' . $id . ',id_identitas',
+            'NIP' => 'required|string|min:10|max:20',
             'tempat_lahir' => 'required|string|min:5|max:10',
             'tanggal_lahir' => 'required|date|before:today',
             'jenis_kelamin' => 'required|string|in:laki,perempuan',
@@ -66,12 +176,12 @@ class ProfilController extends Controller
             'no_telp' => 'required|string|min:10|max:15',
             'email' => 'required|string|min:10|max:50',
             'foto_profil' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
-            'username' => 'required|max:20|unique:m_identitas_diri,username' . $id . ',id_user',
+            'username' => 'required|max:20',
             'password' => 'nullable|min:5|max:20',
-            'id_bidang_minat' => 'required|array|min:1',
-            'id_bidang_minat.*' => 'integer|exists:m_bidang_minat,id', // Pastikan setiap ID valid
-            'id_mata_kuliah' => 'required|array|min:1',
-            'id_mata_kuliah.*' => 'integer|exists:m_mata_kuliah,id', // Validasi mata kuliah
+            'bidang_minat_ids' => 'required|array',
+            'bidang_minat_ids.*' => 'integer|exists:m_mata_kuliah,id_mk', // Pastikan setiap ID valid
+            'mata_kuliah_ids' => 'required|array',
+            'mata_kuliah_ids.*' => 'integer|exists:m_bidang_minat,id_bd', // Validasi mata kuliah
         ];
 
         $validator = Validator::make($request->all(), $rules);
@@ -144,26 +254,58 @@ class ProfilController extends Controller
         if (Auth::user()->kode_jenis_pengguna === 'DSN') {
 
             // Proses khusus untuk dosen
-            DB::table('detail_bidang_minat')->where('id_user', $id)->delete();
-            DB::table('detail_mata_kuliah')->where('id_user', $id)->delete();
+            DB::table('detail_bddosen')->where('id_user', $id)->delete();
+            DB::table('detail_mkdosen')->where('id_user', $id)->delete();
+
+            $detailbd = detailbddosen::find($id);
+            $detailmk = detailbddosen::find($id);
+
         
-            foreach ($request->id_bidang_minat as $bidang) {
-                detailbddosen::find($id)->update([
-                    'id_user' => $id,
-                    'id_bidang_minat' => $bidang,
-                ]);
+            foreach ($request->bidang_minat_ids as $bidang) {
+                if ($detailbd) {
+                    // Jika data dengan $id ditemukan, lakukan update
+                    $detailbd->update([
+                        'id_user' => $id,
+                        'id_bd' => $bidang,
+                    ]);
+                } else {
+                    // Jika data dengan $id tidak ditemukan, buat data baru
+                    detailbddosen::create([
+                        'id_user' => $id,
+                        'id_bd' => $bidang,
+                    ]);
+                }
             }
         
-            foreach ($request->id_mata_kuliah as $mk) {
-                detailmkdosen::find($id)->update([
-                    'id_user' => $id,
-                    'id_mata_kuliah' => $mk,
-                ]);
+            foreach ($request->mata_kuliah_ids as $mk) {
+                if ($detailmk) {
+                    // Jika data dengan $id ditemukan, lakukan update
+                    $detailmk->update([
+                        'id_user' => $id,
+                        'id_bd' => $mk,
+                    ]);
+                } else {
+                    // Jika data dengan $id tidak ditemukan, buat data baru
+                    detailmkdosen::create([
+                        'id_user' => $id,
+                        'id_bd' => $mk,
+                    ]);
+                }
             }
         }
         
 
         return redirect()->route('profil.index')->with('success', 'Profil berhasil diperbarui.');
     }
+
+    // public function confirmmk(string $id){
+    //     $detailmk = detailmkdosen::find($id);
+    //     return view('superadmin.data.delete', ['detailmk' => $detailmk, 'activemenu' => $activeMenu]);
+    // }
+
+    // public function confirmbd(string $id){
+    //     $detailbd = detailmkdosen::find($id);
+    //     return view('superadmin.data.delete', ['detailbd' => $detailbd, 'activemenu' => $activeMenu]);
+    // }
 
 }

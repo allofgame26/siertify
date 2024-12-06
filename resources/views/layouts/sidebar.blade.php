@@ -17,14 +17,14 @@
         <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
             <!-- Add icons to the links using the .nav-icon class
            with font-awesome or any other icon font library -->
-            <li class="nav-item">
-                <a href="{{ url('/admin') }}" class="nav-link {{ $activeMenu == 'dashboard' ? 'active' : '' }}">
+            {{-- <li class="nav-item">
+                <a href="{{ url('/dashboard') }}" class="nav-link {{ $activeMenu == 'dashboard' ? 'active' : '' }}">
                     <i class="nav-icon fas fa-tachometer-alt"></i>
                     <p>
                         Dashboard
                     </p>
                 </a>
-            </li>
+            </li> --}}
             <li class="nav-item">
                 <a href="{{ url('/profil') }}" class="nav-link {{ $activeMenu == 'profil' ? 'active' : '' }}">
                     <i class="nav-icon fas fa-user-circle"></i>
@@ -77,6 +77,14 @@
 
             <!-- Fitur Super Admin-->
             @if(Auth::user()->getRole() == 'SDM')
+            <li class="nav-item">
+                <a href="{{ url('/dashboard') }}" class="nav-link {{ $activeMenu == 'dashboard' ? 'active' : '' }}">
+                    <i class="nav-icon fas fa-tachometer-alt"></i>
+                    <p>
+                        Dashboard
+                    </p>
+                </a>
+            </li>
             <li class="nav-header">Kelola Pengguna</li>
             <li class="nav-item">
                 <a href="{{ url('/jenispengguna') }}" class="nav-link {{ $activeMenu == 'jenispengguna' ? 'active' : '' }} ">
@@ -101,6 +109,14 @@
 
             <!-- Fitur Admin -->
             @if(Auth::user()->getRole() == 'ADM')
+            <li class="nav-item">
+                <a href="{{ url('/dashboard') }}" class="nav-link {{ $activeMenu == 'dashboard' ? 'active' : '' }}">
+                    <i class="nav-icon fas fa-tachometer-alt"></i>
+                    <p>
+                        Dashboard
+                    </p>
+                </a>
+            </li>
             <li class="nav-header">Data Pengguna</li>
             <li class="nav-item">
                 <a href="{{ url('/data-dosen') }}" class="nav-link {{ $activeMenu == 'data-dosen' ? 'active' : '' }} ">

@@ -10,7 +10,7 @@ class detailbddosen extends Model
 {
     use HasFactory;
 
-    protected $table = 't_detailbddosen';
+    protected $table = 'm_detailbddosen';
     protected $primaryKey = 'id_detailbd';
 
     protected $fillable = ['id_user','id_bd'];

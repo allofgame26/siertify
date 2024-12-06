@@ -134,34 +134,33 @@
                         <small id="error-password" class="error-text form-text text-danger"></small>
                     </div>
                     @if (Auth::user()->getRole() == 'DSN')
-                        <div class="form-group">
-                            <label>Mata Kuliah</label>
-                            <div class="select2-purple">
-                                <select class="select2" multiple="multiple" data-placeholder="Select a State" data-dropdown-css-class="select2-purple" style="width: 100%;">
-                                  <option>Alabama</option>
-                                  <option>Alaska</option>
-                                  <option>California</option>
-                                  <option>Delaware</option>
-                                  <option>Tennessee</option>
-                                  <option>Texas</option>
-                                  <option>Washington</option>
-                                </select>
-                              </div>
-                        </div>
-                        <div class="form-group">
-                            <label for="bidang-minat">Bidang Minat:</label>
-                            <select class="select2" multiple="multiple" data-placeholder="Pilih Mata Kuliah"
-                                data-dropdown-css-class="select2-purple" style="width: 100%;" name="id_bidang_minat[]"
-                                id="bidang-minat" multiple>
-                                @foreach ($user->bidangminat as $bd)
-                                    <option value="{{ $bidang->id }}"
-                                        {{ in_array($bidang->id, $userBidangMinat) ? 'selected' : '' }}>
-                                        {{ $bidang->nama_bd }}
-                                    </option>
+
+                    <div class="col">
+                        <div class="card card-info">
+                            <div class="card-header bg-info" style="height: 60px; padding: 12px">
+                                <h3 class="card-title">Mata Kuliah</h3>
+                            </div>
+                            <div class="card-body">
+                                @foreach ($user->matakuliah as $mk)
+                                    <span class="custom-badge-mk">{{ $mk->nama_mk }}</span>
                                 @endforeach
-                            </select>
-                            <!-- /.form-group -->
+                            </div>
                         </div>
+                    </div>
+
+                    <div class="col">
+                        <div class="card card-info">
+                            <div class="card-header bg-info" style="height: 60px; padding: 12px">
+                                <h3 class="card-title">Bidang Minat</h3>
+                            </div>
+                            <div class="card-body">
+                                @foreach ($user->bidangminat as $bd)
+                                    <span class="custom-badge-bd">{{ $bd->nama_bd }}</span>
+                                @endforeach
+                            </div>
+                        </div>
+                    </div>
+                    
                 </div>
                 @endif
             <div class="modal-footer">
@@ -250,6 +249,7 @@
 
                         $.ajax({
                             url: form.action,
+                            method: 'POST',
                             type: form.method,
                             data: formData,
                             contentType: false,

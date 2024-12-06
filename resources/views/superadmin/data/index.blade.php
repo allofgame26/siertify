@@ -70,6 +70,8 @@
             });
         }
 
+        //mengatur memunculkannya data
+    
         var datapengguna;
         $(document).ready(function() {
             datapengguna = $('#table_datapengguna').DataTable({

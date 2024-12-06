@@ -142,10 +142,12 @@
 
                 @if (Auth::user()->getRole() == 'DSN')
                     <div class="col">
-
                         <div class="card card-info">
-                            <div class="card-header bg-info" style="height: 46px; padding: 12px">
+                            <div class="card-header bg-info" style="height: 60px; padding: 12px">
                                 <h3 class="card-title">Mata Kuliah</h3>
+                                <div class="card-tools">
+                                    <button onclick="modalAction('{{ url('/profil/' . $user->id_user . '/mk') }}')" class="btn btn-success btn-sm"><i class="fas fa-plus-square"></i></button>
+                                </div>
                             </div>
                             <div class="card-body">
                                 @foreach ($user->matakuliah as $mk)
@@ -157,8 +159,11 @@
 
                     <div class="col">
                         <div class="card card-info">
-                            <div class="card-header bg-info" style="height: 46px; padding: 12px">
+                            <div class="card-header bg-info" style="height: 60px; padding: 12px">
                                 <h3 class="card-title">Bidang Minat</h3>
+                                <div class="card-tools">
+                                    <button onclick="modalAction('{{ url('/profil/' . $user->id_user . '/bd') }}')" class="btn btn-success btn-sm"><i class="fas fa-plus-square"></i></button>
+                                </div>
                             </div>
                             <div class="card-body">
                                 @foreach ($user->bidangminat as $bd)
