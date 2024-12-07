@@ -22,4 +22,13 @@ class matakuliahmodel extends Model
     public function tagmksertifkasi():HasMany{
         return $this->hasMany(tagmksertifikasimodel::class);
     }
+
+    public function detailmk():HasMany{
+        return $this->hasMany(detailmkdosen::class, 'id_mk', 'id_mk');
+    }
+
+    public function matakuliah()
+    {
+        return $this->belongsToMany(matakuliahmodel::class, 'm_detailmkdosen', 'id_user', 'id_mk');
+    }
 }

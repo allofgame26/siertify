@@ -25,8 +25,18 @@ Route::post('/postlogin', [AuthController::class, 'postlogin']);
 Route::post('/logout', [AuthController::class, 'logout']);
 
 
-// Route::get('/landingpage', [WelcomeController::class, 'landingpage']);
-Route::get('/', [WelcomeController::class, 'landingpage']);
+Route::get('/landingpage', [WelcomeController::class, 'landingpage']);
+Route::get('/', [WelcomeController::class, 'login']);
+
+// profil
+Route::get('/profil', [ProfilController::class, 'index'])->name('profil.index');
+Route::get('/profil/{id}/edit', [ProfilController::class, 'edit']);
+Route::put('/profil/{id}/update', [ProfilController::class, 'update']);
+Route::get('/profil/createmk', [ProfilController::class, 'createmk']);
+Route::get('/profil/{id}/bd', [ProfilController::class, 'createbd']);
+Route::post('/profil/prosesbd', [ProfilController::class, 'storebd']);
+Route::get('/profil/{id}/mk', [ProfilController::class, 'matakuliah']);
+Route::post('/profil/prosesmk', [ProfilController::class, 'storemk']);
     
     // jenis pelatihan dan sertifikasi admin
 Route::get('/jenis', [JenisPelatihanSertifikasiController::class, 'index']);  // menampilkan halaman jenis
@@ -219,6 +229,9 @@ Route::put('/admin/{id}/update_ajax', [ProfilController::class,'update_ajax']); 
 
 // Route::get('/dashboard', [WelcomeController::class, 'index']);
 
+
 Route::get('/dashboard', [DashboardAdminController::class, 'index']);
+
+
 
 
