@@ -15,6 +15,7 @@ use App\Http\Controllers\MatkulController;
 use App\Http\Controllers\ProfilController;
 use App\Http\Controllers\VendorPelatihanController;
 use App\Http\Controllers\VendorSertifikasiController;
+use App\Http\Controllers\pelatihansertifikasicontroller;
 use App\Http\Controllers\akunpenggunacontroller;
 use App\Models\jenispenggunamodel;
 
@@ -231,6 +232,8 @@ Route::put('/admin/{id}/update_ajax', [ProfilController::class,'update_ajax']); 
 
 
 Route::get('/dashboard', [DashboardAdminController::class, 'index']);
+
+Route::get('/pelatihansertifikasi',[pelatihansertifikasicontroller::class, 'index']);
 
 
 
