@@ -5,10 +5,16 @@
     <!-- Sidebar user (optional) -->
     <div class="user-panel mt-3 pb-3 mb-3 d-flex ">
         <div class="image">
-            <img src="{{ asset('adminlte/dist/img/user2-160x160.jpg') }}" class="img-circle elevation-2" alt="User Image">
+            @if(Auth::user()->avatar)
+            <!-- Tampilkan avatar pengguna jika ada -->
+            <img src="{{ asset('img/' . Auth::user()->foto_profil) }}" alt="User foto_profil" class="brand-image img-circle elevation-3" style="width: 34px; height: 34px; object-fit: cover; border-radius: 50%;">
+        @else
+            <!-- Jika tidak ada foto_profil, tampilkan logo default -->
+            <img src="{{ asset('img/profil-pic.png') }}" alt="profil picture" class="brand-image img-circle elevation-3" style="width: 34px; height: 34px; background-color: white;">
+        @endif
         </div>
         <div class="info">
-            <a href="#" class="d-block text-left text-wrap">Yolanda Ekaputri Setyawannnnnn</a>
+            <a href="#" class="d-block text-left text-wrap">{{Auth::user()->identitas->nama_lengkap}}</a>
         </div>
     </div>
 
@@ -67,9 +73,9 @@
                 </a>
             </li>
             <li class="nav-item">
-                <a href="{{ url('/penawaran') }}" class="nav-link {{ $activeMenu == 'penawaran' ? 'active' : '' }} ">
+                <a href="{{ url('/penugasan') }}" class="nav-link {{ $activeMenu == 'penugasan' ? 'active' : '' }} ">
                     <i class="nav-icon fas fa-envelope-open"></i>
-                    <p>Penawaran</p>
+                    <p>Penugasan</p>
                 </a>
             </li>
             @endif
@@ -193,6 +199,7 @@
     </nav>
     <!-- /.sidebar-menu -->
 </div>
+
 <style>
     .sidebar {
         background-color: #0D313F;

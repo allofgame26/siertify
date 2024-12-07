@@ -31,43 +31,28 @@
                 <div class="modal-body">
                     <div class="form-group">
                         <label>Nama Pengguna</label>
-                        <select name="id_identitas" id="id_identitas" class="form-control" readonly>
-                            <option value="">- Pilih Nama -</option>
-                            @foreach ($identitas as $l)
-                                <option {{ $l->id_identitas == $akunpengguna->id_identitas ? 'selected' : '' }}
-                                value="{{ $l->id_identitas }}">{{ $l->nama_lengkap }}</option>
-                            @endforeach
-                        </select>
-                        <input type="hidden" name="id_identitas" value="{{ $akunpengguna->id_identitas }}">
-                        <small id="error-id_identitas" class="error-text form-text text-danger"></small>
+                        <input value="{{ $akunpengguna->identitas->nama_lengkap }}" type="text" name="nama_lengkap" id="nama_lengkap"
+                            class="form-control" readonly>
                     </div>
                     <div class="form-group">
                         <label>Jenis Pengguna</label>
-                        <select name="id_jenis_pengguna" id="id_jenis_pengguna" class="form-control" readonly>
-                            <option value="">- Pilih Jenis Pengguna -</option>
-                            @foreach ($jenispengguna as $l)
-                                <option {{ $l->id_jenis_pengguna == $akunpengguna->id_jenis_pengguna ? 'selected' : '' }} 
-                                value="{{ $l->id_jenis_pengguna }}">{{ $l->nama_jenis_pengguna }}</option>
-                            @endforeach
-                        </select>
-                        <input type="hidden" name="id_jenis_pengguna" value="{{ $akunpengguna->id_jenis_pengguna }}">
-                        <small id="error-id_jenis_pengguna" class="error-text form-text text-danger"></small>
+                        <input value="{{ $akunpengguna->jenis_pengguna->nama_jenis_pengguna }}" type="text" name="nama_jenis_pengguna" id="nama_jenis_pengguna"
+                            class="form-control" readonly>
                     </div>
                     <div class="form-group">
                         <label>Periode</label>
-                        <select name="id_periode" id="id_periode" class="form-control" readonly>
-                            <option value="">- Pilih Periode -</option>
-                            @foreach ($periode as $l)
-                                <option {{ $l->id_periode == $akunpengguna->id_periode ? 'selected' : '' }} 
-                                value="{{ $l->id_periode }}">{{ $l->nama_periode }}</option>
-                            @endforeach
-                        </select>
-                        <input type="hidden" name="id_periode" value="{{ $akunpengguna->id_periode }}">
-                        <small id="error-id_periode" class="error-text form-text text-danger"></small>
+                        <input value="{{ $akunpengguna->periode->nama_periode }}" type="text" name="nama_periode" id="nama_periode"
+                            class="form-control" readonly>
                     </div>
                     <div class="form-group">
                         <label>Username</label>
                         <input value="{{ $akunpengguna->username }}" type="text" name="username" id="username"
+                            class="form-control" placeholder="Enter Username" readonly>
+                        <small id="error-username" class="error-text form-text text-danger"></small>
+                    </div>
+                    <div class="form-group">
+                        <label>Password</label>
+                        <input value="*********" type="text" name="username" id="username"
                             class="form-control" placeholder="Enter Username" readonly>
                         <small id="error-username" class="error-text form-text text-danger"></small>
                     </div>
