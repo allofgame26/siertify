@@ -17,15 +17,9 @@ class pelatihansertifikasicontroller extends Controller
         $page = (object) [
             'title' => 'Daftar Pelatihan & Sertifikasi yang sudah diinputnkan'
         ];
-        // $penjualan = PenjualanModel::all();
-        // $barang = BarangModel::all();
-        // $user = UserModel::all();
         return view('penjualan.index', [
             'activeMenu' => $activeMenu,
             'breadcrumb' => $breadcrumb,
-            // 'penjualan' => $penjualan,
-            // 'barang' => $barang,
-            // 'user' => $user,
             'page' => $page
         ]);
     }
