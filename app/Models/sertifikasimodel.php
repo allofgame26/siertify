@@ -6,7 +6,6 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
-use Illuminate\Support\Facades\Hash;
 
 class sertifikasimodel extends Model
 {
@@ -18,18 +17,7 @@ class sertifikasimodel extends Model
         'nama_sertifikasi',
         'id_vendor_sertifikasi',
         'id_jenis_sertifikasi',
-        'id_periode',
-        'tanggal_mulai',
-        'tanggal_selesai',
         'level_sertifikasi',
-        'lokasi',
-        'biaya',
-        'quota_peserta',
-        'no_sertifikat',
-        'tanggal_kadaluarsa',
-        'bukti_sertifikat',
-        'status_disetujui',
-        'input_by'
     ];
 
     public function periode():BelongsTo{
@@ -41,7 +29,7 @@ class sertifikasimodel extends Model
     }
 
     public function vendorsertifikasi():BelongsTo{
-        return $this->belongsTo(vendorpelathihanmodel::class);
+        return $this->belongsTo(vendorpelatihanmodel::class);
     }
 
     public function pesertasertifikasi():HasMany{

@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 class WelcomeController extends Controller
 {
     public function index(){
+        
         $breadcrumb = (object)[
             'title' => 'Selamat Datang',
             'list' => ['Home', 'Welcome']
@@ -15,5 +16,13 @@ class WelcomeController extends Controller
         $activeMenu = 'dashboard';
 
         return view('welcome', ['breadcrumb' => $breadcrumb, 'activeMenu' => $activeMenu]);
+    }
+
+    public function landingpage(){
+        return view('landingpage');
+    }
+
+    public function login(){
+        return view('auth.login');
     }
 }

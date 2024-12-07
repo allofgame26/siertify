@@ -22,4 +22,13 @@ class bidangminatmodel extends Model
     public function tagbdsertifikasi():HasMany{
         return $this->hasMany(tagbdsertifikasimodel::class);
     }
+
+    public function detailbd():HasMany{
+        return $this->hasMany(detailbddosen::class, 'id_bd', 'id_bd');
+    }
+
+    public function bidangminat()
+    {
+        return $this->belongsToMany(bidangminatmodel::class, 'm_detailbddosen', 'id_user', 'id_bd');
+    }
 }

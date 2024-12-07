@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('m_jenis_pelatihan_sertifikasi', function (Blueprint $table){
             $table->id('id_jenis_pelatihan_sertifikasi');
-            $table->string('nama_jenis_setifikasi',50);
+            $table->string('nama_jenis_sertifikasi',50);
             $table->string('deskripsi_pendek',255);
             $table->timestamps();
         });
