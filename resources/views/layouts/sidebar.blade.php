@@ -182,6 +182,18 @@
                 </ul>
             </li>
             <li class="nav-item">
+                <a href="{{ url('/pelatihan') }}" class="nav-link {{ $activeMenu == 'pealtihan' ? 'active' : '' }} ">
+                    <i class="nav-icon 	fas fa-archive"></i>
+                    <p>Master Pelatihan</p>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="{{ url('/sertifikasi') }}" class="nav-link {{ $activeMenu == 'sertifikasi' ? 'active' : '' }} ">
+                    <i class="nav-icon 	fas fa-archive"></i>
+                    <p>Master Sertifikasi</p>
+                </a>
+            </li>
+            <li class="nav-item">
                 <a href="{{ url('/pelatihansertifikasi') }}" class="nav-link {{ $activeMenu == 'pelatihan-sertifikasi' ? 'active' : '' }} ">
                     <i class="nav-icon 	fas fa-archive"></i>
                     <p>Pelatihan & Sertifikasi</p>

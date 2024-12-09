@@ -17,7 +17,10 @@ use App\Http\Controllers\VendorPelatihanController;
 use App\Http\Controllers\VendorSertifikasiController;
 use App\Http\Controllers\pelatihansertifikasicontroller;
 use App\Http\Controllers\akunpenggunacontroller;
+use App\Http\Controllers\sertifikasicontroller;
+use App\Http\Controllers\pelatihancontroller;
 use App\Models\jenispenggunamodel;
+use App\Models\sertifikasimodel;
 
 Route::pattern('id','[0-9]+');
 
@@ -228,12 +231,22 @@ Route::get('/admin/profil', [ProfilController::class, 'profil_admin']);
 Route::get('/admin/edit', [ProfilController::class,'edit_admin']); //menampilkan halaman form edit matkul ajax
 Route::put('/admin/{id}/update_ajax', [ProfilController::class,'update_ajax']);   //menyimpan halaman form edit matkul ajax
 
-// Route::get('/dashboard', [WelcomeController::class, 'index']);
+Route::get('/dashboard', [WelcomeController::class, 'index']);
 
 
 Route::get('/dashboard', [DashboardAdminController::class, 'index']);
 
-Route::get('/pelatihansertifikasi',[pelatihansertifikasicontroller::class, 'index']);
+// Route::get('/pelatihansertifikasi',[pelatihansertifikasicontroller::class, 'index']);
+
+Route::get('/sertifikasi',[sertifikasicontroller::class, 'index']);
+Route::POST('/sertifikasi/list',[sertifikasicontroller::class, 'list']);
+Route::get('/sertifikasi/{id}/show',[sertifikasicontroller::class, 'show']);
+Route::get('/sertifikasi/create',[sertifikasicontroller::class, 'create']);
+Route::post('/sertifikasi/proses',[sertifikasicontroller::class, 'store']);
+
+// Route::get('/pelatihansertifikasi',[pelatihansertifikasicontroller::class, 'index']);
+
+
 
 
 
