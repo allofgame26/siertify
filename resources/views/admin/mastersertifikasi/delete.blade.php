@@ -1,4 +1,4 @@
-@empty($akunpengguna)
+@empty($sertifikasi)
     <div id="modal-master" class="modal-dialog modal-lg" role="document">
         <div class="modal-content">
             <div class="modal-header">
@@ -12,18 +12,18 @@
                     <h5><i class="icon fas fa-ban"></i> Kesalahan!!!</h5>
                     Data yang anda cari tidak ditemukan
                 </div>
-                <a href="{{ url('/akunpengguna') }}" class="btn btn-warning">Kembali</a>
+                <a href="{{ url('/sertifikasi') }}" class="btn btn-warning">Kembali</a>
             </div>
         </div>
     </div>
 @else
-    <form action="{{ url('/akunpengguna/' . $akunpengguna->id_user . '/delete') }}" method="POST" id="form-delete-akunpengguna">
+    <form action="{{ url('/sertifikasi/' . $sertifikasi->id_sertifikasi . '/delete') }}" method="POST" id="form-delete-sertifikasi">
         @csrf
         @method('DELETE')
         <div id="modal-master" class="modal-dialog modal-lg" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLabel">Hapus Data jenis</h5>
+                    <h5 class="modal-title" id="exampleModalLabel">Hapus Data sertifikasi</h5>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
@@ -36,23 +36,23 @@
                     <table class="table table-sm table-bordered table-striped">
                         <tr>
                             <th class="text-right col-3">ID:</th>
-                            <td class="col-9">{{ $akunpengguna->id_user}}</td>
+                            <td class="col-9">{{ $sertifikasi->id_sertifikasi}}</td>
                         </tr>
                         <tr>
-                            <th class="text-right col-3">Nama Lengkap :</th>
-                            <td class="col-9">{{ $identitas->firstWhere('id_identitas', $akunpengguna->id_identitas)?->nama_lengkap ?? 'Tidak Diketahui' }}</td>
+                            <th class="text-right col-3">Nama Sertifikasi :</th>
+                            <td class="col-9">{{ $sertifikasi->firstWhere('id_sertifikasi', $sertifikasi->id_identitas)?->nama_sertifikasi ?? 'Tidak Diketahui' }}</td>
                         </tr>
                         <tr>
-                            <th class="text-right col-3">Jenis Pengguna:</th>
-                            <td class="col-9">{{ $jenispengguna->firstWhere('id_jenis_pengguna', $akunpengguna->id_jenis_pengguna)?->nama_jenis_pengguna ?? 'Tidak Diketahui' }}</td>
+                            <th class="text-right col-3">Jenis Pelatihan Sertifikasi:</th>
+                            <td class="col-9">{{ $jenis->firstWhere('id_jenis_pelatihan_sertifikasi', $sertifikasi->id_jenis_pelatihan_sertifikasi)?->nama_jenis_sertifikasi ?? 'Tidak Diketahui' }}</td>
                         </tr>
                         <tr>
-                            <th class="text-right col-3">Periode:</th>
-                            <td class="col-9">{{ $periode->firstWhere('id_periode', $akunpengguna->id_periode)?->nama_periode ?? 'Tidak Diketahui' }}</td>
+                            <th class="text-right col-3">Vendor</th>
+                            <td class="col-9">{{ $vendor->firstWhere('id_vendor_sertifikasi', $sertifikasi->id_vendor_sertifikasi)?->nama_vendor_sertifikasi ?? 'Tidak Diketahui' }}</td>
                         </tr>
                         <tr>
-                            <th class="text-right col-3">Username :</th>
-                            <td class="col-9">{{ $akunpengguna->username }}</td>
+                            <th class="text-right col-3">Level Sertifikasi</th>
+                            <td class="col-9">{{ $sertifikasi->level_sertifikasi }}</td>
                         </tr>
                     </table>
                 </div>
@@ -65,7 +65,7 @@
     </form>
     <script>
         $(document).ready(function() {
-            $("#form-delete-akunpengguna").validate({
+            $("#form-delete-sertifikasi").validate({
                 rules: {},
                 submitHandler: function(form) {
                     $.ajax({
@@ -80,8 +80,8 @@
                                     title: 'Berhasil',
                                     text: response.message
                                 });
-                                if (typeof datapengguna !== 'undefined') {
-                                    datapengguna.ajax.reload(null, false); // Reload tabel tanpa mengubah posisi halaman
+                                if (typeof datasertifikasi !== 'undefined') {
+                                    datasertifikasi.ajax.reload(null, false); // Reload tabel tanpa mengubah posisi halaman
                             }
                             } else {
                                 $('.error-text').text('');

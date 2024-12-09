@@ -77,7 +77,7 @@
             rules: {
                 nama_sertifikasi: {
                     required: true,
-                    number: true // Validasi tipe integer
+                    maxlength: 40,
                 },
                 id_jenis_pelatihan_sertifikasi: {
                     required: true,
@@ -89,8 +89,6 @@
                 },
                 level_sertifikasi: {
                     required: true,
-                    minlength: 5,
-                    maxlength: 20,
                 }
             },
             submitHandler: function(form) {

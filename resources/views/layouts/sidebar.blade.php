@@ -181,17 +181,31 @@
                     </li>
                 </ul>
             </li>
+
             <li class="nav-item">
-                <a href="{{ url('/pelatihan') }}" class="nav-link {{ $activeMenu == 'pealtihan' ? 'active' : '' }} ">
-                    <i class="nav-icon 	fas fa-archive"></i>
-                    <p>Master Pelatihan</p>
+                <a href="{{ url('/vendor') }}" class="nav-link {{ $activeMenu == 'vendor' ? 'active' : '' }} ">
+                    <i class="nav-icon 	fas fa-landmark"></i>
+                    <p>Master Data Pelatihan & Sertifikasi</p>
+                    <i class="right fas fa-angle-left"></i>
                 </a>
-            </li>
-            <li class="nav-item">
-                <a href="{{ url('/sertifikasi') }}" class="nav-link {{ $activeMenu == 'sertifikasi' ? 'active' : '' }} ">
-                    <i class="nav-icon 	fas fa-archive"></i>
-                    <p>Master Sertifikasi</p>
-                </a>
+                <ul class="nav nav-treeview">
+                    <!-- Submenu Pelatihan -->
+                    <li class="nav-item">
+                        <a href="{{ url('/pelatihan') }}"
+                            class="nav-link {{ $activeMenu == 'pelatihan' ? 'active' : '' }}">
+                            <i class="fa fa-caret-right"></i>
+                            <p> Master Pelatihan</p>
+                        </a>
+                    </li>
+                    <!-- Submenu Sertifikasi -->
+                    <li class="nav-item">
+                        <a href="{{ url('sertifikasi') }}"
+                            class="nav-link {{ $activeMenu == 'sertifikasi' ? 'active' : '' }}">
+                            <i class="fa fa-caret-right"></i>
+                            <p> Master Sertifikasi</p>
+                        </a>
+                    </li>
+                </ul>
             </li>
             <li class="nav-item">
                 <a href="{{ url('/pelatihansertifikasi') }}" class="nav-link {{ $activeMenu == 'pelatihan-sertifikasi' ? 'active' : '' }} ">

@@ -243,6 +243,12 @@ Route::POST('/sertifikasi/list',[sertifikasicontroller::class, 'list']);
 Route::get('/sertifikasi/{id}/show',[sertifikasicontroller::class, 'show']);
 Route::get('/sertifikasi/create',[sertifikasicontroller::class, 'create']);
 Route::post('/sertifikasi/proses',[sertifikasicontroller::class, 'store']);
+Route::get('/sertifikasi/{id}/edit',[sertifikasicontroller::class, 'edit']);
+Route::put('/sertifikasi/{id}/update',[sertifikasicontroller::class, 'update']);
+Route::get('/sertifikasi/{id}/confirm',[sertifikasicontroller::class, 'confirm']);
+Route::delete('/sertifikasi/{id}/delete',[sertifikasicontroller::class, 'delete']);
+Route::get('/sertifikasi/import',[sertifikasicontroller::class, 'import']);
+Route::post('/sertifikasi/import_proses',[sertifikasicontroller::class, 'import_proses']);
 
 // Route::get('/pelatihansertifikasi',[pelatihansertifikasicontroller::class, 'index']);
 
