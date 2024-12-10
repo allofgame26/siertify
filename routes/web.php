@@ -15,9 +15,12 @@ use App\Http\Controllers\MatkulController;
 use App\Http\Controllers\ProfilController;
 use App\Http\Controllers\VendorPelatihanController;
 use App\Http\Controllers\VendorSertifikasiController;
+use App\Http\Controllers\pelatihansertifikasicontroller;
 use App\Http\Controllers\akunpenggunacontroller;
 use App\Http\Controllers\PengajuanPelatihanPimpinanController;
 use App\Http\Controllers\PengajuanSertifikasiPimpinanController;
+use App\Http\Controllers\sertifikasicontroller;
+use App\Http\Controllers\pelatihancontroller;
 
 Route::pattern('id','[0-9]+');
 
@@ -228,10 +231,39 @@ Route::get('/admin/profil', [ProfilController::class, 'profil_admin']);
 Route::get('/admin/edit', [ProfilController::class,'edit_admin']); //menampilkan halaman form edit matkul ajax
 Route::put('/admin/{id}/update_ajax', [ProfilController::class,'update_ajax']);   //menyimpan halaman form edit matkul ajax
 
-// Route::get('/dashboard', [WelcomeController::class, 'index']);
+Route::get('/dashboard', [WelcomeController::class, 'index']);
 
 
 Route::get('/dashboard', [DashboardAdminController::class, 'index']);
+
+
+Route::get('/mastersertifikasi',[sertifikasicontroller::class, 'index']);
+Route::POST('/mastersertifikasi/list',[sertifikasicontroller::class, 'list']);
+Route::get('/mastersertifikasi/{id}/show',[sertifikasicontroller::class, 'show']);
+Route::get('/mastersertifikasi/create',[sertifikasicontroller::class, 'create']);
+Route::post('/mastersertifikasi/proses',[sertifikasicontroller::class, 'store']);
+Route::get('/mastersertifikasi/{id}/edit',[sertifikasicontroller::class, 'edit']);
+Route::put('/mastersertifikasi/{id}/update',[sertifikasicontroller::class, 'update']);
+Route::get('/mastersertifikasi/{id}/confirm',[sertifikasicontroller::class, 'confirm']);
+Route::delete('/mastersertifikasi/{id}/delete',[sertifikasicontroller::class, 'delete']);
+Route::get('/mastersertifikasi/import',[sertifikasicontroller::class, 'import']);
+Route::post('/mastersertifikasi/import_proses',[sertifikasicontroller::class, 'import_proses']);
+
+Route::get('/masterpelatihan',[sertifikasicontroller::class, 'index']);
+Route::POST('/masterpelatihan/list',[sertifikasicontroller::class, 'list']);
+Route::get('/masterpelatihan/{id}/show',[sertifikasicontroller::class, 'show']);
+Route::get('/masterpelatihan/create',[sertifikasicontroller::class, 'create']);
+Route::post('/masterpelatihan/proses',[sertifikasicontroller::class, 'store']);
+Route::get('/masterpelatihan/{id}/edit',[sertifikasicontroller::class, 'edit']);
+Route::put('/masterpelatihan/{id}/update',[sertifikasicontroller::class, 'update']);
+Route::get('/masterpelatihan/{id}/confirm',[sertifikasicontroller::class, 'confirm']);
+Route::delete('/masterpelatihan/{id}/delete',[sertifikasicontroller::class, 'delete']);
+Route::get('/masterpelatihan/import',[sertifikasicontroller::class, 'import']);
+Route::post('/masterpelatihan/import_proses',[sertifikasicontroller::class, 'import_proses']);
+
+// Route::get('/pelatihansertifikasi',[pelatihansertifikasicontroller::class, 'index']);
+
+
 
 //Begin AdminLte
 Route::get('/pengajuan', [PengajuanPelatihanPimpinanController::class, 'index']);
