@@ -1,4 +1,4 @@
-<form action="{{ url('/sertifikasi/proses') }}" method="POST" id="form-tambah-sertifikasi">
+<form action="{{ url('/mastersertifikasi/proses') }}" method="POST" id="form-tambah-sertifikasi">
     @csrf
     <div id="modal-master" class="modal-dialog modal-lg" role="document">
         <div class="modal-content">

@@ -12,7 +12,7 @@
                     <h5><i class="icon fas fa-ban"></i> Kesalahan!!!</h5>
                     Data Master Sertifikasi yang anda cari tidak ditemukan
                 </div>
-                <a href="{{ url('/sertifikasi') }}" class="btn btn-info">Kembali</a>
+                <a href="{{ url('/mastersertifikasi') }}" class="btn btn-info">Kembali</a>
             </div>
         </div>
     </div>

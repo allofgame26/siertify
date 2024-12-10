@@ -52,9 +52,9 @@ class sertifikasicontroller extends Controller
                 return $sertifikasi->vendorsertifikasi->nama_vendor_sertifikasi ?? 'Error';
             })
             ->addColumn('aksi', function ($sertifikasi) {
-                $btn = '<button onclick="modalAction(\'' . url('/sertifikasi/' . $sertifikasi->id_sertifikasi . '/show') . '\')" class="btn btn-info btn-sm"><i class="fa fa-pencil"></i>Detail</button> ';
-                $btn .= '<button onclick="modalAction(\'' . url('/sertifikasi/' . $sertifikasi->id_sertifikasi . '/edit') . '\')" class="btn btn-warning btn-sm"><i class="fa fa-pencil"></i>Edit</button> ';
-                $btn .= '<button onclick="modalAction(\'' . url('/sertifikasi/' . $sertifikasi->id_sertifikasi . '/confirm') . '\')" class="btn btn-danger btn-sm">Hapus</button> ';
+                $btn = '<button onclick="modalAction(\'' . url('/mastersertifikasi/' . $sertifikasi->id_sertifikasi . '/show') . '\')" class="btn btn-info btn-sm"><i class="fa fa-pencil"></i>Detail</button> ';
+                $btn .= '<button onclick="modalAction(\'' . url('/mastersertifikasi/' . $sertifikasi->id_sertifikasi . '/edit') . '\')" class="btn btn-warning btn-sm"><i class="fa fa-pencil"></i>Edit</button> ';
+                $btn .= '<button onclick="modalAction(\'' . url('/mastersertifikasi/' . $sertifikasi->id_sertifikasi . '/confirm') . '\')" class="btn btn-danger btn-sm">Hapus</button> ';
                 return $btn;
             })
             
@@ -122,7 +122,7 @@ class sertifikasicontroller extends Controller
                 'message' => 'Data Jenis berhasil disimpan'
             ]);
         }
-        return redirect('/sertifikasi');
+        return redirect('/mastersertifikasi');
     }
 
     public function edit(string $id){
@@ -170,7 +170,7 @@ class sertifikasicontroller extends Controller
                 ]);
             }
         }
-        return redirect('/sertifikasi');
+        return redirect('/mastersertifikasi');
     }
 
     public function delete(Request $request,$id){
@@ -189,7 +189,7 @@ class sertifikasicontroller extends Controller
                 ]);
             }
         }
-        return redirect('/sertifikasi');
+        return redirect('/mastersertifikasi');
     }
     
     public function confirm(string $id){
@@ -257,7 +257,7 @@ class sertifikasicontroller extends Controller
                 ]);
             }
         }
-        return redirect('/sertifikasi');
+        return redirect('/mastersertifikasi');
     }
 
     public function export_excel()

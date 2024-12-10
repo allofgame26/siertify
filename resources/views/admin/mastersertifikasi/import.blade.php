@@ -1,4 +1,4 @@
-<form action="{{ url('/sertifikasi/import_proses') }}" method="POST" id="form-import" enctype="multipart/form-data">
+<form action="{{ url('/mastersertifikasi/import_proses') }}" method="POST" id="form-import" enctype="multipart/form-data">
     @csrf
     <div id="modal-master" class="modal-dialog modal-lg" role="document">
         <div class="modal-content">

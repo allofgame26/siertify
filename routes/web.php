@@ -17,10 +17,10 @@ use App\Http\Controllers\VendorPelatihanController;
 use App\Http\Controllers\VendorSertifikasiController;
 use App\Http\Controllers\pelatihansertifikasicontroller;
 use App\Http\Controllers\akunpenggunacontroller;
+use App\Http\Controllers\PengajuanPelatihanPimpinanController;
+use App\Http\Controllers\PengajuanSertifikasiPimpinanController;
 use App\Http\Controllers\sertifikasicontroller;
 use App\Http\Controllers\pelatihancontroller;
-use App\Models\jenispenggunamodel;
-use App\Models\sertifikasimodel;
 
 Route::pattern('id','[0-9]+');
 
@@ -236,24 +236,55 @@ Route::get('/dashboard', [WelcomeController::class, 'index']);
 
 Route::get('/dashboard', [DashboardAdminController::class, 'index']);
 
+
+Route::get('/mastersertifikasi',[sertifikasicontroller::class, 'index']);
+Route::POST('/mastersertifikasi/list',[sertifikasicontroller::class, 'list']);
+Route::get('/mastersertifikasi/{id}/show',[sertifikasicontroller::class, 'show']);
+Route::get('/mastersertifikasi/create',[sertifikasicontroller::class, 'create']);
+Route::post('/mastersertifikasi/proses',[sertifikasicontroller::class, 'store']);
+Route::get('/mastersertifikasi/{id}/edit',[sertifikasicontroller::class, 'edit']);
+Route::put('/mastersertifikasi/{id}/update',[sertifikasicontroller::class, 'update']);
+Route::get('/mastersertifikasi/{id}/confirm',[sertifikasicontroller::class, 'confirm']);
+Route::delete('/mastersertifikasi/{id}/delete',[sertifikasicontroller::class, 'delete']);
+Route::get('/mastersertifikasi/import',[sertifikasicontroller::class, 'import']);
+Route::post('/mastersertifikasi/import_proses',[sertifikasicontroller::class, 'import_proses']);
+
+Route::get('/masterpelatihan',[sertifikasicontroller::class, 'index']);
+Route::POST('/masterpelatihan/list',[sertifikasicontroller::class, 'list']);
+Route::get('/masterpelatihan/{id}/show',[sertifikasicontroller::class, 'show']);
+Route::get('/masterpelatihan/create',[sertifikasicontroller::class, 'create']);
+Route::post('/masterpelatihan/proses',[sertifikasicontroller::class, 'store']);
+Route::get('/masterpelatihan/{id}/edit',[sertifikasicontroller::class, 'edit']);
+Route::put('/masterpelatihan/{id}/update',[sertifikasicontroller::class, 'update']);
+Route::get('/masterpelatihan/{id}/confirm',[sertifikasicontroller::class, 'confirm']);
+Route::delete('/masterpelatihan/{id}/delete',[sertifikasicontroller::class, 'delete']);
+Route::get('/masterpelatihan/import',[sertifikasicontroller::class, 'import']);
+Route::post('/masterpelatihan/import_proses',[sertifikasicontroller::class, 'import_proses']);
+
 // Route::get('/pelatihansertifikasi',[pelatihansertifikasicontroller::class, 'index']);
 
-Route::get('/sertifikasi',[sertifikasicontroller::class, 'index']);
-Route::POST('/sertifikasi/list',[sertifikasicontroller::class, 'list']);
-Route::get('/sertifikasi/{id}/show',[sertifikasicontroller::class, 'show']);
-Route::get('/sertifikasi/create',[sertifikasicontroller::class, 'create']);
-Route::post('/sertifikasi/proses',[sertifikasicontroller::class, 'store']);
-Route::get('/sertifikasi/{id}/edit',[sertifikasicontroller::class, 'edit']);
-Route::put('/sertifikasi/{id}/update',[sertifikasicontroller::class, 'update']);
-Route::get('/sertifikasi/{id}/confirm',[sertifikasicontroller::class, 'confirm']);
-Route::delete('/sertifikasi/{id}/delete',[sertifikasicontroller::class, 'delete']);
-Route::get('/sertifikasi/import',[sertifikasicontroller::class, 'import']);
-Route::post('/sertifikasi/import_proses',[sertifikasicontroller::class, 'import_proses']);
-
-// Route::get('/pelatihansertifikasi',[pelatihansertifikasicontroller::class, 'index']);
 
 
+//Begin AdminLte
+Route::get('/pengajuan', [PengajuanPelatihanPimpinanController::class, 'index']);
+Route::get('/', [WelcomeController::class, 'index']);
 
+// jenis pelatihan dan sertifikasi
+Route::get('/pengajuan', [PengajuanPelatihanPimpinanController::class, 'index']);  // menampilkan halaman jenis
+Route::post('/pengajuan/list', [PengajuanPelatihanPimpinanController::class, 'list'] );    //menampilkan data jenis dalam bentuk json datatables
+Route::post('/pengajuan/ajax', [PengajuanPelatihanPimpinanController::class, 'store_ajax']); // Menyimpan data jenis baru Ajax 
+Route::get('/pengajuan/{id}/edit_ajax', [PengajuanPelatihanPimpinanController::class,'edit_ajax']); //menampilkan halaman form edit jenis ajax
+Route::put('/pengajuan/{id}/update_ajax', [PengajuanPelatihanPimpinanController::class,'update_ajax']);   //menyimpan halaman form edit jenis ajax
+Route::get('/pengajuan/export_excel', [PengajuanPelatihanPimpinanController::class, 'export_excel']);  //export excel
+Route::get('/pengajuan/export_pdf', [PengajuanPelatihanPimpinanController::class, 'export_pdf']); //export pdf
+Route::get('/{id}/show_ajax', [PengajuanPelatihanPimpinanController::class, 'show_ajax']); //show_ajax
 
-
-
+// jenis pelatihan dan sertifikasi
+Route::get('/sertifikasi', [PengajuanSertifikasiPimpinanController::class, 'index']);  // menampilkan halaman jenis
+Route::post('/sertifikasi/list', [PengajuanSertifikasiPimpinanController::class, 'list'] );    //menampilkan data jenis dalam bentuk json datatables
+Route::post('/sertifikasi/ajax', [PengajuanSertifikasiPimpinanController::class, 'store_ajax']); // Menyimpan data jenis baru Ajax 
+Route::get('/sertifikasi/{id}/edit_ajax', [PengajuanSertifikasiPimpinanController::class,'edit_ajax']); //menampilkan halaman form edit jenis ajax
+Route::put('/sertifkasi/{id}/update_ajax', [PengajuanSertifikasiPimpinanController::class,'update_ajax']);   //menyimpan halaman form edit jenis ajax
+Route::get('/sertifikasi/export_excel', [PengajuanSertifikasiPimpinanController::class, 'export_excel']);  //export excel
+Route::get('/sertifikasi/export_pdf', [PengajuanSertifikasiPimpinanController::class, 'export_pdf']); //export pdf
+Route::get('/{id}/show_ajax', [PengajuanSertifikasiPimpinanController::class, 'show_ajax']); //show_ajax
