@@ -17,30 +17,16 @@ class pelatihanmodel extends Model
     protected $fillable = [
         'nama_pelatihan',
         'id_vendor_pelatihan',
-        'id_jenis_pelatihan',
-        'id_periode',
-        'tanggal_mulai',
-        'tanggal_selesai',
+        'id_jenis_pelatihan_sertifikasi',
         'level_pelatihan',
-        'lokasi',
-        'biaya',
-        'quota_peserta',
-        'no_pelatihan',
-        'bukti_pelatihan',
-        'status_disetujui',
-        'input_by'
     ];
 
-    public function periode():BelongsTo{
-        return $this->belongsTo(periodemodel::class);
-    }
-
     public function jenispelatihan():BelongsTo{
-        return $this->belongsTo(jenispelatihansertifikasimodel::class);
+        return $this->belongsTo(jenispelatihansertifikasimodel::class,'id_jenis_pelatihan_sertifikasi','id_jenis_pelatihan_sertifikasi');
     }
 
     public function vendorpelatihan():BelongsTo{
-        return $this->belongsTo(vendorpelathihanmodel::class);
+        return $this->belongsTo(vendorpelatihanmodel::class,'id_vendor_pelatihan','id_vendor_pelatihan');
     }
 
     public function pesertapelatihan():HasMany{

@@ -225,18 +225,6 @@ Route::post('/matkul/import_ajax', [MatkulController::class, 'import_ajax']); //
 Route::get('/matkul/export_excel', [MatkulController::class, 'export_excel']);  //export excel
 Route::get('/matkul/export_pdf', [MatkulController::class, 'export_pdf']); //export pdf
 
-// profil admin
-// harus dikasih kondisi klo rolenya admin nampilin admin
-Route::get('/admin/profil', [ProfilController::class, 'profil_admin']);
-Route::get('/admin/edit', [ProfilController::class,'edit_admin']); //menampilkan halaman form edit matkul ajax
-Route::put('/admin/{id}/update_ajax', [ProfilController::class,'update_ajax']);   //menyimpan halaman form edit matkul ajax
-
-Route::get('/dashboard', [WelcomeController::class, 'index']);
-
-
-Route::get('/dashboard', [DashboardAdminController::class, 'index']);
-
-
 Route::get('/mastersertifikasi',[sertifikasicontroller::class, 'index']);
 Route::POST('/mastersertifikasi/list',[sertifikasicontroller::class, 'list']);
 Route::get('/mastersertifikasi/{id}/show',[sertifikasicontroller::class, 'show']);
@@ -249,17 +237,28 @@ Route::delete('/mastersertifikasi/{id}/delete',[sertifikasicontroller::class, 'd
 Route::get('/mastersertifikasi/import',[sertifikasicontroller::class, 'import']);
 Route::post('/mastersertifikasi/import_proses',[sertifikasicontroller::class, 'import_proses']);
 
-Route::get('/masterpelatihan',[sertifikasicontroller::class, 'index']);
-Route::POST('/masterpelatihan/list',[sertifikasicontroller::class, 'list']);
-Route::get('/masterpelatihan/{id}/show',[sertifikasicontroller::class, 'show']);
-Route::get('/masterpelatihan/create',[sertifikasicontroller::class, 'create']);
-Route::post('/masterpelatihan/proses',[sertifikasicontroller::class, 'store']);
-Route::get('/masterpelatihan/{id}/edit',[sertifikasicontroller::class, 'edit']);
-Route::put('/masterpelatihan/{id}/update',[sertifikasicontroller::class, 'update']);
-Route::get('/masterpelatihan/{id}/confirm',[sertifikasicontroller::class, 'confirm']);
-Route::delete('/masterpelatihan/{id}/delete',[sertifikasicontroller::class, 'delete']);
-Route::get('/masterpelatihan/import',[sertifikasicontroller::class, 'import']);
-Route::post('/masterpelatihan/import_proses',[sertifikasicontroller::class, 'import_proses']);
+// profil admin
+// harus dikasih kondisi klo rolenya admin nampilin admin
+Route::get('/admin/profil', [ProfilController::class, 'profil_admin']);
+Route::get('/admin/edit', [ProfilController::class,'edit_admin']); //menampilkan halaman form edit matkul ajax
+Route::put('/admin/{id}/update_ajax', [ProfilController::class,'update_ajax']);   //menyimpan halaman form edit matkul ajax
+
+Route::get('/dashboard', [WelcomeController::class, 'index']);
+
+
+Route::get('/dashboard', [DashboardAdminController::class, 'index']);
+
+Route::get('/masterpelatihan',[pelatihancontroller::class, 'index']);
+Route::POST('/masterpelatihan/list',[pelatihancontroller::class, 'list']);
+Route::get('/masterpelatihan/{id}/show',[pelatihancontroller::class, 'show']);
+Route::get('/masterpelatihan/create',[pelatihancontroller::class, 'create']);
+Route::post('/masterpelatihan/proses',[pelatihancontroller::class, 'store']);
+Route::get('/masterpelatihan/{id}/edit',[pelatihancontroller::class, 'edit']);
+Route::put('/masterpelatihan/{id}/update',[pelatihancontroller::class, 'update']);
+Route::get('/masterpelatihan/{id}/confirm',[pelatihancontroller::class, 'confirm']);
+Route::delete('/masterpelatihan/{id}/delete',[pelatihancontroller::class, 'delete']);
+Route::get('/masterpelatihan/import',[pelatihancontroller::class, 'import']);
+Route::post('/masterpelatihan/import_proses',[pelatihancontroller::class, 'import_proses']);
 
 // Route::get('/pelatihansertifikasi',[pelatihansertifikasicontroller::class, 'index']);
 
@@ -267,7 +266,6 @@ Route::post('/masterpelatihan/import_proses',[sertifikasicontroller::class, 'imp
 
 //Begin AdminLte
 Route::get('/pengajuan', [PengajuanPelatihanPimpinanController::class, 'index']);
-Route::get('/', [WelcomeController::class, 'index']);
 
 // jenis pelatihan dan sertifikasi
 Route::get('/pengajuan', [PengajuanPelatihanPimpinanController::class, 'index']);  // menampilkan halaman jenis

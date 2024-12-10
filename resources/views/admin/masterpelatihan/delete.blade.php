@@ -1,4 +1,4 @@
-@empty($sertifikasi)
+@empty($pelatihan)
     <div id="modal-master" class="modal-dialog modal-lg" role="document">
         <div class="modal-content">
             <div class="modal-header">
@@ -12,18 +12,18 @@
                     <h5><i class="icon fas fa-ban"></i> Kesalahan!!!</h5>
                     Data yang anda cari tidak ditemukan
                 </div>
-                <a href="{{ url('/mastersertifikasi') }}" class="btn btn-warning">Kembali</a>
+                <a href="{{ url('/masterpelatihan') }}" class="btn btn-warning">Kembali</a>
             </div>
         </div>
     </div>
 @else
-    <form action="{{ url('/mastersertifikasi/' . $sertifikasi->id_sertifikasi . '/delete') }}" method="POST" id="form-delete-sertifikasi">
+    <form action="{{ url('/masterpelatihan/' . $pelatihan->id_pelatihan . '/delete') }}" method="POST" id="form-delete-pelatihan">
         @csrf
         @method('DELETE')
         <div id="modal-master" class="modal-dialog modal-lg" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLabel">Hapus Data sertifikasi</h5>
+                    <h5 class="modal-title" id="exampleModalLabel">Hapus Data pelatihan</h5>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
@@ -36,23 +36,23 @@
                     <table class="table table-sm table-bordered table-striped">
                         <tr>
                             <th class="text-right col-3">ID:</th>
-                            <td class="col-9">{{ $sertifikasi->id_sertifikasi}}</td>
+                            <td class="col-9">{{ $pelatihan->id_pelatihan}}</td>
                         </tr>
                         <tr>
-                            <th class="text-right col-3">Nama Sertifikasi :</th>
-                            <td class="col-9">{{ $sertifikasi->firstWhere('id_sertifikasi', $sertifikasi->id_sertifikasi)?->nama_sertifikasi ?? 'Tidak Diketahui' }}</td>
+                            <th class="text-right col-3">Nama pelatihan :</th>
+                            <td class="col-9">{{ $pelatihan->firstWhere('id_pelatihan', $pelatihan->id_pelatihan)?->nama_pelatihan ?? 'Tidak Diketahui' }}</td>
                         </tr>
                         <tr>
-                            <th class="text-right col-3">Jenis Pelatihan Sertifikasi:</th>
-                            <td class="col-9">{{ $jenis->firstWhere('id_jenis_pelatihan_sertifikasi', $sertifikasi->id_jenis_pelatihan_sertifikasi)?->nama_jenis_sertifikasi ?? 'Tidak Diketahui' }}</td>
+                            <th class="text-right col-3">Jenis Pelatihan pelatihan:</th>
+                            <td class="col-9">{{ $jenis->firstWhere('id_jenis_pelatihan_sertifikasi', $pelatihan->id_jenis_pelatihan_sertifikasi)?->nama_jenis_sertifikasi ?? 'Tidak Diketahui' }}</td>
                         </tr>
                         <tr>
                             <th class="text-right col-3">Vendor</th>
-                            <td class="col-9">{{ $vendor->firstWhere('id_vendor_sertifikasi', $sertifikasi->id_vendor_sertifikasi)?->nama_vendor_sertifikasi ?? 'Tidak Diketahui' }}</td>
+                            <td class="col-9">{{ $vendor->firstWhere('id_vendor_pelatihan', $pelatihan->id_vendor_pelatihan)?->nama_vendor_pelatihan ?? 'Tidak Diketahui' }}</td>
                         </tr>
                         <tr>
-                            <th class="text-right col-3">Level Sertifikasi</th>
-                            <td class="col-9">{{ $sertifikasi->level_sertifikasi }}</td>
+                            <th class="text-right col-3">Level pelatihan</th>
+                            <td class="col-9">{{ $pelatihan->level_pelatihan }}</td>
                         </tr>
                     </table>
                 </div>
@@ -65,7 +65,7 @@
     </form>
     <script>
         $(document).ready(function() {
-            $("#form-delete-sertifikasi").validate({
+            $("#form-delete-pelatihan").validate({
                 rules: {},
                 submitHandler: function(form) {
                     $.ajax({
@@ -80,8 +80,8 @@
                                     title: 'Berhasil',
                                     text: response.message
                                 });
-                                if (typeof datasertifikasi !== 'undefined') {
-                                    datasertifikasi.ajax.reload(null, false); // Reload tabel tanpa mengubah posisi halaman
+                                if (typeof datapelatihan !== 'undefined') {
+                                    datapelatihan.ajax.reload(null, false); // Reload tabel tanpa mengubah posisi halaman
                             }
                             } else {
                                 $('.error-text').text('');

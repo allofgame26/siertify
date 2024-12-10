@@ -191,7 +191,7 @@
                 <ul class="nav nav-treeview">
                     <!-- Submenu Pelatihan -->
                     <li class="nav-item">
-                        <a href="{{ url('/pelatihan') }}"
+                        <a href="{{ url('/masterpelatihan') }}"
                             class="nav-link {{ $activeMenu == 'pelatihan' ? 'active' : '' }}">
                             <i class="fa fa-caret-right"></i>
                             <p> Master Pelatihan</p>
@@ -199,7 +199,7 @@
                     </li>
                     <!-- Submenu Sertifikasi -->
                     <li class="nav-item">
-                        <a href="{{ url('sertifikasi') }}"
+                        <a href="{{ url('mastersertifikasi') }}"
                             class="nav-link {{ $activeMenu == 'sertifikasi' ? 'active' : '' }}">
                             <i class="fa fa-caret-right"></i>
                             <p> Master Sertifikasi</p>
