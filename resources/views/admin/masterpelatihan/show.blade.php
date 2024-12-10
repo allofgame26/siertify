@@ -1,4 +1,4 @@
-@empty($sertifikasi)
+@empty($pelatihan)
     <div id="modal-master" class="modal-dialog modal-lg" role="document">
         <div class="modal-content">
             <div class="modal-header bg-warning">
@@ -10,9 +10,9 @@
             <div class="modal-body">
                 <div class="alert alert-danger">
                     <h5><i class="icon fas fa-ban"></i> Kesalahan!!!</h5>
-                    Data Master Sertifikasi yang anda cari tidak ditemukan
+                    Data Master pelatihan yang anda cari tidak ditemukan
                 </div>
-                <a href="{{ url('/mastersertifikasi') }}" class="btn btn-info">Kembali</a>
+                <a href="{{ url('/masterpelatihan') }}" class="btn btn-info">Kembali</a>
             </div>
         </div>
     </div>
@@ -23,30 +23,30 @@
         <div id="modal-master" class="modal-dialog modal-lg" role="document">
             <div class="modal-content">
                 <div class="modal-header bg-info">
-                    <h5 class="modal-title" id="exampleModalLabel">Detail Sertifikasi</h5>
+                    <h5 class="modal-title" id="exampleModalLabel">Detail pelatihan</h5>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
                 <div class="modal-body">
                     <div class="form-group">
-                        <label>Nama Sertifikasi</label>
-                        <input value="{{ $sertifikasi->nama_sertifikasi }}" type="text" name="nama_sertifikasi" id="nama_sertifikasi"
+                        <label>Nama pelatihan</label>
+                        <input value="{{ $pelatihan->nama_pelatihan }}" type="text" name="nama_pelatihan" id="nama_pelatihan"
                             class="form-control" readonly>
                     </div>
                     <div class="form-group">
                         <label>Vendor</label>
-                        <input value="{{ $sertifikasi->vendorsertifikasi->nama_vendor_sertifikasi }}" type="text" name="id_vendor_sertifikasi" id="id_vendor_sertifikasi"
+                        <input value="{{ $pelatihan->vendorpelatihan->nama_vendor_pelatihan }}" type="text" name="id_vendor_pelatihan" id="id_vendor_pelatihan"
                             class="form-control" readonly>
                     </div>
                     <div class="form-group">
-                        <label>Jenis Sertifikasi</label>
-                        <input value="{{ $sertifikasi->jenissertifikasi->nama_jenis_sertifikasi }}" type="text" name="id_jenis_pelatihan_sertifikasi" id="id_jenis_pelatihan_sertifikasi"
+                        <label>Jenis pelatihan</label>
+                        <input value="{{ $pelatihan->jenispelatihan->nama_jenis_sertifikasi }}" type="text" name="id_jenis_pelatihan_sertifikasi" id="id_jenis_pelatihan_sertifikasi"
                             class="form-control" readonly>
                     </div>
                     <div class="form-group">
                         <label> Level Sertifikat</label>   
-                        <input value="{{ $sertifikasi->level_sertifikasi }}" type="text" name="level_sertifikasi" id="level_sertifikasi"
+                        <input value="{{ $pelatihan->level_pelatihan }}" type="text" name="level_pelatihan" id="level_pelatihan"
                             class="form-control" placeholder="Enter Username" readonly>
                         <small id="error-username" class="error-text form-text text-danger"></small>
                     </div>
@@ -84,11 +84,11 @@
         $(document).ready(function() {
             $("#form-show").validate({
                 rules: {
-                    nama_sertifikasi: {
+                    nama_pelatihan: {
                     required: true,
                     number: true // Validasi tipe integer
                 },
-                id_vendor_sertifikasi: {
+                id_vendor_pelatihan: {
                     required: true,
                     number: true // Validasi tipe integer
                 },
@@ -96,7 +96,7 @@
                     required: true,
                     number: true // Validasi tipe integer
                 },
-                level_sertifikasi: {
+                level_pelatihan: {
                     required: true,
                     minlength: 5,
                     maxlength: 20,
@@ -116,8 +116,8 @@
                                     text: response.message
                                 }).then(function() {
                                     // Reload halaman atau update data setelah Swal ditutup
-                                    if (typeof tablesertifikasi !== 'undefined') {
-                                        tablesertifikasi.ajax
+                                    if (typeof tablepelatihan !== 'undefined') {
+                                        tablepelatihan.ajax
                                             .reload(); // Reload data table jika ada
                                     } else {
                                         location
