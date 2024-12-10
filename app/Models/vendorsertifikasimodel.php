@@ -16,6 +16,6 @@ class vendorsertifikasimodel extends Model
     protected $fillable = ['nama_vendor_sertifikasi','alamat_vendor_sertifikasi','kota_vendor_sertifikasi','notelp_vendor_sertifikasi','web_vendor_sertifikasi'];
 
     public function sertifikasi():HasMany{
-        return $this->hasMany(sertifikasimodel::class);
+        return $this->hasMany(sertifikasimodel::class,'id_vendor_sertifikasi','id_vendor_sertifikasi');
     }
 }
