@@ -1,4 +1,4 @@
-<form action="{{ url('/profil/prosesmk') }}" method="POST" id="form-tambah-mk">
+<form action="{{ url('/profil/' . $idselected. '/prosesmk') }}" method="POST" id="form-tambah-mk">
     @csrf
     <div id="modal-master" class="modal-dialog modal-lg" role="document">
         <div class="modal-content">
@@ -14,9 +14,8 @@
                     <select name="id_user" id="id_user" class="form-control" required>
                         <option value="">- Pilih Nama -</option>
                         @foreach ($akun as $l)
-                        <option value="{{ $l->id_user }}">
-                        {{ $l->username }}
-                        </option>
+                        <option {{ $l->id_user == $idselected ? 'selected' : '' }}
+                        value="{{ $l->id_user }}"> {{ $l->username }} </option>
                         @endforeach
                     </select>
                     <small id="error-id_user" class="error-text form-text text-danger"></small>

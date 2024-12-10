@@ -67,16 +67,17 @@ class ProfilController extends Controller
     public function createbd(string $id) {
 
         // $id = Auth::user()->id_user;
+        $idselected = $id;
 
-        $akun = akunusermodel::all();
+        $akun = akunusermodel::select('id_user','username')->get();
 
         $bd = bidangminatmodel::all();
 
 
-        return view('profil.bd', ['akun' => $akun, 'bd' => $bd]);
+        return view('profil.bd', ['akun' => $akun, 'bd' => $bd, 'idselected' => $idselected]);
     }
 
-    public function storebd(Request $request){
+    public function storebd(Request $request,$id){
         // cek apakah request berupa ajax
         if ($request->ajax() || $request->wantsJson()) {
             $rules = [
@@ -95,7 +96,7 @@ class ProfilController extends Controller
             }
             $detailbd = detailbddosen::create([
                 'id_user' => $request->id_user,
-                'id_bd' => $request->id_bd,
+                'id_bd' => $id,
             ]);
 
             if($detailbd){
@@ -116,17 +117,18 @@ class ProfilController extends Controller
 
     public function matakuliah(string $id) {
 
-        // $id = Auth::user()->id_user;
 
-        $akun = akunusermodel::all();
+        $idselected = $id;
+
+        $akun = akunusermodel::select('id_user','username')->get();
 
         $mk = matakuliahmodel::all();
 
 
-        return view('profil.mk', ['akun' => $akun, 'mk' => $mk]);
+        return view('profil.mk', ['akun' => $akun, 'mk' => $mk, 'idselected' => $idselected]);
     }
 
-    public function storemk(Request $request){
+    public function storemk(Request $request,$id){
         // cek apakah request berupa ajax
         if ($request->ajax() || $request->wantsJson()) {
             $rules = [
@@ -144,7 +146,7 @@ class ProfilController extends Controller
                 ]);
             }
             $detailmk = detailmkdosen::create([
-                'id_user' => $request->id_user,
+                'id_user' => $id,
                 'id_mk' => $request->id_mk,
             ]);
 

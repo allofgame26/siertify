@@ -38,9 +38,9 @@ Route::get('/profil/{id}/edit', [ProfilController::class, 'edit']);
 Route::put('/profil/{id}/update', [ProfilController::class, 'update']);
 Route::get('/profil/createmk', [ProfilController::class, 'createmk']);
 Route::get('/profil/{id}/bd', [ProfilController::class, 'createbd']);
-Route::post('/profil/prosesbd', [ProfilController::class, 'storebd']);
+Route::post('/profil/{id}/prosesbd', [ProfilController::class, 'storebd']);
 Route::get('/profil/{id}/mk', [ProfilController::class, 'matakuliah']);
-Route::post('/profil/prosesmk', [ProfilController::class, 'storemk']);
+Route::post('/profil/{id}/prosesmk', [ProfilController::class, 'storemk']);
     
     // jenis pelatihan dan sertifikasi admin
 Route::get('/jenis', [JenisPelatihanSertifikasiController::class, 'index']);  // menampilkan halaman jenis
