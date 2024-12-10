@@ -77,7 +77,7 @@
             rules: {
                 nama_sertifikasi: {
                     required: true,
-                    maxlength: 40,
+                    maxlength: 100,
                 },
                 id_jenis_pelatihan_sertifikasi: {
                     required: true,

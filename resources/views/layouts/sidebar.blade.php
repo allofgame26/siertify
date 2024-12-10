@@ -183,7 +183,7 @@
             </li>
 
             <li class="nav-item">
-                <a href="{{ url('/vendor') }}" class="nav-link {{ $activeMenu == 'vendor' ? 'active' : '' }} ">
+                <a href="{{ url('/pelatihan') }}" class="nav-link {{ $activeMenu == 'vendor' ? 'active' : '' }} ">
                     <i class="nav-icon 	fas fa-landmark"></i>
                     <p>Master Data Pelatihan & Sertifikasi</p>
                     <i class="right fas fa-angle-left"></i>

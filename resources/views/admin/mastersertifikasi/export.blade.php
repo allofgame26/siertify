@@ -95,22 +95,21 @@
             <thead>
                 <tr>
                     <th>No</th>
-                    <th>ID Identitas</th>
-                    <th>ID Jenis Pengguna</th>
-                    <th>ID Periode</th>
-                    <th>Username</th>
-                    <th>Password</th>
+                    <th>Nama Sertifikat</th>
+                    <th>Jenis Pelatihan Sertifikasi</th>
+                    <th>Nama Vendor Sertifikasi</th>
+                    <th>Level Sertifikasi</th>
                 </tr>
             </thead>
             <tbody>
-                @foreach ($akunpengguna as $b)
+                @foreach ($sertifikasi as $b)
                     <tr>
                         <td class="text-center">{{ $loop->iteration }}</td>
-                        <td>{{ $b->id_identitas }}</td>
-                        <td>{{ $b->id_jenis_pengguna }}</td>
-                        <td>{{ $b->id_periode }}</td>
-                        <td>{{ $b->username }}</td>
-                        <td>{{ $b->password }}</td>
+                        <td>{{ $b->id_sertifikasi }}</td>
+                        <td>{{ $b->nama_sertifikasi }}</td>
+                        <td>{{ $b->id_vendor_sertifikasi }}</td>
+                        <td>{{ $b->id_jenis_pelatihan_sertifikasi }}</td>
+                        <td>{{ $b->level_sertifikasi }}</td>
                     </tr>
                 @endforeach
             </tbody>

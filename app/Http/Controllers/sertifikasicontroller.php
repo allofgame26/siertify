@@ -87,7 +87,7 @@ class sertifikasicontroller extends Controller
         // cek apakah request berupa ajax
         if ($request->ajax() || $request->wantsJson()) {
             $rules = [
-                'nama_sertifikasi' => 'required|max:40', // Validasi ID Identitas (harus ada di tabel 'identitas')
+                'nama_sertifikasi' => 'required|max:100', // Validasi ID Identitas (harus ada di tabel 'identitas')
                 'id_jenis_pelatihan_sertifikasi' => 'required|integer', // Validasi ID Jenis Pengguna
                 'id_vendor_sertifikasi' => 'required|integer', // Validasi ID Periode
                 'level_sertifikasi' => 'required', // Username unik
@@ -260,6 +260,74 @@ class sertifikasicontroller extends Controller
         return redirect('/sertifikasi');
     }
 
+    public function export_excel()
+    {
+        //ambil data yang akan di export
+        $sertifikasi = sertifikasimodel::select('id_sertifikasi', 'nama_sertifikasi', 'id_vendor_sertifikasi', 'id_jenis_pelatihan_sertifikasi','level_sertifkasi')
+            ->orderBy('id_sertifikasi')
+            ->get();
+
+        //load library
+        $spreadsheet = new Spreadsheet();
+        $sheet = $spreadsheet->getActiveSheet();
+
+        $sheet->setCellValue('A1', 'No');
+        $sheet->setCellValue('B1', 'ID Sertifikasi');
+        $sheet->setCellValue('C1', 'Nama Sertifikasi');
+        $sheet->setCellValue('D1', 'ID Vendor Sertifikasi');
+        $sheet->setCellValue('E1', 'ID Jenis Pelatihan Sertifikasi');
+        $sheet->setCellValue('F1', 'Level Sertifikasi');
+
+        $sheet->getStyle('A1:F1')->getFont()->setBold(true); //bold header
+
+        $no = 1;
+        $baris = 2;
+        foreach ($sertifikasi as $key => $value) {
+            $sheet->setCellValue('A' . $baris, $no);
+            $sheet->setCellValue('B' . $baris, $value->id_sertifikasi);
+            $sheet->setCellValue('C' . $baris, $value->nama_sertifikasi);
+            $sheet->setCellValue('D' . $baris, $value->id_vendor_sertifikasi);
+            $sheet->setCellValue('E' . $baris, $value->id_jenis_pelatihan_sertifikasi);
+            $sheet->setCellValue('F' . $baris, $value->level_sertifkasi);
+            $baris++;
+            $no++;
+
+        }
+
+        foreach (range('A', 'F') as $columID) {
+            $sheet->getColumnDimension($columID)->setAutoSize(true); //set auto size kolom
+        }
+
+        $sheet->setTitle('Data Akun Pengguna');
+        $writer = IOFactory::createWriter($spreadsheet, 'Xlsx');
+        $filename = 'Data Identitas Pengguna ' . date('Y-m-d H:i:s') . '.xlsx';
+        header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
+        header('Content-Disposition: attachment;filename="' . $filename . '"');
+        header('Cache-Control: max-age=0');
+        header('Cache-Control: max-age=1');
+        header('Expires: Mon, 26 Jul 1997 05:00:00 GMT');
+        header('Last-Modified: ' . gmdate('D, dMY H:i:s') . 'GMT');
+        header('Cache-Control: cache, must-revalidate');
+        header('Pragma: public');
+        $writer->save('php://output');
+        exit;
+
+    }
+
+    public function export_pdf(){
+         //ambil data yang akan di export
+         $sertifikasi = sertifikasimodel::select('id_sertifikasi', 'nama_sertifikasi', 'id_vendor_sertifikasi', 'id_jenis_pelatihan_sertifikasi','level_sertifkasi')
+            ->orderBy('id_sertifikasi')
+            ->get();
+
+         //use Barruvdh\DomPDF\Facade\\Pdf
+        $pdf = Pdf::loadView('admin.mastersertifikasi.export', ['sertifikasi'=>$sertifikasi]);
+        $pdf->setPaper('a4', 'potrait');
+        $pdf->setOption("isRemoteEnabled", false);
+        $pdf->render();
+
+        return $pdf->download('Data Master Sertifikasi '.date('Y-m-d H:i:s').'.pdf');
+    }
 
 
 }
