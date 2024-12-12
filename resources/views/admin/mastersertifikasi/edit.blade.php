@@ -60,8 +60,8 @@
                     <div class="form-group">
                         <label>Level Sertifikasi</label>
                         <select name="level_sertifikasi" id="level_sertifikasi" class="form-control" required>
-                            <option  value="internasional" {{ $sertifikasi->level_sertifikasi == 'internasional' ? 'selected' : '' }}>Internasional</option>
-                            <option value="nasional" {{ $sertifikasi->level_sertifikasi == 'nasional' ? 'selected' : '' }}>Nasional</option>
+                            <option  value="Internasional" {{ $sertifikasi->level_sertifikasi == 'internasional' ? 'selected' : '' }}>Internasional</option>
+                            <option value="Nasional" {{ $sertifikasi->level_sertifikasi == 'nasional' ? 'selected' : '' }}>Nasional</option>
                         </select>
                         <small id="error-level_sertifikasi" class="error-text form-text text-danger"></small>
                     </div>

@@ -20,16 +20,16 @@ class sertifikasimodel extends Model
         'level_sertifikasi'
     ];
 
-    public function periode():BelongsTo{
-        return $this->belongsTo(periodemodel::class);
-    }
-
     public function jenissertifikasi():BelongsTo{
         return $this->belongsTo(jenispelatihansertifikasimodel::class,'id_jenis_pelatihan_sertifikasi','id_jenis_pelatihan_sertifikasi');
     }
 
     public function vendorsertifikasi():BelongsTo{
         return $this->belongsTo(vendorsertifikasimodel::class,'id_vendor_sertifikasi','id_vendor_sertifikasi');
+    }
+
+    public function detailsertifikasi():HasMany{
+        return $this->hasMany(detailsertifikasi::class,'id_sertifikasi','id_sertifikasi');
     }
 
     public function pesertasertifikasi():HasMany{

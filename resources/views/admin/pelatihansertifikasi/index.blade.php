@@ -5,12 +5,13 @@
     <ul class="nav nav-pills mb-3" id="pills-tab" role="tablist">
         <li class="nav-item">
             <a class="nav-link active" id="pills-home-tab" data-toggle="pill" href="#pills-home" role="tab"
-                aria-controls="pills-home" aria-selected="true">Transaksi Penjualan</a>
+                aria-controls="pills-home" aria-selected="true">Pelatihan </a>
         </li>
         <li class="nav-item">
             <a class="nav-link" id="pills-profile-tab" data-toggle="pill" href="#pills-profile" role="tab"
-                aria-controls="pills-profile" aria-selected="false">Detail Penjualan</a>
+                aria-controls="pills-profile" aria-selected="false">Sertifikasi</a>
         </li>
+        <!-- ID didalam class="nav-item" membuat halaman yang berbeda-->
     </ul>
     <div class="tab-content" id="pills-tabContent">
         <!-- Tabel Transaksi Penjualan-->
@@ -19,7 +20,7 @@
                 <div class="card-header">
                     <h3 class="card-title">{{ $page->title }}</h3>
                     <div class="card-tools">
-                        <button onclick="modalAction('{{ url('/penjualan/create_ajax') }}')" class="btn btn-success">Tambah Data (Ajax)</button>
+                        <button onclick="modalAction('{{ url('/detailsertifikasi/create') }}')" class="btn btn-success">Tambah Data </button>
                     </div>
                 </div>
                 <div class="card-body">
@@ -34,29 +35,33 @@
                             <div class="form-group row">
                                 <label class="col-1 control-label col-form-label">Filter:</label>
                                 <div class="col-3">
-                                    <select class="form-control" id="user_id" name="user_id" required>
+                                    <select class="form-control" id="id_user" name="id_user" required>
                                         <option value="">- Semua -</option>
                                         @foreach ($user as $item)
-                                            <option value="{{ $item->user_id }}">{{ $item->username }}</option>
+                                            <option value="{{ $item->id_user }}">{{ $item->username }}</option>
                                         @endforeach
                                     </select>
-                                    <small class="form-text text-muted">user</small>
+                                    <small class="form-text text-muted">User</small>
                                 </div>
                             </div>
                         </div>
                     </div>
-                    <table class="table table-bordered table-striped table-hover table-sm" id="table-penjualan">
+                    <table class="table table-bordered table-striped table-hover table-sm" id="table-sertifikasi">
                         <thead>
                             <tr>
                                 <th>No</th>
-                                <th>Kode Penjualan</th>
-                                <th>Pembeli</th>
-                                <th>User ID</th>
-                                <th>Tanggal Penjualan</th>
+                                <th>Nama Sertifikasi</th>
+                                <th>Periode</th>
+                                <th>Tanggal Mulai</th>
+                                <th>Lokasi</th>
+                                <th>Biaya</th>
+                                <th>Status Disetujui</th>
                                 <th>Aksi</th>
                             </tr>
                         </thead>
-                        <Tbody></Tbody>
+                        <Tbody>
+
+                        </Tbody>
                     </table>
                 </div>
             </div>
@@ -67,7 +72,7 @@
                 <div class="card-header">
                     <h3 class="card-title">{{ $page->title }}</h3>
                     <div class="card-tools">
-                        <button onclick="modalAction('{{ url('/detail/create_ajax') }}')" class="btn btn-success">Tambah Data (Ajax)</button>
+                        <button onclick="modalAction('{{ url('/detailpelatihan/create') }}')" class="btn btn-success">Tambah Data</button>
                     </div>
                 </div>
                 <div class="card-body">
@@ -82,25 +87,27 @@
                             <div class="form-group row">
                                 <label class="col-1 control-label col-form-label">Filter:</label>
                                 <div class="col-3">
-                                    <select class="form-control" id="barang_id" name="barang_id" required>
+                                    <select class="form-control" id="id_user" name="id_user" required>
                                         <option value="">- Semua -</option>
-                                        @foreach ($barang as $item)
-                                            <option value="{{ $item->barang_id }}">{{ $item->barang_nama }}</option>
+                                        @foreach ($user as $item)
+                                            <option value="{{ $item->id_user }}">{{ $item->username }}</option>
                                         @endforeach
                                     </select>
-                                    <small class="form-text text-muted">barang</small>
+                                    <small class="form-text text-muted">User</small>
                                 </div>
                             </div>
                         </div>
                     </div>
-                    <table class="table table-bordered table-striped table-hover table-sm" id="table-detail">
+                    <table class="table table-bordered table-striped table-hover table-sm" id="table-pelatihan">
                         <thead>
                             <tr>
                                 <th>No</th>
-                                <th>Penjualan ID</th>
-                                <th>Barang ID</th>
-                                <th>Harga</th>
-                                <th>Jumlah</th>
+                                <th>Nama Pelatihan</th>
+                                <th>Periode</th>
+                                <th>Tanggal Mulai</th>
+                                <th>Lokasi</th>
+                                <th>Biaya</th>
+                                <th>Status Disetujui</th>
                                 <th>Aksi</th>
                             </tr>
                         </thead>
@@ -122,48 +129,48 @@
         }
         var tablePenjualan;
         $(document).ready(function() {
-            tablePenjualan = $('#table-penjualan').DataTable({
+            tablePenjualan = $('#table-sertifikasi').DataTable({
                 autoWidth: false,
                 serverSide: true,
                 ajax: {
-                    "url": "{{ url('penjualan/list') }}",
+                    "url": "{{ url('detailpelatihan/list') }}",
                     "dataType": "json",
                     "type": "POST",
                     "data": function(d) {
-                        d.user_id = $('#user_id').val();
+                        d.id_user = $('#id_user').val();
                     }
                 },
                 columns: [{
                     // nomor urut dari laravel datatable addIndexColumn()
                     data: "DT_RowIndex",
                     className: "text-center",
-                    width: "5%",
                     orderable: false,
                     searchable: false
                 }, {
-                    data: "penjualan_kode",
+                    data: "nama_sertifikasi",
                     className: "",
-                    width: "20%",
                     orderable: true,
                     searchable: true
                 }, {
-                    data: "pembeli",
+                    data: "tanggal_mulai",
                     className: "",
-                    width: "27%",
                     orderable: true,
                     searchable: true
                 }, {
-                    data: "user.user_id",
+                    data: "lokasi",
                     className: "",
-                    width: "14%",
                     orderable: true,
                     searchable: true
                 }, {
-                    data: "penjualan_tanggal",
+                    data: "biaya",
                     className: "",
-                    width: "14%",
                     orderable: true,
                     searchable: false
+                }, {
+                    data: "status_disetujui",
+                    className: "",
+                    orderable: true,
+                    searchable: true
                 }, {
                     data: "aksi",
                     className: "",
@@ -171,14 +178,14 @@
                     searchable: false
                 }]
             });
-            $('#user_id').on('change', function() {
+            $('#id_user').on('change', function() {
                 tablePenjualan.ajax.reload();
             });
         });
 
         var tableDetail;
         $(document).ready(function() {
-            tableDetail = $('#table-detail').DataTable({
+            tableDetail = $('#table-pelatihan').DataTable({
                 autoWidth: false,
                 serverSide: true,
                 ajax: {
@@ -186,48 +193,48 @@
                     "dataType": "json",
                     "type": "POST",
                     "data": function(d) {
-                        d.barang_id = $('#barang_id').val();
+                        d.id_user = $('#id_user').val();
                     }
                 },
                 columns: [{
+                    // nomor urut dari laravel datatable addIndexColumn()
                     data: "DT_RowIndex",
                     className: "text-center",
-                    width: "5%",
                     orderable: false,
                     searchable: false
                 }, {
-                    data: "penjualan_id",
+                    data: "nama_pelatihan",
                     className: "",
-                    width: "10%",
+                    orderable: true,
+                    searchable: true
+                }, {
+                    data: "tanggal_mulai",
+                    className: "",
+                    orderable: true,
+                    searchable: true
+                }, {
+                    data: "lokasi",
+                    className: "",
+                    orderable: true,
+                    searchable: true
+                }, {
+                    data: "biaya",
+                    className: "",
                     orderable: true,
                     searchable: false
                 }, {
-                    data: "barang.barang_id",
+                    data: "status_disetujui",
                     className: "",
-                    width: "37%",
                     orderable: true,
-                    searchable: false
-                }, {
-                    data: "harga",
-                    className: "",
-                    width: "14%",
-                    orderable: true,
-                    searchable: false
-                }, {
-                    data: "jumlah",
-                    className: "",
-                    width: "14%",
-                    orderable: true,
-                    searchable: false
+                    searchable: true
                 }, {
                     data: "aksi",
                     className: "",
-                    width: "14%",
                     orderable: false,
                     searchable: false
                 }]
             });
-            $('#barang_id').on('change', function() {
+            $('#id_user').on('change', function() {
                 tableDetail.ajax.reload();
             });
         });

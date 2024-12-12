@@ -17,10 +17,15 @@ use App\Http\Controllers\VendorPelatihanController;
 use App\Http\Controllers\VendorSertifikasiController;
 use App\Http\Controllers\pelatihansertifikasicontroller;
 use App\Http\Controllers\akunpenggunacontroller;
+use App\Http\Controllers\detailpelatihan;
+use App\Http\Controllers\detailpelatihancontroller;
+use App\Http\Controllers\detailsertifikasi as ControllersDetailsertifikasi;
+use App\Http\Controllers\detailsertifikasicontroller;
 use App\Http\Controllers\PengajuanPelatihanPimpinanController;
 use App\Http\Controllers\PengajuanSertifikasiPimpinanController;
 use App\Http\Controllers\sertifikasicontroller;
 use App\Http\Controllers\pelatihancontroller;
+use App\Models\detailsertifikasi;
 
 Route::pattern('id','[0-9]+');
 
@@ -261,7 +266,11 @@ Route::get('/masterpelatihan/import',[pelatihancontroller::class, 'import']);
 Route::post('/masterpelatihan/import_proses',[pelatihancontroller::class, 'import_proses']);
 
 // Route::get('/pelatihansertifikasi',[pelatihansertifikasicontroller::class, 'index']);
+Route::get('/detailsertifikasi',[detailsertifikasicontroller::class,'index']);
+Route::get('/detailsertifikasi/list',[detailsertifikasicontroller::class,'list']);
 
+Route::get('/detailpelatihan',[detailpelatihancontroller::class,'index']);
+Route::get('/detailpelatihan/list',[detailpelatihancontroller::class,'list']);
 
 
 //Begin AdminLte

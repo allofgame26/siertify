@@ -60,8 +60,8 @@
                     <div class="form-group">
                         <label>Level pelatihan</label>
                         <select name="level_pelatihan" id="level_pelatihan" class="form-control" required>
-                            <option  value="internasional" {{ $pelatihan->level_pelatihan == 'internasional' ? 'selected' : '' }}>Internasional</option>
-                            <option value="nasional" {{ $pelatihan->level_pelatihan == 'nasional' ? 'selected' : '' }}>Nasional</option>
+                            <option  value="Internasional" {{ $pelatihan->level_pelatihan == 'internasional' ? 'selected' : '' }}>Internasional</option>
+                            <option value="Nasional" {{ $pelatihan->level_pelatihan == 'nasional' ? 'selected' : '' }}>Nasional</option>
                         </select>
                         <small id="error-level_pelatihan" class="error-text form-text text-danger"></small>
                     </div>

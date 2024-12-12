@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class detailsertifikasi extends Model
 {
@@ -27,4 +28,16 @@ class detailsertifikasi extends Model
                             'status_disetujui',
                             'input_by'
                         ];
+    
+    public function sertifikasi():BelongsTo{
+        return $this->belongsTo(sertifikasimodel::class, 'id_sertifikasi', 'id_sertifikasi');
+    }
+
+    public function periode():BelongsTo{
+        return $this->belongsTo(periodemodel::class, 'id_periode', 'id_periode');
+    }
+
+    public function user():BelongsTo{
+        return $this->belongsTo(akunusermodel::class, 'id_user', 'id_user');
+    }
 }

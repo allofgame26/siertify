@@ -38,8 +38,8 @@
                 <div class="form-group">
                     <label>Level Sertifikasi</label>
                     <select name="level_sertifikasi" id="level_sertifikasi" class="form-control" required>
-                        <option value="internasional">Internasional</option>
-                        <option value="nasional">Nasional</option>
+                        <option value="Internasional">Internasional</option>
+                        <option value="Nasional">Nasional</option>
                     </select>
                     <small id="error-level_sertifikasi" class="error-text form-text text-danger"></small>
                 </div>

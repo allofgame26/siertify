@@ -207,6 +207,7 @@
                     </li>
                 </ul>
             </li>
+            
             <li class="nav-item">
                 <a href="{{ url('/pelatihansertifikasi') }}" class="nav-link {{ $activeMenu == 'pelatihan-sertifikasi' ? 'active' : '' }} ">
                     <i class="nav-icon 	fas fa-archive"></i>
