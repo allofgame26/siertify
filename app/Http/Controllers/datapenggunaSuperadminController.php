@@ -70,7 +70,17 @@ class datapenggunaSuperadminController extends Controller
         }
     
         // Validasi data
-        $rules = [/*...*/];
+        $rules = [  
+        'nama_lengkap' => 'required|string|min:10|max:100',
+        'NIP' => 'required|string|min:10|max:20|unique:m_identitas,NIP',
+        'tempat_lahir' => 'required|string|min:5|max:10',
+        'tanggal_lahir' => 'required|date|before:today',
+        'jenis_kelamin' => 'required|string|in:laki,perempuan',
+        'alamat' => 'required|string|min:10|max:100',
+        'no_telp' => 'required|string|min:10|max:15',
+        'email' => 'required|string|min:10|max:50',
+        'foto_profil' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048'];
+
         $validator = Validator::make($request->all(), $rules);
     
         if ($validator->fails()) {

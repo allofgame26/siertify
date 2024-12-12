@@ -32,6 +32,6 @@ class detailpelatihan extends Model
     }
 
     public function periode():BelongsTo{
-        return $this->belongsTo(periodemodel::class);
+        return $this->belongsTo(periodemodel::class, 'id_periode', 'id_periode');
     }
 }

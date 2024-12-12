@@ -17,22 +17,12 @@ class pelatihanmodel extends Model
     protected $fillable = [
         'nama_pelatihan',
         'id_vendor_pelatihan',
-        'id_jenis_pelatihan',
-        'id_periode',
-        'tanggal_mulai',
-        'tanggal_selesai',
+        'id_jenis_pelatihan_sertifikasi',
         'level_pelatihan',
-        'lokasi',
-        'biaya',
-        'quota_peserta',
-        'no_pelatihan',
-        'bukti_pelatihan',
-        'status_disetujui',
-        'input_by'
     ];
 
     public function periode():BelongsTo{
-        return $this->belongsTo(periodemodel::class);
+        return $this->belongsTo(periodemodel::class, 'id_periode', 'id_periode');
     }
 
     public function jenispelatihan():BelongsTo{
@@ -40,7 +30,7 @@ class pelatihanmodel extends Model
     }
 
     public function vendorpelatihan():BelongsTo{
-        return $this->belongsTo(vendorpelathihanmodel::class);
+        return $this->belongsTo(vendorpelatihanmodel::class,'id_vendor_pelatihan', 'id_vendor_pelatihan');
     }
 
     public function pesertapelatihan():HasMany{
@@ -53,6 +43,10 @@ class pelatihanmodel extends Model
 
     public function tagbd():HasMany{
         return $this->hasMany(tagbdpelatihanmodel::class);
+    }
+
+    public function detailpelatihan():HasMany{
+        return $this->hasMany(detailpelatihan::class, 'id_pelatihan', 'id_pelatihan');
     }
 
 }
