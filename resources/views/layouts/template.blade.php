@@ -24,6 +24,7 @@
 <link rel="stylesheet" href="{{ asset('adminlte/plugins/select2/css/select2.min.css') }}">
 <link rel="stylesheet" href="{{ asset('adminlte/plugins/select2-bootstrap4-theme/select2-bootstrap4.min.css') }}">
 
+
     @stack('css') <!-- digunakan untuk memanggil custom css dari perintah push('css') pada masing - masing view -->
 </head>
 
@@ -96,6 +97,8 @@
     <!-- jquery-validation -->
     <script src="{{ asset('adminlte/plugins/jquery-validation/jquery.validate.min.js') }}"></script>
     <script src="{{ asset('adminlte/plugins/jquery-validation/additional-methods.min.js') }}"></script>
+
+    <script src="{{ asset('adminlte/plugins/bootstrap/js/bootstrap.bundle.min.js') }}"></script>
 
     <script>
         //untuk mengirimkan token laravel CSRF pada setiap request ajax

@@ -17,7 +17,8 @@ class sertifikasimodel extends Model
         'nama_sertifikasi',
         'id_vendor_sertifikasi',
         'id_jenis_pelatihan_sertifikasi',
-        'level_sertifikasi'
+        'level_sertifikasi',
+
     ];
 
     public function periode():BelongsTo{
@@ -42,6 +43,10 @@ class sertifikasimodel extends Model
 
     public function tagbd():HasMany{
         return $this->hasMany(tagbdsertifikasimodel::class);
+    }
+
+    public function detailsertifikasi():HasMany{
+        return $this->hasMany(detailsertifikasi::class, 'id_sertifikasi', 'id_sertifikasi');
     }
 
 }

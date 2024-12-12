@@ -5,7 +5,7 @@
     <!-- Sidebar user (optional) -->
     <div class="user-panel mt-3 pb-3 mb-3 d-flex ">
         <div class="image">
-            @if(Auth::user()->avatar)
+            @if(Auth::user()->foto_profil)
             <!-- Tampilkan avatar pengguna jika ada -->
             <img src="{{ asset('img/' . Auth::user()->foto_profil) }}" alt="User foto_profil" class="brand-image img-circle elevation-3" style="width: 34px; height: 34px; object-fit: cover; border-radius: 50%;">
         @else
@@ -67,7 +67,7 @@
             @if(Auth::user()->getRole() == 'DSN')
             <li class="nav-header">Kelola Pelatihan Sertifikasi</li>
             <li class="nav-item">
-                <a href="{{ url('/pendataan') }}" class="nav-link {{ $activeMenu == 'pendataan' ? 'active' : '' }} ">
+                <a href="{{ url('/pendataan/pelatihan') }}" class="nav-link {{ $activeMenu == 'pendataan' ? 'active' : '' }} ">
                     <i class="nav-icon fas fa-address-card"></i>
                     <p>Pendataan</p>
                 </a>
