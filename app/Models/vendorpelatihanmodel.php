@@ -15,7 +15,7 @@ class vendorpelatihanmodel extends Model
 
     protected $fillable = ['nama_vendor_pelatihan','alamat_vendor_pelatihan','kota_vendor_pelatihan','notelp_vendor_pelatihan','web_vendor_pelatihan'];
 
-    public function pelatihan():HasMany{
-        return $this->hasMany(pelatihanmodel::class);
+    public function vendorpelatihan():HasMany{
+        return $this->hasMany(pelatihanmodel::class,'id_vendor_pelatihan','id_vendor_pelatihan');
     }
 }

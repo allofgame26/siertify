@@ -4,10 +4,10 @@
         <div class="card-header">
             <h3 class="card-title">{{ $page->title }}</h3>
             <div class="card-tools">
-                <button onclick="modalAction('{{ url('/datapengguna/import') }}')" class="btn btn-primary btn-sm"><i class="fas fa-upload"></i>Import Data</button>
-                <a href="{{ url('/datapengguna/export_excel') }}" class="btn btn-indigo btn-sm"><i class="fas fa-file-excel"></i>Export Excel</a>
-                <a href="{{ url('/datapengguna/export_pdf') }}" class="btn btn-pink btn-sm"><i class="fas fa-file-pdf"></i> Export PDF</a>
-                <button onclick="modalAction('{{ url('/datapengguna/create') }}')" class="btn btn-success btn-sm"><i class="fas fa-plus-square"></i>Tambah Data</button>
+                <button onclick="modalAction('{{ url('/mastersertifikasi/import') }}')" class="btn btn-primary btn-sm"><i class="fas fa-upload"></i>Import Data</button>
+                <a href="{{ url('/mastersertifikasi/export_excel') }}" class="btn btn-indigo btn-sm"><i class="fas fa-file-excel"></i>Export Excel</a>
+                <a href="{{ url('/mastersertifikasi/export_pdf') }}" class="btn btn-pink btn-sm"><i class="fas fa-file-pdf"></i> Export PDF</a>
+                <button onclick="modalAction('{{ url('mastersertifikasi/create') }}')" class="btn btn-success btn-sm"><i class="fas fa-plus-square"></i>Tambah Data</button>
             </div>
         </div>
         <div class="card-body">
@@ -17,15 +17,14 @@
             @if (session('error'))
                 <div class="alert alert-danger">{{ session('error') }}</div>
             @endif
-            
-            <table class="table table-bordered table-striped table-hover table-sm" id="table_datapengguna">
+            <table class="table table-bordered table-striped table-hover table-sm" id="table_sertifikat">
                 <thead>
                     <tr>
                         <th>No</th>
-                        <th>Foto Profil</th>
-                        <th>Nama Lengkap</th>
-                        <th>NIP</th>
-                        <th>Email</th>
+                        <th>Nama Sertifikat</th>
+                        <th>Jenis Pelatihan Sertifikasi</th>
+                        <th>Nama Vendor Sertifikasi</th>
+                        <th>Level Sertifikasi</th>
                         <th>Aksi</th>
                     </tr>
                 </thead>
@@ -34,31 +33,33 @@
     </div>
 
     <!-- Modal -->
-    <div id="myModal" class="modal fade animate shake" tabindex="-1" role="dialog" data-backdrop="static"
-        data-keyboard="false" data-width="75%"></div>
+    <div id="myModal" class="modal fade animate shake" tabindex="-1" role="dialog" data-backdrop="static" data-keyboard="false" data-width="75%" aria-hidden="true"></div>
 @endsection
 
 @push('css')
-    <style>
-        .btn-pink {
-            background-color: #d81b60;
-            color: white;
-        }
+<style>
 
-        .btn-indigo {
-            background-color: indigo;
-            color: white;
-        }
+.btn-pink {
+    background-color: #d81b60;
+    color:white;
+}
 
-        .btn-teal {
-            background-color: #39cccc;
-            color: white
-        }
+.btn-indigo {
+    background-color: indigo;
+    color: white;
+}
 
-        .card-tools .btn i {
-            margin-right: 8px;
-        }
-    </style>
+.btn-teal {
+    background-color: #39cccc;
+    color: white
+}
+
+.card-tools .btn i {
+    margin-right: 8px;
+}
+
+</style>
+
 @endpush
 
 @push('js')
@@ -70,19 +71,22 @@
             });
         }
 
-        //mengatur memunculkannya data
-    
-        var datapengguna;
+        var sertifikat;
         $(document).ready(function() {
-            datapengguna = $('#table_datapengguna').DataTable({
+
+            sertifikat = $('#table_sertifikat').DataTable({
                 // serverSide: true, jika ingin menggunakan server side processing
                 serverSide: true,
                 ajax: {
-                    "url": "{{ url('/datapengguna/list') }}",
+                    "url": "{{ url('/mastersertifikasi/list') }}",
                     "dataType": "json",
                     "type": "POST",
-                    headers: {
-                        'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                    "headers": {
+                        "X-CSRF-TOKEN": "{{ csrf_token() }}"
+                    },
+                    dataSrc: function (json) {
+                        console.log(json); // Memeriksa data yang diterima
+                        return json.data;
                     }
                 },
                 columns: [{
@@ -91,29 +95,27 @@
                         className: "text-center",
                         orderable: false,
                         searchable: false
-
-                    }, {
-                        data: "foto_profil",
-                        className: "",
-                        orderable: false,
-                        searchable: false,
                     },{
-                        data: "nama_lengkap",
+                        data: "nama_sertifikasi",
                         className: "",
                         orderable: true,
                         searchable: true
-                    }, {
-                        data: "NIP",
+                    },{
+                        data: "nama_vendor_sertifikasi",
+                        className: "",
+                        orderable: true,
+                        searchable: true
+                    },{
+                        data: "nama_jenis_sertifikasi",
                         className: "",
                         orderable: false,
                         searchable: true
-                    }, {
-                        data: "email",
+                    },{
+                        data: "level_sertifikasi",
                         className: "",
                         orderable: false,
                         searchable: true
-                    },
-                    {
+                    },{
                         data: "aksi",
                         className: "",
                         orderable: false,

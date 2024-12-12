@@ -15,10 +15,16 @@ use App\Http\Controllers\MatkulController;
 use App\Http\Controllers\ProfilController;
 use App\Http\Controllers\VendorPelatihanController;
 use App\Http\Controllers\VendorSertifikasiController;
+use App\Http\Controllers\pelatihansertifikasicontroller;
 use App\Http\Controllers\akunpenggunacontroller;
 use App\Models\jenispenggunamodel;
 use App\Http\Controllers\PendataanPelatihanController;
 use App\Http\Controllers\PendataanSertifikasiController;
+use App\Http\Controllers\PengajuanPelatihanPimpinanController;
+use App\Http\Controllers\PengajuanSertifikasiPimpinanController;
+use App\Http\Controllers\sertifikasicontroller;
+use App\Http\Controllers\pelatihancontroller;
+
 
 Route::pattern('id','[0-9]+');
 
@@ -27,12 +33,23 @@ Route::post('/postlogin', [AuthController::class, 'postlogin']);
 Route::post('/logout', [AuthController::class, 'logout']);
 
 
-// Route::get('/landingpage', [WelcomeController::class, 'landingpage']);
+
 Route::get('/', [WelcomeController::class, 'landingpage']);
 
 
 // dashboard
 Route::get('/dashboard', [DashboardAdminController::class, 'index']);
+
+
+// profil
+Route::get('/profil', [ProfilController::class, 'index'])->name('profil.index');
+Route::get('/profil/{id}/edit', [ProfilController::class, 'edit']);
+Route::put('/profil/{id}/update', [ProfilController::class, 'update']);
+Route::get('/profil/createmk', [ProfilController::class, 'createmk']);
+Route::get('/profil/{id}/bd', [ProfilController::class, 'createbd']);
+Route::post('/profil/{id}/prosesbd', [ProfilController::class, 'storebd']);
+Route::get('/profil/{id}/mk', [ProfilController::class, 'matakuliah']);
+Route::post('/profil/{id}/prosesmk', [ProfilController::class, 'storemk']);
     
 // jenis pelatihan dan sertifikasi admin
 Route::get('/jenis', [JenisPelatihanSertifikasiController::class, 'index']);  // menampilkan halaman jenis
@@ -172,7 +189,6 @@ Route::post('/matkul/import_ajax', [MatkulController::class, 'import_ajax']); //
 Route::get('/matkul/export_excel', [MatkulController::class, 'export_excel']);  //export excel
 Route::get('/matkul/export_pdf', [MatkulController::class, 'export_pdf']); //export pdf
 
-
 // pendataan pelatihan dosen
 Route::get('/pendataan/pelatihan', [PendataanPelatihanController::class, 'index']);  // menampilkan halaman pendataan
 Route::post('/pendataan/pelatihan/list', [PendataanPelatihanController::class, 'list'] );    //menampilkan data pendataan dalam bentuk json datatables
@@ -219,3 +235,59 @@ Route::delete('/pendataan/sertifikasi/{id}/delete', [PendataanSertifikasiControl
 Route::get('/pendataan/sertifikasi/export_excel', [PendataanSertifikasiController::class, 'export_excel']);  //export excel
 Route::get('/pendataan/sertifikasi/export_pdf', [PendataanSertifikasiController::class, 'export_pdf']); //export pdf
 
+Route::get('/mastersertifikasi',[sertifikasicontroller::class, 'index']);
+Route::POST('/mastersertifikasi/list',[sertifikasicontroller::class, 'list']);
+Route::get('/mastersertifikasi/{id}/show',[sertifikasicontroller::class, 'show']);
+Route::get('/mastersertifikasi/create',[sertifikasicontroller::class, 'create']);
+Route::post('/mastersertifikasi/proses',[sertifikasicontroller::class, 'store']);
+Route::get('/mastersertifikasi/{id}/edit',[sertifikasicontroller::class, 'edit']);
+Route::put('/mastersertifikasi/{id}/update',[sertifikasicontroller::class, 'update']);
+Route::get('/mastersertifikasi/{id}/confirm',[sertifikasicontroller::class, 'confirm']);
+Route::delete('/mastersertifikasi/{id}/delete',[sertifikasicontroller::class, 'delete']);
+Route::get('/mastersertifikasi/import',[sertifikasicontroller::class, 'import']);
+Route::post('/mastersertifikasi/import_proses',[sertifikasicontroller::class, 'import_proses']);
+
+// profil admin
+// harus dikasih kondisi klo rolenya admin nampilin admin
+Route::get('/admin/profil', [ProfilController::class, 'profil_admin']);
+Route::get('/admin/edit', [ProfilController::class,'edit_admin']); //menampilkan halaman form edit matkul ajax
+Route::put('/admin/{id}/update_ajax', [ProfilController::class,'update_ajax']);   //menyimpan halaman form edit matkul ajax
+
+Route::get('/dashboard', [DashboardAdminController::class, 'index']);
+
+Route::get('/masterpelatihan',[pelatihancontroller::class, 'index']);
+Route::POST('/masterpelatihan/list',[pelatihancontroller::class, 'list']);
+Route::get('/masterpelatihan/{id}/show',[pelatihancontroller::class, 'show']);
+Route::get('/masterpelatihan/create',[pelatihancontroller::class, 'create']);
+Route::post('/masterpelatihan/proses',[pelatihancontroller::class, 'store']);
+Route::get('/masterpelatihan/{id}/edit',[pelatihancontroller::class, 'edit']);
+Route::put('/masterpelatihan/{id}/update',[pelatihancontroller::class, 'update']);
+Route::get('/masterpelatihan/{id}/confirm',[pelatihancontroller::class, 'confirm']);
+Route::delete('/masterpelatihan/{id}/delete',[pelatihancontroller::class, 'delete']);
+Route::get('/masterpelatihan/import',[pelatihancontroller::class, 'import']);
+Route::post('/masterpelatihan/import_proses',[pelatihancontroller::class, 'import_proses']);
+
+// Route::get('/pelatihansertifikasi',[pelatihansertifikasicontroller::class, 'index']);
+
+//Begin AdminLte
+Route::get('/pengajuan', [PengajuanPelatihanPimpinanController::class, 'index']);
+
+// jenis pelatihan dan sertifikasi
+Route::get('/pengajuan', [PengajuanPelatihanPimpinanController::class, 'index']);  // menampilkan halaman jenis
+Route::post('/pengajuan/list', [PengajuanPelatihanPimpinanController::class, 'list'] );    //menampilkan data jenis dalam bentuk json datatables
+Route::post('/pengajuan/ajax', [PengajuanPelatihanPimpinanController::class, 'store_ajax']); // Menyimpan data jenis baru Ajax 
+Route::get('/pengajuan/{id}/edit_ajax', [PengajuanPelatihanPimpinanController::class,'edit_ajax']); //menampilkan halaman form edit jenis ajax
+Route::put('/pengajuan/{id}/update_ajax', [PengajuanPelatihanPimpinanController::class,'update_ajax']);   //menyimpan halaman form edit jenis ajax
+Route::get('/pengajuan/export_excel', [PengajuanPelatihanPimpinanController::class, 'export_excel']);  //export excel
+Route::get('/pengajuan/export_pdf', [PengajuanPelatihanPimpinanController::class, 'export_pdf']); //export pdf
+Route::get('/{id}/show_ajax', [PengajuanPelatihanPimpinanController::class, 'show_ajax']); //show_ajax
+
+// jenis pelatihan dan sertifikasi
+Route::get('/sertifikasi', [PengajuanSertifikasiPimpinanController::class, 'index']);  // menampilkan halaman jenis
+Route::post('/sertifikasi/list', [PengajuanSertifikasiPimpinanController::class, 'list'] );    //menampilkan data jenis dalam bentuk json datatables
+Route::post('/sertifikasi/ajax', [PengajuanSertifikasiPimpinanController::class, 'store_ajax']); // Menyimpan data jenis baru Ajax 
+Route::get('/sertifikasi/{id}/edit_ajax', [PengajuanSertifikasiPimpinanController::class,'edit_ajax']); //menampilkan halaman form edit jenis ajax
+Route::put('/sertifkasi/{id}/update_ajax', [PengajuanSertifikasiPimpinanController::class,'update_ajax']);   //menyimpan halaman form edit jenis ajax
+Route::get('/sertifikasi/export_excel', [PengajuanSertifikasiPimpinanController::class, 'export_excel']);  //export excel
+Route::get('/sertifikasi/export_pdf', [PengajuanSertifikasiPimpinanController::class, 'export_pdf']); //export pdf
+Route::get('/{id}/show_ajax', [PengajuanSertifikasiPimpinanController::class, 'show_ajax']); //show_ajax

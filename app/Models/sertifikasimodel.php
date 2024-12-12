@@ -18,6 +18,7 @@ class sertifikasimodel extends Model
         'id_vendor_sertifikasi',
         'id_jenis_pelatihan_sertifikasi',
         'level_sertifikasi',
+
     ];
 
     public function periode():BelongsTo{
@@ -25,11 +26,11 @@ class sertifikasimodel extends Model
     }
 
     public function jenissertifikasi():BelongsTo{
-        return $this->belongsTo(jenispelatihansertifikasimodel::class);
+        return $this->belongsTo(jenispelatihansertifikasimodel::class,'id_jenis_pelatihan_sertifikasi','id_jenis_pelatihan_sertifikasi');
     }
 
     public function vendorsertifikasi():BelongsTo{
-        return $this->belongsTo(vendorpelatihanmodel::class);
+        return $this->belongsTo(vendorsertifikasimodel::class,'id_vendor_sertifikasi','id_vendor_sertifikasi');
     }
 
     public function pesertasertifikasi():HasMany{

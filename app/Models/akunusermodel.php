@@ -35,6 +35,26 @@ class akunusermodel extends Authenticatable
         return $this->belongsTo(periodemodel::class, 'id_periode', 'id_periode');
     }
 
+    public function detailbd():HasMany{
+        return $this->hasMany(detailbddosen::class, 'id_user', 'id_user');
+    }
+
+    public function detailmk():HasMany{
+        return $this->hasMany(detailmkdosen::class, 'id_user', 'id_user');
+    }
+
+    // Model User.php
+    public function matakuliah()
+    {
+        return $this->belongsToMany(matakuliahmodel::class, 'm_detailmkdosen', 'id_user', 'id_mk');
+    }
+
+    public function bidangminat()
+    {
+        return $this->belongsToMany(bidangminatmodel::class, 'm_detailbddosen', 'id_user', 'id_bd');
+    }
+
+
     public function pesertapelatihan():HasMany{
         return $this->hasMany(pesertapelatihanmodel::class);
     }

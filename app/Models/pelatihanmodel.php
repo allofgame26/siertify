@@ -21,16 +21,19 @@ class pelatihanmodel extends Model
         'level_pelatihan',
     ];
 
+
     public function periode():BelongsTo{
         return $this->belongsTo(periodemodel::class, 'id_periode', 'id_periode');
     }
 
     public function jenispelatihan():BelongsTo{
-        return $this->belongsTo(jenispelatihansertifikasimodel::class);
+        return $this->belongsTo(jenispelatihansertifikasimodel::class,'id_jenis_pelatihan_sertifikasi','id_jenis_pelatihan_sertifikasi');
     }
 
     public function vendorpelatihan():BelongsTo{
-        return $this->belongsTo(vendorpelatihanmodel::class,'id_vendor_pelatihan', 'id_vendor_pelatihan');
+
+        return $this->belongsTo(vendorpelatihanmodel::class,'id_vendor_pelatihan','id_vendor_pelatihan');
+
     }
 
     public function pesertapelatihan():HasMany{
