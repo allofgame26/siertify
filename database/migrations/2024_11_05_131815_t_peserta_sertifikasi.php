@@ -14,10 +14,10 @@ return new class extends Migration
         Schema::create('t_peserta_sertifikasi',function(Blueprint $table){
             $table->id('id_peserta');
             $table->unsignedBigInteger('id_user')->index();
-            $table->unsignedBigInteger('id_sertifikasi')->index();
+            $table->unsignedBigInteger('id_detail_sertifikasi')->index();
 
             $table->foreign('id_user')->references('id_user')->on('m_akun_user');
-            $table->foreign('id_sertifikasi')->references('id_sertifikasi')->on('m_sertifikasi');
+            $table->foreign('id_detail_sertifikasi')->references('id_detail_sertifikasi')->on('t_detailsertifikasi');
         });
     }
 

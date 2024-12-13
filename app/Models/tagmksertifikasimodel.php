@@ -15,10 +15,10 @@ class tagmksertifikasimodel extends Model
     protected $fillable = ['id_mk','id_sertifikasi'];
 
     public function matakuliah():BelongsTo{
-        return $this->belongsTo(matakuliahmodel::class);
+        return $this->belongsTo(matakuliahmodel::class,'id_mk','id_mk');
     }
 
     public function sertifikasi():BelongsTo{
-        return $this->belongsTo(sertifikasimodel::class);
+        return $this->belongsTo(sertifikasimodel::class,'id_sertifikasi','id_sertifikasi');
     }
 }

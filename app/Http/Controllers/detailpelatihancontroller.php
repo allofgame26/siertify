@@ -34,24 +34,20 @@ class detailpelatihancontroller extends Controller
     public function list(Request $request)
     {
         $detailpelatihan = detailpelatihan::select(
+                            'id_detail_pelatihan',
                             'id_pelatihan',
                             'id_periode',
-                            'id_user',
                             'tanggal_mulai',
                             'tanggal_selesai',
                             'lokasi',
-                            'quota_peserta',
                             'biaya',
-                            'no_pelatihan',
                             'status_disetujui',
-                            'input_by',
-                            'surat_tugas'
                         )
-        ->with(['pelatihan', 'periode', 'user'])
+        ->with(['pelatihan', 'periode'])
         ->get();
 
-        if ($request->id_user) {
-            $detailpelatihan->where('id_user', $request->id_user);
+        if ($request->id_periode) {
+            $detailpelatihan->where('id_periode', $request->id_periode);
         }
 
 
@@ -60,6 +56,12 @@ class detailpelatihancontroller extends Controller
         ->addIndexColumn()
         ->addColumn('nama_pelatihan', function ($detailpelatihan) {
             return $detailpelatihan->pelatihan->nama_pelatihan ?? '';
+        })
+        ->addColumn('nama_periode', function ($detailpelatihan) {
+            return $detailpelatihan->periode->nama_periode ?? '';
+        })
+        ->addColumn('biaya_format', function ($detailpelatihan) {
+            return 'Rp' . number_format($detailpelatihan->biaya, 0, ',', '.') ?? ' ';
         })
         ->addColumn('aksi', function ($detailpelatihan) {
             $btn = '<button onclick="modalAction(\'' . url('/detailpelatihan/' . $detailpelatihan->id_detail_sertifikasi . '/show') . '\')" class="btn btn-info btn-sm"><i class="fa fa-pencil"></i>Detail</button> ';

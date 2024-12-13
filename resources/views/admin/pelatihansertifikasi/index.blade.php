@@ -5,11 +5,11 @@
     <ul class="nav nav-pills mb-3" id="pills-tab" role="tablist">
         <li class="nav-item">
             <a class="nav-link active" id="pills-home-tab" data-toggle="pill" href="#pills-home" role="tab"
-                aria-controls="pills-home" aria-selected="true">Pelatihan </a>
+                aria-controls="pills-home" aria-selected="true">Sertifikasi </a>
         </li>
         <li class="nav-item">
             <a class="nav-link" id="pills-profile-tab" data-toggle="pill" href="#pills-profile" role="tab"
-                aria-controls="pills-profile" aria-selected="false">Sertifikasi</a>
+                aria-controls="pills-profile" aria-selected="false">Pelatihan</a>
         </li>
         <!-- ID didalam class="nav-item" membuat halaman yang berbeda-->
     </ul>
@@ -20,7 +20,10 @@
                 <div class="card-header">
                     <h3 class="card-title">{{ $page->title }}</h3>
                     <div class="card-tools">
-                        <button onclick="modalAction('{{ url('/detailsertifikasi/create') }}')" class="btn btn-success">Tambah Data </button>
+                        <button onclick="modalAction('{{ url('/detailsertifikasi/import') }}')" class="btn btn-primary btn-sm"><i class="fas fa-upload"></i>Import Data</button>
+                        <a href="{{ url('/detailsertifikasi/export_excel') }}" class="btn btn-indigo btn-sm"><i class="fas fa-file-excel"></i>Export Excel</a>
+                        <a href="{{ url('/detailsertifikasi/export_pdf') }}" class="btn btn-pink btn-sm"><i class="fas fa-file-pdf"></i> Export PDF</a>
+                        <button onclick="modalAction('{{ url('/detailsertifikasi/create') }}')" class="btn btn-success"><i class="fas fa-plus-square"></i>Tambah Data </button>
                     </div>
                 </div>
                 <div class="card-body">
@@ -35,16 +38,17 @@
                             <div class="form-group row">
                                 <label class="col-1 control-label col-form-label">Filter:</label>
                                 <div class="col-3">
-                                    <select class="form-control" id="id_user" name="id_user" required>
+                                    <select class="form-control" id="id_periode" name="id_periode" required>
                                         <option value="">- Semua -</option>
-                                        @foreach ($user as $item)
-                                            <option value="{{ $item->id_user }}">{{ $item->username }}</option>
+                                        @foreach ($periode as $item)
+                                            <option value="{{ $item->id_periode }}">{{ $item->nama_periode }}</option>
                                         @endforeach
                                     </select>
-                                    <small class="form-text text-muted">User</small>
+                                    <small class="form-text text-muted">periode</small>
                                 </div>
                             </div>
                         </div>
+                        
                     </div>
                     <table class="table table-bordered table-striped table-hover table-sm" id="table-sertifikasi">
                         <thead>
@@ -87,13 +91,13 @@
                             <div class="form-group row">
                                 <label class="col-1 control-label col-form-label">Filter:</label>
                                 <div class="col-3">
-                                    <select class="form-control" id="id_user" name="id_user" required>
+                                    <select class="form-control" id="id_periode" name="id_periode" required>
                                         <option value="">- Semua -</option>
-                                        @foreach ($user as $item)
-                                            <option value="{{ $item->id_user }}">{{ $item->username }}</option>
+                                        @foreach ($periode as $item)
+                                            <option value="{{ $item->id_periode }}">{{ $item->nama_periode }}</option>
                                         @endforeach
                                     </select>
-                                    <small class="form-text text-muted">User</small>
+                                    <small class="form-text text-muted">periode</small>
                                 </div>
                             </div>
                         </div>
@@ -133,11 +137,11 @@
                 autoWidth: false,
                 serverSide: true,
                 ajax: {
-                    "url": "{{ url('detailpelatihan/list') }}",
+                    "url": "{{ url('detailsertifikasi/list') }}",
                     "dataType": "json",
                     "type": "POST",
                     "data": function(d) {
-                        d.id_user = $('#id_user').val();
+                        d.id_periode = $('#id_periode').val();
                     }
                 },
                 columns: [{
@@ -151,6 +155,11 @@
                     className: "",
                     orderable: true,
                     searchable: true
+                },{
+                    data: "nama_periode",
+                    className: "",
+                    orderable: true,
+                    searchable: true
                 }, {
                     data: "tanggal_mulai",
                     className: "",
@@ -162,7 +171,7 @@
                     orderable: true,
                     searchable: true
                 }, {
-                    data: "biaya",
+                    data: "biaya_format",
                     className: "",
                     orderable: true,
                     searchable: false
@@ -178,7 +187,7 @@
                     searchable: false
                 }]
             });
-            $('#id_user').on('change', function() {
+            $('#id_periode').on('change', function() {
                 tablePenjualan.ajax.reload();
             });
         });
@@ -189,11 +198,11 @@
                 autoWidth: false,
                 serverSide: true,
                 ajax: {
-                    "url": "{{ url('detail/list') }}",
+                    "url": "{{ url('detailpelatihan/list') }}",
                     "dataType": "json",
                     "type": "POST",
                     "data": function(d) {
-                        d.id_user = $('#id_user').val();
+                        d.id_periode = $('#id_periode').val();
                     }
                 },
                 columns: [{
@@ -207,7 +216,12 @@
                     className: "",
                     orderable: true,
                     searchable: true
-                }, {
+                },{
+                    data: "nama_periode",
+                    className: "",
+                    orderable: true,
+                    searchable: true
+                },{
                     data: "tanggal_mulai",
                     className: "",
                     orderable: true,
@@ -218,7 +232,7 @@
                     orderable: true,
                     searchable: true
                 }, {
-                    data: "biaya",
+                    data: "biaya_format",
                     className: "",
                     orderable: true,
                     searchable: false
@@ -234,9 +248,34 @@
                     searchable: false
                 }]
             });
-            $('#id_user').on('change', function() {
+            $('#id_periode').on('change', function() {
                 tableDetail.ajax.reload();
             });
         });
     </script>
+@endpush
+@push('css')
+<style>
+
+.btn-pink {
+    background-color: #d81b60;
+    color:white;
+}
+
+.btn-indigo {
+    background-color: indigo;
+    color: white;
+}
+
+.btn-teal {
+    background-color: #39cccc;
+    color: white
+}
+
+.card-tools .btn i {
+    margin-right: 8px;
+}
+
+</style>
+
 @endpush

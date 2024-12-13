@@ -15,10 +15,10 @@ class tagbdsertifikasimodel extends Model
     protected $fillable = ['id_bd','id_sertifikasi'];
 
     public function bidangminat():BelongsTo{
-        return $this->belongsTo(bidangminatmodel::class);
+        return $this->belongsTo(bidangminatmodel::class,'id_bd','id_bd');
     }
 
     public function sertifikasi():BelongsTo{
-        return $this->belongsTo(sertifikasimodel::class);
+        return $this->belongsTo(sertifikasimodel::class,'id_sertifikasi','id_sertifikasi');
     }
 }

@@ -14,10 +14,10 @@ return new class extends Migration
         Schema::create('t_peserta_pelatihan',function(Blueprint $table){
             $table->id('id_peserta');
             $table->unsignedBigInteger('id_user')->index();
-            $table->unsignedBigInteger('id_pelatihan')->index();
+            $table->unsignedBigInteger('id_detail_pelatihan')->index();
 
             $table->foreign('id_user')->references('id_user')->on('m_akun_user');
-            $table->foreign('id_pelatihan')->references('id_pelatihan')->on('m_pelatihan');
+            $table->foreign('id_detail_pelatihan')->references('id_detail_pelatihan')->on('t_detailpelatihan');
         });
     }
 

@@ -12,6 +12,7 @@
         "laravel/sanctum": "^3.3",
         "laravel/tinker": "^2.8",
         "phpoffice/phpspreadsheet": "^3.4",
+        "phpoffice/phpword": "^1.3",
         "yajra/laravel-datatables-oracle": "^10.11"
     },
     "require-dev": {

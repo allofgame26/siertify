@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class detailpelatihan extends Model
 {
@@ -38,6 +39,10 @@ class detailpelatihan extends Model
     }
     public function akun():BelongsTo{
         return $this->belongsTo(akunusermodel::class,'id_user','id_user');
+    }
+
+    public function peserta():HasMany{
+        return $this->hasMany(pesertapelatihanmodel::class,'id_detail_pelatihan','id_detail_pelatihan');
     }
     
 }
