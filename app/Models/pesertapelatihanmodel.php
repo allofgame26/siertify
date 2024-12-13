@@ -12,13 +12,14 @@ class pesertapelatihanmodel extends Model
 
     protected $table = 't_peserta_pelatihan';
     protected $primaryKey = 'id_peserta';
-    protected $fillable = ['id_user','id_pelatihan'];
+    protected $fillable = ['id_user','id_detail_pelatihan'];
 
-    public function pelatihan():BelongsTo{
-        return $this->belongsTo(pelatihanmodel::class);
+    public function detailpelatihan():BelongsTo{
+        return $this->belongsTo(detailpelatihan::class,'id_detail_pelatihan','id_detail_pelatihan');
     }
 
     public function akun():BelongsTo{
-        return $this->belongsTo(akunusermodel::class);
+        return $this->belongsTo(akunusermodel::class,'id_user','id_user');
     }
+
 }

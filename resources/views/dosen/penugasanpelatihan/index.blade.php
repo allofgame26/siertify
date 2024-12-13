@@ -16,14 +16,12 @@
         <div class="tab-pane fade show active" id="pills-home" role="tabpanel" aria-labelledby="pills-home-tab">
             <div class="card card-outline card-info" style="margin-left: 10px; margin-right:10px">
                 <div class="card-header">
-                    <h3 class="card-title">Pendataan Riwayat Pelatihan</h3>
+                    <h3 class="card-title">Penugasan Pelatihan</h3>
                     <div class="card-tools">
-                        <a href="{{ url('/pendataan/pelatihan/export_excel') }}" class="btn btn-indigo btn-sm"><i
+                        <a href="{{ url('/penugasan/pelatihan/export_excel') }}" class="btn btn-indigo btn-sm"><i
                                 class="fas fa-file-excel"></i>Export Excel</a>
-                        <a href="{{ url('/pendataan/pelatihan/export_pdf') }}" class="btn btn-pink btn-sm"><i
+                        <a href="{{ url('/penugasan/pelatihan/export_pdf') }}" class="btn btn-pink btn-sm"><i
                                 class="fas fa-file-pdf"></i>Export PDF</a>
-                        <button onclick="modalAction('{{ url('/pendataan/pelatihan/create') }}')"
-                            class="btn btn-success btn-sm"><i class="fas fa-plus-square"></i>Tambah Data</button>
                     </div>
                 </div>
                 <div class="card-body">
@@ -69,14 +67,12 @@
         <div class="tab-pane fade" id="pills-profile" role="tabpanel" aria-labelledby="pills-profile-tab">
             <div class="card card-outline card-primary" style="margin-left: 10px; margin-right:10px">
                 <div class="card-header">
-                    <h3 class="card-title">Pendataan Riwayat Sertifikasi</h3>
+                    <h3 class="card-title">Penugasan Sertifikasi</h3>
                     <div class="card-tools">
-                        <a href="{{ url('/pendataan/sertifikasi/export_excel') }}" class="btn btn-indigo btn-sm"><i
+                        <a href="{{ url('/penugasan/sertifikasi/export_excel') }}" class="btn btn-indigo btn-sm"><i
                                 class="fas fa-file-excel"></i>Export Excel</a>
-                        <a href="{{ url('/pendataan/sertifikasi/export_pdf') }}" class="btn btn-pink btn-sm"><i
+                        <a href="{{ url('/penugasan/sertifikasi/export_pdf') }}" class="btn btn-pink btn-sm"><i
                                 class="fas fa-file-pdf"></i>Export PDF</a>
-                        <button onclick="modalAction('{{ url('/pendataan/sertifikasi/create') }}')"
-                            class="btn btn-success btn-sm"><i class="fas fa-plus-square"></i>Tambah Data</button>
                     </div>
                 </div>
                 <div class="card-body">
@@ -176,7 +172,7 @@
                 autoWidth: false,
                 serverSide: true,
                 ajax: {
-                    url: "{{ url('pendataan/pelatihan/list') }}",
+                    url: "{{ url('penugasan/pelatihan/list') }}",
                     type: "POST",
                     dataType: "json",
                     data: function(d) {
@@ -219,7 +215,8 @@
                         data: "tanggal_mulai",
                         orderable: true,
                         searchable: true
-                    },
+                    }
+                    ,
                     {
                         data: "aksi",
                         className: "",
@@ -234,16 +231,13 @@
                 tablePelatihan.ajax.reload(); // Memuat ulang tabel pelatihan
               
             });
-        });
 
-
-        $(document).ready(function() {
             // Initialize DataTable for sertifikasi
             tableSertifikasi = $('#table-sertifikasi').DataTable({
                 autoWidth: false,
                 serverSide: true,
                 ajax: {
-                    url: "{{ url('pendataan/sertifikasi/list') }}",
+                    url: "{{ url('penugasan/sertifikasi/list') }}",
                     type: "POST",
                     dataType: "json",
                     data: function(d) {
@@ -296,7 +290,6 @@
                 ]
             });
 
-            
             $('#id_periode_sertifikasi').on('change', function() {
                 tableSertifikasi.ajax.reload(); // Memuat ulang tabel pelatihan
               

@@ -19,11 +19,10 @@
 @endif
 <form action="" method="post" id="form-tambah-sertifikasi" enctype="multipart/form-data">
     @csrf
-    @method('PUT')
     <div id="modal-master" class="modal-dialog modal-lg" role="document">
         <div class="modal-content">
             <div class="modal-header bg-info">
-                <h5 class="modal-title" id="exampleModalLabel">Detail Data Riwayat Sertifikasi</h5>
+                <h5 class="modal-title" id="exampleModalLabel">Penugasan sertifikasi</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span>&times;</span>
                 </button>
@@ -57,23 +56,29 @@
                         <div class="form-group">
                             <label>Jenis Sertifikasi</label>
                             <input value="{{ $sertifikasi->nama_jenis_sertifikasi }}" type="text"
-                                name="jenis_sertifikasi" id="jenis_sertifikasi" class="form-control" placeholder=""
+                                name="jenis_pelatihan" id="jenis_pelatihan" class="form-control" placeholder=""
                                 readonly>
-                            <small id="error-jenis_sertifikasi" class="error-text form-text text-danger"></small>
+                            <small id="error-jenis_pelatihan" class="error-text form-text text-danger"></small>
                         </div>
                     </div>
                 </div>
-                <div class="form-group">
-                    <label>Biaya Sertifikasi</label>
-                    <input value="{{ $sertifikasi->biaya }}" type="number" name="biaya" id="biaya"
-                        class="form-control" placeholder="Enter biaya sertifikasi" readonly>
-                    <small id="error-biaya" class="error-text form-text text-danger"></small>
-                </div>
-                <div class="form-group">
-                    <label>Lokasi Sertifikasi</label>
-                    <input value="{{ $sertifikasi->lokasi }}" type="text" name="lokasi" id="lokasi"
-                        class="form-control" placeholder="Enter lokasi sertifikasi" readonly>
-                    <small id="error-lokasi" class="error-text form-text text-danger"></small>
+                <div class="row">
+                    <div class="col-6">
+                        <div class="form-group">
+                            <label>Biaya Sertifikasi</label>
+                            <input value="{{ $sertifikasi->biaya }}" type="number" name="biaya" id="biaya"
+                                class="form-control" placeholder="Enter biaya sertifikasi" readonly>
+                            <small id="error-biaya" class="error-text form-text text-danger"></small>
+                        </div>
+                    </div>
+                    <div class="col-6">
+                        <div class="form-group">
+                            <label>Lokasi Sertifikasi</label>
+                            <input value="{{ $sertifikasi->lokasi }}" type="text" name="lokasi" id="lokasi"
+                                class="form-control" placeholder="Enter lokasi sertifikasi" readonly>
+                            <small id="error-lokasi" class="error-text form-text text-danger"></small>
+                        </div>
+                    </div>
                 </div>
                 <p>Jadwal Sertifikasi</p>
                 <div class="row">
@@ -139,25 +144,28 @@
                 </div>
 
                 <div>
-                    <p>Bukti Sertifikasi</p>
+                    <p>Peserta Sertifikasi</p>
                 </div>
-                <div class="form-group">
-                    <div class="form-group">
-                        <label>Tanggal Kadaluarsa</label>
-                        <input value="{{ $sertifikasi->tanggal_kadaluarsa }}" type="text" name="tanggal_kadaluarsa"
-                            id="tanggal_kadaluarsa" class="form-control" readonly>
-                        <small id="error-tanggal_kadaluarsa" class="error-text form-text text-danger"></small>
-                    </div>
-                    <label>Nomor Sertifikat</label>
-                    <input value="{{ $sertifikasi->no_sertifikasi }}" type="text" name="no_sertifikasi"
-                        id="no_sertifikasi" class="form-control" placeholder="Enter nomor sertifikat" readonly>
-                    <small id="error-no_sertifikasi" class="error-text form-text text-danger"></small>
-                </div>
-                <div class="form-group">
-                    <label>Bukti Sertifikat</label>
-                    <input type="text" value="{{ $sertifikasi->bukti_sertifikasi }}" name="bukti_sertifikasi"
-                        id="bukti_sertifikasi" class="form-control" readonly>
-                    <small id="error-bukti_sertifikasi" class="error-text form-text textdanger"></small>
+                <div class="scrollable-table">
+                    <table class="table table-bordered table-striped table-hover table-sm">
+                        <thead>
+                            <tr>
+                                <th>No</th>
+                                <th>Nama</th>
+                                <th>NIP</th>
+                            </tr>
+                        </thead>
+                        <TBody>
+                            @foreach ($peserta as $index => $p)
+                                <tr>
+                                    <td>{{ $index + 1 }}</td>
+                                    <td>{{ $p->nama_lengkap }}</td>
+                                    <td>{{ $p->NIP }}</td>
+                                </tr>
+                            @endforeach
+                        </TBody>
+
+                    </table>
                 </div>
 
 
@@ -165,6 +173,10 @@
 
             </div>
             <div class="modal-footer">
+                <button class="btn btn-info btn-unduh-surat" type="button"
+                    data-id="{{ $sertifikasi->id_detail_sertifikasi }}"
+                    onclick="modalAction('{{ url('/penugasan/sertifikasi/' . $sertifikasi->id_detail_sertifikasi . '/surat_tugas') }}')">
+                    <i class="fas fa-download" style="margin-right: 8px;"></i>Unduh Surat Tugas</button>
                 <button type="button" data-dismiss="modal" class="btn btn-warning">Kembali</button>
             </div>
         </div>
@@ -240,114 +252,82 @@
         justify-content: center;
         text-align: center;
     }
+
+    .scrollable-table {
+        max-height: 200px;
+        /* Tinggi maksimal */
+        overflow-y: scroll;
+        /* Scrollbar vertikal */
+        border: 1px solid #ddd;
+        padding: 5px;
+    }
+
+    .scrollable-table table {
+        width: 100%;
+        border-collapse: collapse;
+    }
+
+    .scrollable-table th,
+    .scrollable-table td {
+        padding: 8px;
+        text-align: left;
+    }
 </style>
 
 <script>
     $(document).ready(function() {
 
-        // $('#id_sertifikasi').on('change', function() {
-        //     // Ambil opsi yang dipilih
-        //     let selectedOption = $(this).find(':selected');
-        //     let level = selectedOption.data('level');
-        //     let jenis = selectedOption.data('jenis');
-        //     let vendor = selectedOption.data('vendor');
+        // Event handler untuk tombol unduh surat tugas
+        $(".btn-unduh-surat").on("click", function(e) {
+            e.preventDefault(); // Mencegah form submit default
 
-        //     // Set nilai ke input atau dropdown lain
-        //     $('#level_sertifikasi').val(level); // Pilih level di dropdown
-        //     $('#jenis_sertifikasi').val(jenis); // Isi input jenis sertifikasi
-        //     $('#vendor_sertifikasi').val(vendor); // Isi input jenis sertifikasi
-        // });
+            var id = $(this).data("id"); // Ambil ID dari atribut data-id pada tombol
+            var url = `/penugasan/sertifikasi/${id}/surat_tugas`;
 
-        $("#form-tambah-sertifikasi").validate({
-            rules: {
-                id_sertifikasi: {
-                    required: true,
-                    number: true
+            $.ajax({
+                url: url,
+                type: "GET",
+                headers: {
+                    "X-Requested-With": "XMLHttpRequest", // Pastikan request adalah AJAX
                 },
-                id_periode: {
-                    required: true,
-                },
-                tanggal_mulai: {
-                    required: true,
-
-                },
-                tanggal_selesai: {
-                    required: true
-                },
-                lokasi: {
-                    required: true,
-                    minlength: 3,
-                    maxlength: 50
-                },
-                biaya: {
-                    required: true,
-                    number: true,
-                },
-                no_sertifikasi: {
-                    minlength: 1,
-                    maxlength: 20,
-                    required: true,
-
-                },
-                bukti_sertifikasi: {
-                    required: true,
-                    extension: "pdf|jpg|jpeg|png"
-                }
-
-            },
-            submitHandler: function(form) {
-
-                var formData = new FormData(form); // Gunakan FormData untuk file upload
-
-                $.ajax({
-                    url: form.action,
-                    type: form.method,
-                    data: formData,
-                    contentType: false,
-                    processData: false,
-                    success: function(response) {
-                        if (response.status) {
-                            $('#myModal').modal('hide');
-                            Swal.fire({
-                                icon: 'success',
-                                title: 'Berhasil',
-                                text: response.message
-                            }).then(function() {
-                                // Reload halaman atau update data setelah Swal ditutup
-                                if (typeof tablesertifikasi !== 'undefined') {
-                                    tablesertifikasi.ajax
-                                        .reload(); // Reload data table jika ada
-                                } else {
-                                    location
-                                        .reload(); // Reload halaman jika tidak ada tablevendor
-                                }
-                            });
-                        } else {
-                            $('.error-text').text('');
-                            $.each(response.msgField, function(prefix, val) {
-                                $('#error-' + prefix).text(val[0]);
-                            });
-                            Swal.fire({
-                                icon: 'error',
-                                title: 'Terjadi Kesalahan',
-                                text: response.message
-                            });
-                        }
+                success: function(response) {
+                    if (response.status === "processing") {
+                        $('#modal-master').modal('hide');
+                        Swal.fire({
+                            icon: 'info',
+                            text: response.message
+                        }).then(() => {
+                            location.reload(); // Refresh halaman setelah klik "OK"
+                        });
+                    } else if (response.status === "error") {
+                        Swal.fire({
+                            icon: "error",
+                            title: "Gagal",
+                            text: response.message,
+                        }).then(() => {
+                            location.reload(); // Refresh halaman setelah klik "OK"
+                        });
+                    } else {
+                        // Redirect untuk mengunduh file
+                        window.location.href = url;
+                        // Setelah beberapa detik, refresh halaman
+                        setTimeout(function() {
+                            location.reload();
+                        }, 500); // Waktu jeda untuk memastikan unduhan dimulai
                     }
-                });
-                return false;
-            },
-            errorElement: 'span',
-            errorPlacement: function(error, element) {
-                error.addClass('invalid-feedback');
-                element.closest('.form-group').append(error);
-            },
-            highlight: function(element, errorClass, validClass) {
-                $(element).addClass('is-invalid');
-            },
-            unhighlight: function(element, errorClass, validClass) {
-                $(element).removeClass('is-invalid');
-            }
+                },
+                error: function(xhr) {
+                    Swal.fire({
+                        icon: "error",
+                        title: "Terjadi Kesalahan",
+                        text: "Gagal mengunduh surat tugas.",
+                    }).then(() => {
+                        location.reload(); // Refresh halaman setelah klik "OK"
+                    });
+                },
+            });
+
+            return false; // Mencegah form untuk submit secara biasa
         });
     });
 </script>

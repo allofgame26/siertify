@@ -80,15 +80,24 @@ class PendataanPelatihanController extends Controller
             'm_pelatihan.level_pelatihan',
             'j.nama_jenis_sertifikasi',
             'periode.nama_periode',
+            'detail.tanggal_mulai',
             'detail.id_detail_pelatihan' // Ambil nama periode
         )->where(
             'detail.id_user', '=', $user_id
-        )->get(); // Tambahkan get() untuk mengeksekusi query
+        );
+
+        // Apply filter berdasarkan id_periode jika ada
+        if ($request->id_periode_pelatihan) {
+            $pelatihan->where('detail.id_periode', $request->id_periode_pelatihan);
+        }
+
+        // Ambil data setelah semua filter diterapkan
+        $pelatihan = $pelatihan->get();
 
         return DataTables::of($pelatihan)
             ->addIndexColumn()
             ->addColumn('aksi', function ($pendataan) {
-                $btn = '<button onclick="modalAction(\'' . url('/pendataan/pelatihan/' . $pendataan->id_detail_pelatihan . '/show') . '\')" class="btn btn-info btn-sm">Detail</button>';
+                $btn = '<button onclick="modalAction(\'' . url('/pendataan/pelatihan/' . $pendataan->id_detail_pelatihan . '/show') . '\')" class="btn btn-info btn-sm">Detail</button> ';
                 $btn .= '<button onclick="modalAction(\'' . url('/pendataan/pelatihan/' . $pendataan->id_detail_pelatihan . '/edit') . '\')" class="btn btn-warning btn-sm">Edit</button> ';
                 $btn .= '<button onclick="modalAction(\'' . url('/pendataan/pelatihan/' . $pendataan->id_detail_pelatihan . '/delete') . '\')" class="btn btn-danger btn-sm">Hapus</button> ';
 
@@ -118,7 +127,7 @@ class PendataanPelatihanController extends Controller
                 'vendor.nama_vendor_pelatihan',
                 'm_pelatihan.level_pelatihan'
             )
-        ->get();
+            ->get();
 
         $periode = periodemodel::all(); // Tetap diambil untuk kebutuhan lain
 

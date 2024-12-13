@@ -12,13 +12,13 @@ class pesertasertifikasimodel extends Model
 
     protected $table = 't_peserta_sertifikasi';
     protected $primaryKey = 'id_peserta';
-    protected $fillable = ['id_user','id_sertifikasi'];
+    protected $fillable = ['id_user','id_detail_sertifikasi '];
 
     public function sertifikasi():BelongsTo{
-        return $this->belongsTo(sertifikasimodel::class);
+        return $this->belongsTo(detailsertifikasi::class,'id_detail_sertifikasi','id_detail_sertifikasi');
     }
 
     public function akun():BelongsTo{
-        return $this->belongsTo(akunusermodel::class);
+        return $this->belongsTo(akunusermodel::class,'id_user','id_user');
     }
 }
