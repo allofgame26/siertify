@@ -19,11 +19,10 @@
 @endif
 <form action="" method="post" id="form-tambah-pelatihan" enctype="multipart/form-data">
     @csrf
-    @method('PUT')
     <div id="modal-master" class="modal-dialog modal-lg" role="document">
         <div class="modal-content">
             <div class="modal-header bg-info">
-                <h5 class="modal-title" id="exampleModalLabel">Detail Data Riwyat Pelatihan</h5>
+                <h5 class="modal-title" id="exampleModalLabel">Penugasan Pelatihan</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span>&times;</span>
                 </button>
@@ -63,17 +62,23 @@
                         </div>
                     </div>
                 </div>
-                <div class="form-group">
-                    <label>Biaya Pelatihan</label>
-                    <input value="{{ $pelatihan->biaya }}" type="number" name="biaya" id="biaya"
-                        class="form-control" placeholder="Enter biaya pelatihan" readonly>
-                    <small id="error-biaya" class="error-text form-text text-danger"></small>
-                </div>
-                <div class="form-group">
-                    <label>Lokasi Pelatihan</label>
-                    <input value="{{ $pelatihan->lokasi }}" type="text" name="lokasi" id="lokasi"
-                        class="form-control" placeholder="Enter lokasi pelatihan" readonly>
-                    <small id="error-lokasi" class="error-text form-text text-danger"></small>
+                <div class="row">
+                    <div class="col-6">
+                        <div class="form-group">
+                            <label>Biaya Pelatihan</label>
+                            <input value="{{ $pelatihan->biaya }}" type="number" name="biaya" id="biaya"
+                                class="form-control" placeholder="Enter biaya pelatihan" readonly>
+                            <small id="error-biaya" class="error-text form-text text-danger"></small>
+                        </div>
+                    </div>
+                    <div class="col-6">
+                        <div class="form-group">
+                            <label>Lokasi Pelatihan</label>
+                            <input value="{{ $pelatihan->lokasi }}" type="text" name="lokasi" id="lokasi"
+                                class="form-control" placeholder="Enter lokasi pelatihan" readonly>
+                            <small id="error-lokasi" class="error-text form-text text-danger"></small>
+                        </div>
+                    </div>
                 </div>
                 <p>Jadwal Pelatihan</p>
                 <div class="row">
@@ -139,19 +144,28 @@
                 </div>
 
                 <div>
-                    <p>Bukti Pelatihan</p>
+                    <p>Peserta Pelatihan</p>
                 </div>
-                <div class="form-group">
-                    <label>Nomor Sertifikat</label>
-                    <input value="{{ $pelatihan->no_pelatihan }}" type="text" name="no_pelatihan"
-                        id="no_pelatihan" class="form-control" placeholder="Enter nomor sertifikat" readonly>
-                    <small id="error-no_pelatihan" class="error-text form-text text-danger"></small>
-                </div>
-                <div class="form-group">
-                    <label>Bukti Sertifikat</label>
-                    <input type="text" value="{{ $pelatihan->bukti_pelatihan }}" name="bukti_pelatihan"
-                        id="bukti_pelatihan" class="form-control" readonly>
-                    <small id="error-bukti_pelatihan" class="error-text form-text textdanger"></small>
+                <div class="scrollable-table">
+                    <table class="table table-bordered table-striped table-hover table-sm">
+                        <thead>
+                            <tr>
+                                <th>No</th>
+                                <th>Nama</th>
+                                <th>NIP</th>
+                            </tr>
+                        </thead>
+                        <TBody>
+                            @foreach ($peserta as $index => $p)
+                                <tr>
+                                    <td>{{ $index + 1 }}</td>
+                                    <td>{{ $p->nama_lengkap }}</td>
+                                    <td>{{ $p->NIP }}</td>
+                                </tr>
+                            @endforeach
+                        </TBody>
+
+                    </table>
                 </div>
 
 
@@ -159,6 +173,10 @@
 
             </div>
             <div class="modal-footer">
+                <button class="btn btn-info btn-unduh-surat" type="button"
+                    data-id="{{ $pelatihan->id_detail_pelatihan }}"
+                    onclick="modalAction('{{ url('/penugasan/pelatihan/' . $pelatihan->id_detail_pelatihan . '/surat_tugas') }}')">
+                    <i class="fas fa-download" style="margin-right: 8px;"></i>Unduh Surat Tugas</button>
                 <button type="button" data-dismiss="modal" class="btn btn-warning">Kembali</button>
             </div>
         </div>
@@ -234,114 +252,82 @@
         justify-content: center;
         text-align: center;
     }
+
+    .scrollable-table {
+        max-height: 200px;
+        /* Tinggi maksimal */
+        overflow-y: scroll;
+        /* Scrollbar vertikal */
+        border: 1px solid #ddd;
+        padding: 5px;
+    }
+
+    .scrollable-table table {
+        width: 100%;
+        border-collapse: collapse;
+    }
+
+    .scrollable-table th,
+    .scrollable-table td {
+        padding: 8px;
+        text-align: left;
+    }
 </style>
 
 <script>
     $(document).ready(function() {
 
-        // $('#id_pelatihan').on('change', function() {
-        //     // Ambil opsi yang dipilih
-        //     let selectedOption = $(this).find(':selected');
-        //     let level = selectedOption.data('level');
-        //     let jenis = selectedOption.data('jenis');
-        //     let vendor = selectedOption.data('vendor');
+        // Event handler untuk tombol unduh surat tugas
+        $(".btn-unduh-surat").on("click", function(e) {
+            e.preventDefault(); // Mencegah form submit default
 
-        //     // Set nilai ke input atau dropdown lain
-        //     $('#level_pelatihan').val(level); // Pilih level di dropdown
-        //     $('#jenis_pelatihan').val(jenis); // Isi input jenis pelatihan
-        //     $('#vendor_pelatihan').val(vendor); // Isi input jenis pelatihan
-        // });
+            var id = $(this).data("id"); // Ambil ID dari atribut data-id pada tombol
+            var url = `/penugasan/pelatihan/${id}/surat_tugas`;
 
-        $("#form-tambah-pelatihan").validate({
-            rules: {
-                id_pelatihan: {
-                    required: true,
-                    number: true
+            $.ajax({
+                url: url,
+                type: "GET",
+                headers: {
+                    "X-Requested-With": "XMLHttpRequest", // Pastikan request adalah AJAX
                 },
-                id_periode: {
-                    required: true,
-                },
-                tanggal_mulai: {
-                    required: true,
-
-                },
-                tanggal_selesai: {
-                    required: true
-                },
-                lokasi: {
-                    required: true,
-                    minlength: 3,
-                    maxlength: 50
-                },
-                biaya: {
-                    required: true,
-                    number: true,
-                },
-                no_pelatihan: {
-                    minlength: 1,
-                    maxlength: 20,
-                    required: true,
-
-                },
-                bukti_pelatihan: {
-                    required: true,
-                    extension: "pdf|jpg|jpeg|png"
-                }
-
-            },
-            submitHandler: function(form) {
-
-                var formData = new FormData(form); // Gunakan FormData untuk file upload
-
-                $.ajax({
-                    url: form.action,
-                    type: form.method,
-                    data: formData,
-                    contentType: false,
-                    processData: false,
-                    success: function(response) {
-                        if (response.status) {
-                            $('#myModal').modal('hide');
-                            Swal.fire({
-                                icon: 'success',
-                                title: 'Berhasil',
-                                text: response.message
-                            }).then(function() {
-                                // Reload halaman atau update data setelah Swal ditutup
-                                if (typeof tablepelatihan !== 'undefined') {
-                                    tablepelatihan.ajax
-                                        .reload(); // Reload data table jika ada
-                                } else {
-                                    location
-                                        .reload(); // Reload halaman jika tidak ada tablevendor
-                                }
-                            });
-                        } else {
-                            $('.error-text').text('');
-                            $.each(response.msgField, function(prefix, val) {
-                                $('#error-' + prefix).text(val[0]);
-                            });
-                            Swal.fire({
-                                icon: 'error',
-                                title: 'Terjadi Kesalahan',
-                                text: response.message
-                            });
-                        }
+                success: function(response) {
+                    if (response.status === "processing") {
+                        $('#modal-master').modal('hide');
+                        Swal.fire({
+                            icon: 'info',
+                            text: response.message
+                        }).then(() => {
+                            location.reload(); // Refresh halaman setelah klik "OK"
+                        });
+                    } else if (response.status === "error") {
+                        Swal.fire({
+                            icon: "error",
+                            title: "Gagal",
+                            text: response.message,
+                        }).then(() => {
+                            location.reload(); // Refresh halaman setelah klik "OK"
+                        });
+                    } else {
+                        // Redirect untuk mengunduh file
+                        window.location.href = url;
+                        // Setelah beberapa detik, refresh halaman
+                        setTimeout(function() {
+                            location.reload();
+                        }, 500); // Waktu jeda untuk memastikan unduhan dimulai
                     }
-                });
-                return false;
-            },
-            errorElement: 'span',
-            errorPlacement: function(error, element) {
-                error.addClass('invalid-feedback');
-                element.closest('.form-group').append(error);
-            },
-            highlight: function(element, errorClass, validClass) {
-                $(element).addClass('is-invalid');
-            },
-            unhighlight: function(element, errorClass, validClass) {
-                $(element).removeClass('is-invalid');
-            }
+                },
+                error: function(xhr) {
+                    Swal.fire({
+                        icon: "error",
+                        title: "Terjadi Kesalahan",
+                        text: "Gagal mengunduh surat tugas.",
+                    }).then(() => {
+                        location.reload(); // Refresh halaman setelah klik "OK"
+                    });
+                },
+            });
+
+            return false; // Mencegah form untuk submit secara biasa
         });
     });
 </script>

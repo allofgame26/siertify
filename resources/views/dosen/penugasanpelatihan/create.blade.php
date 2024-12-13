@@ -17,13 +17,13 @@
         </div>
     </div>
 @endif
-<form action="" method="post" id="form-tambah-pelatihan" enctype="multipart/form-data">
+<form action="{{ url('/penugasan/pelatihan/' . $pelatihan->id_detail_pelatihan . '/store') }}" method="post"
+    id="form-edit-pelatihan" enctype="multipart/form-data">
     @csrf
-    @method('PUT')
     <div id="modal-master" class="modal-dialog modal-lg" role="document">
         <div class="modal-content">
-            <div class="modal-header bg-info">
-                <h5 class="modal-title" id="exampleModalLabel">Detail Data Riwyat Pelatihan</h5>
+            <div class="modal-header bg-success">
+                <h5 class="modal-title" id="exampleModalLabel">Tambah Data Riwayat Pelatihan</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span>&times;</span>
                 </button>
@@ -98,71 +98,68 @@
                     <div class="col-4">
                         <div class="form-group">
                             <label>Tanggal Selesai</label>
-                            <input value="{{ $pelatihan->tanggal_selesai }}" type="text" name="tanggal_selesai"
+                            <input value="{{ $pelatihan->tanggal_selesai }}" type="date" name="tanggal_selesai"
                                 id="tanggal_selesai" class="form-control" readonly>
                             <small id="error-tanggal_selesai" class="error-text form-text text-danger"></small>
                         </div>
                     </div>
                 </div>
-
                 <div>
                     <p>Kategori Pelatihan</p>
                 </div>
-
-                <div class="form-group">
-                    <label>Mata Kuliah Relevan</label>
-                </div>
-
-                <div class="form-group">
-                    @if (empty($mataKuliah))
-                        <p style="color: #D9D9D9; ">Tidak ada mata kuliah terkait.</p>
-                    @else
-                        @foreach ($mataKuliah as $namaMk)
-                            <!-- Display each mata kuliah as badge -->
-                            <span class="custom-badge-mk">{{ $namaMk }}</span>
-                        @endforeach
-                    @endif
-                </div>
-
-                <div class="form-group">
-                    <label>Bidang Minat Relevan</label>
-                </div>
-                <div class="form-group">
-                    @if (empty($bidangMinat))
-                        <p style="color: #D9D9D9;">Tidak ada bidang minat terkait.</p>
-                    @else
-                        @foreach ($bidangMinat as $namabd)
-                            <!-- Display each mata kuliah as badge -->
-                            <span class="custom-badge-bd">{{ $namabd }}</span>
-                        @endforeach
-                    @endif
-                </div>
-
+                        <div class="form-group">
+                            <label>Mata Kuliah Relevan</label>
+                        </div>
+                    <div class="form-group">
+                        @if (empty($mataKuliah))
+                            <p style="color: #D9D9D9; ">Tidak ada mata kuliah terkait.</p>
+                        @else
+                            @foreach ($mataKuliah as $mk)
+                                <!-- Display each mata kuliah as badge -->
+                                <span class="custom-badge-mk">{{ $mk->nama_mk }}</span>
+                                <input type="hidden" name="id_mk[]" value="{{ $mk->id_mk}}">
+                            @endforeach
+                        @endif
+                    </div>
+         
+                        <div class="form-group">
+                            <label>Bidang Minat Relevan</label>
+                        </div>
+                    <div class="form-group">
+                        @if (empty($bidangMinat))
+                            <p style="color: #D9D9D9;">Tidak ada bidang minat terkait.</p>
+                        @else
+                            @foreach ($bidangMinat as $bd)
+                                <!-- Display each bidang minat as badge -->
+                                <span class="custom-badge-bd">{{ $bd->nama_bd }}</span>
+                                <input type="hidden" name="id_bd[]" value="{{ $bd->id_bd }}">
+                            @endforeach
+                        @endif
+                    </div>
                 <div>
                     <p>Bukti Pelatihan</p>
                 </div>
                 <div class="form-group">
                     <label>Nomor Sertifikat</label>
-                    <input value="{{ $pelatihan->no_pelatihan }}" type="text" name="no_pelatihan"
-                        id="no_pelatihan" class="form-control" placeholder="Enter nomor sertifikat" readonly>
+                    <input value="" type="text" name="no_pelatihan"
+                        id="no_pelatihan" class="form-control" placeholder="Enter nomor sertifikat" required>
                     <small id="error-no_pelatihan" class="error-text form-text text-danger"></small>
                 </div>
                 <div class="form-group">
                     <label>Bukti Sertifikat</label>
-                    <input type="text" value="{{ $pelatihan->bukti_pelatihan }}" name="bukti_pelatihan"
-                        id="bukti_pelatihan" class="form-control" readonly>
+                    <input type="file" value="" name="bukti_pelatihan"
+                        id="bukti_pelatihan" class="form-control">
                     <small id="error-bukti_pelatihan" class="error-text form-text textdanger"></small>
                 </div>
-
 
                 <input type="hidden" name="input_by" value="{{ Auth::user()->getRole() == 'DSN' ? 'dosen' : '' }}">
 
             </div>
             <div class="modal-footer">
-                <button type="button" data-dismiss="modal" class="btn btn-warning">Kembali</button>
+                <button type="button" data-dismiss="modal" class="btn btn-warning">Batal</button>
+                <button type="submit" class="btn btn-success">Simpan</button>
             </div>
         </div>
-    </div>
 </form>
 
 <style>
@@ -239,53 +236,50 @@
 <script>
     $(document).ready(function() {
 
-        // $('#id_pelatihan').on('change', function() {
-        //     // Ambil opsi yang dipilih
-        //     let selectedOption = $(this).find(':selected');
-        //     let level = selectedOption.data('level');
-        //     let jenis = selectedOption.data('jenis');
-        //     let vendor = selectedOption.data('vendor');
-
-        //     // Set nilai ke input atau dropdown lain
-        //     $('#level_pelatihan').val(level); // Pilih level di dropdown
-        //     $('#jenis_pelatihan').val(jenis); // Isi input jenis pelatihan
-        //     $('#vendor_pelatihan').val(vendor); // Isi input jenis pelatihan
-        // });
-
-        $("#form-tambah-pelatihan").validate({
+        $("#form-edit-pelatihan").validate({
             rules: {
-                id_pelatihan: {
-                    required: true,
-                    number: true
-                },
-                id_periode: {
-                    required: true,
-                },
-                tanggal_mulai: {
-                    required: true,
-
-                },
-                tanggal_selesai: {
-                    required: true
-                },
-                lokasi: {
-                    required: true,
-                    minlength: 3,
-                    maxlength: 50
-                },
-                biaya: {
-                    required: true,
-                    number: true,
-                },
-                no_pelatihan: {
-                    minlength: 1,
-                    maxlength: 20,
-                    required: true,
-
-                },
-                bukti_pelatihan: {
-                    required: true,
-                    extension: "pdf|jpg|jpeg|png"
+                rules: {
+                    nama_pelatihan: {
+                        required: true,
+                        minlength: 5,
+                        maxlength: 100
+                    },
+                    id_vendor_pelatihan: {
+                        required: true,
+                    },
+                    id_jenis_pelatihan_sertifikasi: {
+                        required: true
+                    },
+                    id_periode: {
+                        required: true,
+                        number: true
+                    },
+                    tanggal_mulai: {
+                        required: true,
+                    },
+                    tanggal_selesai: {
+                        required: true
+                    },
+                    lokasi: {
+                        required: true,
+                        minlength: 3,
+                        maxlength: 50
+                    },
+                    biaya: {
+                        required: true,
+                        number: true
+                    },
+                    no_pelatihan: {
+                        minlength: 1,
+                        maxlength: 20,
+                        required: true,
+                    },
+                    'id_mk[]': {
+                        required: true
+                    },
+                    'id_bd[]': {
+                        required: true
+                    }
                 }
 
             },
@@ -343,5 +337,6 @@
                 $(element).removeClass('is-invalid');
             }
         });
+
     });
 </script>
