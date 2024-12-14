@@ -36,7 +36,7 @@ class JenisPelatihanSertifikasiController extends Controller
         return DataTables::of($jenis)
             ->addIndexColumn() // menambahkan kolom index / nomor urut
             ->addColumn('aksi', function ($jenis) {
-                $btn = '<button onclick="modalAction(\'' . url('/jenis/' . $jenis->id_jenis_pelatihan_sertifikasi . '/edit_ajax') . '\')" class="btn btn-warning btn-sm"><i class="fa fa-pencil"></i>Edit</button> ';
+                $btn = '<button onclick="modalAction(\'' . url('/jenis/' . $jenis->id_jenis_pelatihan_sertifikasi . '/edit_ajax') . '\')" class="btn btn-warning btn-sm"><i class="fas fa-pencil"></i>Edit</button> ';
                 $btn .= '<button onclick="modalAction(\'' . url('/jenis/' . $jenis->id_jenis_pelatihan_sertifikasi . '/delete_ajax') . '\')" class="btn btn-danger btn-sm">Hapus</button> ';
             
                 return $btn;

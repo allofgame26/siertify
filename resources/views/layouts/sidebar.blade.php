@@ -64,6 +64,14 @@
 
 
             <!-- Fitur Dosen-->
+                      <li class="nav-item">
+                <a href="{{ url('/dashboard') }}" class="nav-link {{ $activeMenu == 'dashboard' ? 'active' : '' }}">
+                    <i class="nav-icon fas fa-tachometer-alt"></i>
+                    <p>
+                        Dashboard
+                    </p>
+                </a>
+            </li>
             @if(Auth::user()->getRole() == 'DSN')
             <li class="nav-header">Kelola Pelatihan Sertifikasi</li>
             <li class="nav-item">
@@ -73,7 +81,7 @@
                 </a>
             </li>
             <li class="nav-item">
-                <a href="{{ url('/penugasan') }}" class="nav-link {{ $activeMenu == 'penugasan' ? 'active' : '' }} ">
+                <a href="{{ url('/penugasan/pelatihan') }}" class="nav-link {{ $activeMenu == 'penugasan' ? 'active' : '' }} ">
                     <i class="nav-icon fas fa-envelope-open"></i>
                     <p>Penugasan</p>
                 </a>
@@ -184,8 +192,8 @@
 
             <li class="nav-item">
                 <a href="{{ url('/pelatihan') }}" class="nav-link {{ $activeMenu == 'vendor' ? 'active' : '' }} ">
-                    <i class="nav-icon 	fas fa-landmark"></i>
-                    <p>Master Data Pelatihan & Sertifikasi</p>
+                    <i class="nav-icon 	fas fa-book "></i>
+                    <p>Master Data</p>
                     <i class="right fas fa-angle-left"></i>
                 </a>
                 <ul class="nav nav-treeview">

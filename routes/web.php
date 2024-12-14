@@ -27,6 +27,8 @@ use App\Http\Controllers\pelatihancontroller;
 use App\Http\Controllers\detailsertifikasicontroller;
 use App\Http\Controllers\detailpelatihancontroller;
 use App\Models\detailsertifikasi;
+use App\Http\Controllers\PenugasanPelatihanController;
+use App\Http\Controllers\PenugasanSertifikasiController;
 
 
 Route::pattern('id','[0-9]+');
@@ -41,6 +43,14 @@ Route::get('/', [WelcomeController::class, 'landingpage']);
 
 
 // dashboard
+Route::get('/dashboard', [DashboardAdminController::class, 'index']);
+
+// profil admin
+// harus dikasih kondisi klo rolenya admin nampilin admin
+Route::get('/admin/profil', [ProfilController::class, 'profil_admin']);
+Route::get('/admin/edit', [ProfilController::class,'edit_admin']); //menampilkan halaman form edit matkul ajax
+Route::put('/admin/{id}/update_ajax', [ProfilController::class,'update_ajax']);   //menyimpan halaman form edit matkul ajax
+
 Route::get('/dashboard', [DashboardAdminController::class, 'index']);
 
 
@@ -238,6 +248,7 @@ Route::delete('/pendataan/sertifikasi/{id}/delete', [PendataanSertifikasiControl
 Route::get('/pendataan/sertifikasi/export_excel', [PendataanSertifikasiController::class, 'export_excel']);  //export excel
 Route::get('/pendataan/sertifikasi/export_pdf', [PendataanSertifikasiController::class, 'export_pdf']); //export pdf
 
+// master sertifikasi
 Route::get('/mastersertifikasi',[sertifikasicontroller::class, 'index']);
 Route::POST('/mastersertifikasi/list',[sertifikasicontroller::class, 'list']);
 Route::get('/mastersertifikasi/{id}/show',[sertifikasicontroller::class, 'show']);
@@ -250,14 +261,7 @@ Route::delete('/mastersertifikasi/{id}/delete',[sertifikasicontroller::class, 'd
 Route::get('/mastersertifikasi/import',[sertifikasicontroller::class, 'import']);
 Route::post('/mastersertifikasi/import_proses',[sertifikasicontroller::class, 'import_proses']);
 
-// profil admin
-// harus dikasih kondisi klo rolenya admin nampilin admin
-Route::get('/admin/profil', [ProfilController::class, 'profil_admin']);
-Route::get('/admin/edit', [ProfilController::class,'edit_admin']); //menampilkan halaman form edit matkul ajax
-Route::put('/admin/{id}/update_ajax', [ProfilController::class,'update_ajax']);   //menyimpan halaman form edit matkul ajax
-
-Route::get('/dashboard', [DashboardAdminController::class, 'index']);
-
+// master pelatihan
 Route::get('/masterpelatihan',[pelatihancontroller::class, 'index']);
 Route::POST('/masterpelatihan/list',[pelatihancontroller::class, 'list']);
 Route::get('/masterpelatihan/{id}/show',[pelatihancontroller::class, 'show']);
@@ -273,11 +277,26 @@ Route::post('/masterpelatihan/import_proses',[pelatihancontroller::class, 'impor
 Route::get('/detailsertifikasi',[detailsertifikasicontroller::class,'index']);
 Route::post('/detailsertifikasi/list',[detailsertifikasicontroller::class,'list']);
 Route::get('/detailsertifikasi/create',[detailsertifikasicontroller::class,'create']);
-Route::POST('/detailsertifikasi/proses',[detailsertifikasicontroller::class,'store']);
+Route::post('/detailsertifikasi/proses',[detailsertifikasicontroller::class,'store']);
+Route::get('/detailsertifikasi/{id}/createmk', [detailsertifikasicontroller::class, 'createmk'])->name('pendataan.sertifikasi.createmk');;
+Route::post('/detailsertifikasi/storemk', [detailsertifikasicontroller::class, 'store_mk']);
+Route::get('/detailsertifikasi/{id}/createbd', [detailsertifikasicontroller::class, 'createbd']);
+Route::post('/detailsertifikasi/storebd', [detailsertifikasicontroller::class, 'store_bd']);
+Route::get('/detailsertifikasi/{id}/show',[detailsertifikasicontroller::class, 'show']);
+Route::get('/detailsertifikasi/{id}/confirm',[detailsertifikasicontroller::class, 'confirm']);
+Route::delete('/detailsertifikasi/{id}/delete',[detailsertifikasicontroller::class, 'delete']);
+Route::get('/detailsertifikasi/{id}/edit', [detailsertifikasicontroller::class,'edit']); //menampilkan halaman form edit pendataan ajax
+Route::put('/detailsertifikasi/{id}/update', [detailsertifikasicontroller::class,'update']);   //menyimpan halaman form edit pendataan ajax
+Route::get('/detailsertifikasi/{id}/editmk', [detailsertifikasicontroller::class, 'edit_mk']);
+Route::put('/detailsertifikasi/updatemk', [detailsertifikasicontroller::class, 'update_mk']);
+Route::get('/detailsertifikasi/{id}/editbd', [detailsertifikasicontroller::class, 'edit_bd']);
+Route::put('/detailsertifikasi/updatebd', [detailsertifikasicontroller::class, 'update_bd']);
 
 Route::get('/detailpelatihan',[detailpelatihancontroller::class,'index']);
 Route::post('/detailpelatihan/list',[detailpelatihancontroller::class,'list']);
 
+
+// Route::get('/pelatihansertifikasi',[pelatihansertifikasicontroller::class, 'index']);
 
 //Begin AdminLte
 Route::get('/pengajuan', [PengajuanPelatihanPimpinanController::class, 'index']);
@@ -301,3 +320,24 @@ Route::put('/sertifkasi/{id}/update_ajax', [PengajuanSertifikasiPimpinanControll
 Route::get('/sertifikasi/export_excel', [PengajuanSertifikasiPimpinanController::class, 'export_excel']);  //export excel
 Route::get('/sertifikasi/export_pdf', [PengajuanSertifikasiPimpinanController::class, 'export_pdf']); //export pdf
 Route::get('/{id}/show_ajax', [PengajuanSertifikasiPimpinanController::class, 'show_ajax']); //show_ajax
+
+
+// route penugasan
+Route::get('/penugasan/pelatihan', [PenugasanPelatihanController::class, 'index']);  // menampilkan halaman penugasan
+Route::post('/penugasan/pelatihan/list', [PenugasanPelatihanController::class, 'list'] );    //menampilkan data penugasan dalam bentuk json datatables
+Route::get('/penugasan/pelatihan/{id}/show', [PenugasanPelatihanController::class, 'show']); 
+Route::get('/penugasan/pelatihan/{id}/surat_tugas', [PenugasanPelatihanController::class, 'surat_tugas']); //export pdf
+Route::get('/penugasan/pelatihan/{id}/create', [PenugasanPelatihanController::class, 'create']); //add to riwayat aka pendataan
+Route::post('/penugasan/pelatihan/{id}/store', [PenugasanPelatihanController::class, 'store']);
+Route::get('/penugasan/pelatihan/export_excel', [PenugasanPelatihanController::class, 'export_excel']);  //export excel
+Route::get('/penugasan/pelatihan/export_pdf', [PenugasanPelatihanController::class, 'export_pdf']); //export pdf
+
+Route::get('/penugasan/sertifikasi', [PenugasanSertifikasiController::class, 'index']);  // menampilkan halaman penugasan
+Route::post('/penugasan/sertifikasi/list', [PenugasanSertifikasiController::class, 'list'] );    //menampilkan data penugasan dalam bentuk json datatables
+Route::get('/penugasan/sertifikasi/{id}/show', [PenugasanSertifikasiController::class, 'show']); 
+Route::get('/penugasan/sertifikasi/{id}/surat_tugas', [PenugasanSertifikasiController::class, 'surat_tugas']); //export pdf
+Route::get('/penugasan/sertifikasi/{id}/create', [PenugasanSertifikasiController::class, 'create']); //add to riwayat aka pendataan
+Route::post('/penugasan/sertifikasi/{id}/store', [PenugasanSertifikasiController::class, 'store']);
+Route::get('/penugasan/sertifikasi/export_excel', [PenugasanSertifikasiController::class, 'export_excel']);  //export excel
+Route::get('/penugasan/sertifikasi/export_pdf', [PenugasanSertifikasiController::class, 'export_pdf']); //export pdf
+

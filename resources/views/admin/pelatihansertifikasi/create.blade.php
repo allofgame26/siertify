@@ -12,7 +12,7 @@
                 <h5>Detail Pelatihan</h5>
                     <div class="form-group">
                         <label>Nama Sertifikasi</label>
-                        <select name="sertifikasi" id="sertifikasi" class="form-control">
+                        <select name="id_sertifikasi" id="id_sertifikasi" class="form-control">
                             <option value="">Pilih Sertifikasi</option>
                             @foreach ($sertifikasi as $l)
                             <option value="{{ $l->id_sertifikasi }}">{{ $l->nama_sertifikasi }}</option>
@@ -34,7 +34,7 @@
                         <div class="col-md-6">
                             <div class="form-group">
                                 <label>Jumlah Peserta</label>
-                                <input type="number" name="jumlah_peserta" id="jumlah_peserta" class="form-control" placeholder="Enter jumlah peserta">
+                                <input type="text" name="quota_peserta" id="quota_peserta" class="form-control" placeholder="Enter jumlah peserta">
                             </div>
                         </div>
                     </div>
@@ -47,7 +47,7 @@
                         <div class="col-md-4">
                             <div class="form-group">
                                 <label>Periode</label>
-                                <select name="periode" id="periode" class="form-control">
+                                <select name="id_periode" id="id_periode" class="form-control">
                                     <option value="">Pilih Periode</option>
                                     @foreach ($periode as $l)
                                     <option value="{{ $l->id_periode }}">{{ $l->nama_periode }}</option>
@@ -71,33 +71,62 @@
                 </div>
     
                 <!-- Kategori Pelatihan -->
-                <div class="mb-4">
-                    <h5>Kategori Pelatihan</h5>
-                    <div class="row">
-                        <div class="col-md-6">
-                            <div class="form-group">
-                                <label>Mata Kuliah yang Relevan</label>
-                                <select name="mata_kuliah" id="mata_kuliah" class="form-control">
-                                    <option value="">Pilih mata kuliah</option>
-                                    @foreach ($mk as $l)
-                                    <option value="{{ $l->id_mk }}">{{ $l->nama_mk }}</option>
-                                    @endforeach
-                                </select>
-                            </div>
-                        </div>
-                        <div class="col-md-6">
-                            <div class="form-group">
-                                <label>Bidang Minat yang Relevan</label>
-                                <select name="bidang_minat" id="bidang_minat" class="form-control">
-                                    <option value="">Pilih bidang minat</option>
-                                    @foreach ($bd as $l)
-                                    <option value="{{ $l->id_bd }}">{{ $l->nama_bd }}</option>
-                                    @endforeach
-                                </select>
-                            </div>
+                <div class="row">
+                    <div class="col-10">
+                        <div class="form-group">
+                            <label>Mata Kuliah Relevan</label>
                         </div>
                     </div>
+                    <div class="col-2" style="padding-left">
+                        <button
+                        type="button"
+                            onclick="modalAction('{{ url('/detailsertifikasi/' . Auth::user()->id_user . '/createmk') }}')"
+                            class="btn btn-success btn-sm">
+                            <i class="fas fa-plus-square" style="margin-right: 8px;"></i>Tambah
+                        </button>
+                    </div>
                 </div>
+                <!-- Display Session Data as Badges -->
+                @if (session()->has('id_mk'))
+                    <div class="form-group">
+                        <div>
+                            @foreach (session('id_mk') as $id => $namaMk)
+                                <!-- Display each mata kuliah as badge -->
+                                <span class="custom-badge-mk">{{ $namaMk }} </span>
+                                <input type="hidden"  name="id_mk[]" value="{{ $id }}">
+                            @endforeach
+                        </div>
+                    </div>
+                @endif
+                <div class="row">
+                    <div class="col-10">
+                        <div class="form-group">
+                            <label>Bidang Minat Relevan</label>
+                        </div>
+                    </div>
+                    <div class="col-2" style="padding-left">
+                        <button
+                        type="button"
+                            onclick="modalAction('{{ url('/detailsertifikasi/' . Auth::user()->id_user . '/createbd') }}')"
+                            class="btn btn-success btn-sm">
+                            <i class="fas fa-plus-square" style="margin-right: 8px;"></i>Tambah
+                        </button>
+                    </div>
+                </div>
+                 <!-- Display Session Data as Badges -->
+                 @if (session()->has('id_bd'))
+                 <div class="form-group">
+                     <div>
+                         @foreach (session('id_bd') as $id => $namabd)
+                             <!-- Display each mata kuliah as badge -->
+                             <span class="custom-badge-bd">{{ $namabd }} </span>
+                            <input type="hidden"  name="id_bd[]" value="{{ $id }}">
+                         @endforeach
+                     </div>
+                 </div>
+             @endif
+
+            <input type="hidden" name="input_by" value="dosen">
             </div>
             <div class="modal-footer">
                 <button type="button" data-dismiss="modal" class="btn btn-warning">Batal</button>
@@ -117,6 +146,54 @@
         border-radius: 10px;
         /* Sesuaikan nilai radius */
     }
+
+    .custom-badge-mk {
+            background-color: #FFFFEA;
+            /* Warna kuning untuk latar */
+            color: #BB6902;
+            /* Warna teks hitam */
+            border: 1px solid #FFDF1B;
+            /* Warna border kuning gelap */
+            border-radius: 16px;
+            /* Membuat bentuknya lebih bulat */
+            padding: 5px 15px;
+            /* Padding dalam badge */
+            font-weight: medium;
+            /* Teks lebih tebal */
+            font-size: 14px;
+            /* Ukuran font */
+            display: inline-block;
+            /* Supaya terlihat seperti badge */
+            margin: 5px;
+            /* Jarak antar badge */
+            height: 28px;
+            justify-content: center;
+            text-align: center;
+        }
+
+        .custom-badge-bd {
+            background-color: #F1FCF2;
+            /* Warna kuning untuk latar */
+            color: #1F7634;
+            /* Warna teks hitam */
+            border: 1px solid #58D073;
+            /* Warna border kuning gelap */
+            border-radius: 16px;
+            /* Membuat bentuknya lebih bulat */
+            padding: 5px 15px;
+            /* Padding dalam badge */
+            font-weight: medium;
+            /* Teks lebih tebal */
+            font-size: 14px;
+            /* Ukuran font */
+            display: inline-block;
+            /* Supaya terlihat seperti badge */
+            margin: 5px;
+            /* Jarak antar badge */
+            height: 28px;
+            justify-content: center;
+            text-align: center;
+        }
 </style>
 
 <script>
@@ -130,9 +207,8 @@
 
         $("#form-tambah-detailsertifikasi").validate({
             rules: {
-                sertifikasi: {
+                id_sertifikasi: {
                     required: true,
-                    number: true // Validasi tipe integer
                 },
                 biaya: {
                     required: true,
@@ -140,15 +216,14 @@
                 },
                 lokasi: {
                     required: true,
-                    maxlength: 50;
+                    maxlength: 50,
                 },
-                jumlah_peserta: {
+                quota_peserta: {
                     required: true,
-                    number: true,
+                    maxlength: 5,
                 },
-                periode: {
+                id_periode: {
                     required: true,
-                    number: true
                 },
                 tanggal_mulai: {
                     required: true,
@@ -156,14 +231,13 @@
                 tanggal_selesai: {
                     required: true,
                 },
-                mata_kuliah: {
-                    required: true,
-                    number: true
-                },
-                bidang_minat: {
-                    required: true,
-                    number: true
+                'id_mk[]' : {
+                    required: true
+                }, 
+                'id_bd[]' :{
+                    required: true
                 }
+                
             },
             submitHandler: function(form) {
                 console.log('Validasi Berhasil, Form akan disubmit');

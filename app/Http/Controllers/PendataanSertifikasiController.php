@@ -7,19 +7,19 @@ use App\Models\bidangminatmodel;
 use App\Models\detailsertifikasi;
 use App\Models\jenispelatihansertifikasimodel;
 use App\Models\matakuliahmodel;
-use App\Models\sertifikasimodel;
 use App\Models\periodemodel;
+use App\Models\sertifikasimodel;
 use App\Models\tagbdsertifikasimodel;
 use App\Models\tagmksertifikasimodel;
 use App\Models\vendorsertifikasimodel;
+use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
-use Yajra\DataTables\Facades\DataTables;
-use PhpOffice\PhpSpreadsheet\Spreadsheet;
 use PhpOffice\PhpSpreadsheet\IOFactory;
-use Barryvdh\DomPDF\Facade\Pdf;
+use PhpOffice\PhpSpreadsheet\Spreadsheet;
+use Yajra\DataTables\Facades\DataTables;
 
 class PendataanSertifikasiController extends Controller
 {
@@ -71,24 +71,33 @@ class PendataanSertifikasiController extends Controller
             'm_jenis_pelatihan_sertifikasi as j',
             'j.id_jenis_pelatihan_sertifikasi', '=', 'm_sertifikasi.id_jenis_pelatihan_sertifikasi'
         )
-        ->join(
-            'm_periode as periode', 'periode.id_periode', '=', 'detail.id_periode' // Perbaiki join untuk periode
-        )->select(
+            ->join(
+                'm_periode as periode', 'periode.id_periode', '=', 'detail.id_periode' // Perbaiki join untuk periode
+            )->select(
             'm_sertifikasi.id_sertifikasi',
             'm_sertifikasi.nama_sertifikasi',
             'vendor.nama_vendor_sertifikasi',
             'm_sertifikasi.level_sertifikasi',
-            'j.nama_jenis_sertifikasi', 
+            'j.nama_jenis_sertifikasi',
             'periode.nama_periode',
+            'detail.tanggal_mulai',
             'detail.id_detail_sertifikasi' // Ambil nama periode
         )->where(
             'detail.id_user', '=', $user_id
-        )->get(); // Tambahkan get() untuk mengeksekusi query
+        ); // Tambahkan get() untuk mengeksekusi query
+
+        // Apply filter berdasarkan id_periode jika ada
+        if ($request->id_periode_sertifikasi) {
+            $sertifikasi->where('detail.id_periode', $request->id_periode_sertifikasi);
+        }
+
+        // Ambil data setelah semua filter diterapkan
+        $sertifikasi = $sertifikasi->get();
 
         return DataTables::of($sertifikasi)
             ->addIndexColumn()
             ->addColumn('aksi', function ($pendataan) {
-                $btn = '<button onclick="modalAction(\'' . url('/pendataan/sertifikasi/' . $pendataan->id_detail_sertifikasi . '/show') . '\')" class="btn btn-info btn-sm">Detail</button>';
+                $btn = '<button onclick="modalAction(\'' . url('/pendataan/sertifikasi/' . $pendataan->id_detail_sertifikasi . '/show') . '\')" class="btn btn-info btn-sm">Detail</button> ';
                 $btn .= '<button onclick="modalAction(\'' . url('/pendataan/sertifikasi/' . $pendataan->id_detail_sertifikasi . '/edit') . '\')" class="btn btn-warning btn-sm">Edit</button> ';
                 $btn .= '<button onclick="modalAction(\'' . url('/pendataan/sertifikasi/' . $pendataan->id_detail_sertifikasi . '/delete') . '\')" class="btn btn-danger btn-sm">Hapus</button> ';
 
@@ -662,10 +671,9 @@ class PendataanSertifikasiController extends Controller
             }
         }
 
-
         return response()->json([
             'status' => true,
-            'message' => 'Data berhasil diupdate'
+            'message' => 'Data berhasil diupdate',
         ]);
 
         return redirect('/');
@@ -906,12 +914,12 @@ class PendataanSertifikasiController extends Controller
 ////////////////////////////////////////////////////////////////////////
 
 ///EXPORTTT PDF EXCEL
-public function export_excel()
-{
-    
-    $userId = Auth::user()->id_user;
-    
-    //ambil data yang akan di export
+    public function export_excel()
+    {
+
+        $userId = Auth::user()->id_user;
+
+        //ambil data yang akan di export
         $sertifikasi = sertifikasimodel::join(
             'm_jenis_pelatihan_sertifikasi as jenis',
             'm_sertifikasi.id_jenis_pelatihan_sertifikasi', '=', 'jenis.id_jenis_pelatihan_sertifikasi'
@@ -939,96 +947,94 @@ public function export_excel()
             ->orderBy('detail.id_detail_sertifikasi')
             ->get();
 
+        //load library
+        $spreadsheet = new Spreadsheet();
+        $sheet = $spreadsheet->getActiveSheet();
 
-    //load library
-    $spreadsheet = new Spreadsheet();
-    $sheet = $spreadsheet->getActiveSheet();
+        $sheet->setCellValue('A1', 'No');
+        $sheet->setCellValue('B1', 'Periode');
+        $sheet->setCellValue('C1', 'Nama Sertifikasi');
+        $sheet->setCellValue('D1', 'Nama Vendor');
+        $sheet->setCellValue('E1', 'Level');
+        $sheet->setCellValue('F1', 'Jenis Sertifikasi');
+        $sheet->setCellValue('G1', 'No Sertifikat');
 
-    $sheet->setCellValue('A1', 'No');
-    $sheet->setCellValue('B1', 'Periode');
-    $sheet->setCellValue('C1', 'Nama Sertifikasi');
-    $sheet->setCellValue('D1', 'Nama Vendor');
-    $sheet->setCellValue('E1', 'Level');
-    $sheet->setCellValue('F1', 'Jenis Sertifikasi');
-    $sheet->setCellValue('G1', 'No Sertifikat');
+        $sheet->getStyle('A1:G1')->getFont()->setBold(true); //bold header
 
-    $sheet->getStyle('A1:G1')->getFont()->setBold(true); //bold header
+        $no = 1;
+        $baris = 2;
+        foreach ($sertifikasi as $key => $value) {
+            $sheet->setCellValue('A' . $baris, $no);
+            $sheet->setCellValue('B' . $baris, $value->nama_periode);
+            $sheet->setCellValue('C' . $baris, $value->nama_sertifikasi);
+            $sheet->setCellValue('D' . $baris, $value->nama_vendor_sertifikasi);
+            $sheet->setCellValue('E' . $baris, $value->level_sertifikasi);
+            $sheet->setCellValue('F' . $baris, $value->nama_jenis_sertifikasi);
+            $sheet->setCellValue('G' . $baris, $value->no_sertifikasi);
+            $baris++;
+            $no++;
 
-    $no = 1;
-    $baris = 2;
-    foreach ($sertifikasi as $key => $value) {
-        $sheet->setCellValue('A' . $baris, $no);
-        $sheet->setCellValue('B' . $baris, $value->nama_periode);
-        $sheet->setCellValue('C' . $baris, $value->nama_sertifikasi);
-        $sheet->setCellValue('D' . $baris, $value->nama_vendor_sertifikasi);
-        $sheet->setCellValue('E' . $baris, $value->level_sertifikasi);
-        $sheet->setCellValue('F' . $baris, $value->nama_jenis_sertifikasi);
-        $sheet->setCellValue('G' . $baris, $value->no_sertifikasi);
-        $baris++;
-        $no++;
+        }
+
+        foreach (range('A', 'G') as $columID) {
+            $sheet->getColumnDimension($columID)->setAutoSize(true); //set auto size kolom
+        }
+
+        $sheet->setTitle('Data Riwayat Sertifikasi');
+        $writer = IOFactory::createWriter($spreadsheet, 'Xlsx');
+        $filename = 'Data Riwayat Sertifikasi' . date('Y-m-d H:i:s') . '.xlsx';
+        header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
+        header('Content-Disposition: attachment;filename="' . $filename . '"');
+        header('Cache-Control: max-age=0');
+        header('Cache-Control: max-age=1');
+        header('Expires: Mon, 26 Jul 1997 05:00:00 GMT');
+        header('Last-Modified: ' . gmdate('D, dMY H:i:s') . 'GMT');
+        header('Cache-Control: cache, must-revalidate');
+        header('Pragma: public');
+        $writer->save('php://output');
+        exit;
 
     }
 
-    foreach (range('A', 'G') as $columID) {
-        $sheet->getColumnDimension($columID)->setAutoSize(true); //set auto size kolom
-    }
-
-    $sheet->setTitle('Data Riwayat Sertifikasi');
-    $writer = IOFactory::createWriter($spreadsheet, 'Xlsx');
-    $filename = 'Data Riwayat Sertifikasi' . date('Y-m-d H:i:s') . '.xlsx';
-    header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
-    header('Content-Disposition: attachment;filename="' . $filename . '"');
-    header('Cache-Control: max-age=0');
-    header('Cache-Control: max-age=1');
-    header('Expires: Mon, 26 Jul 1997 05:00:00 GMT');
-    header('Last-Modified: ' . gmdate('D, dMY H:i:s') . 'GMT');
-    header('Cache-Control: cache, must-revalidate');
-    header('Pragma: public');
-    $writer->save('php://output');
-    exit;
-
-}
-
-public function export_pdf()
+    public function export_pdf()
     {
         $userId = Auth::user()->id_user;
-    
+
         //ambil data yang akan di export
-            $sertifikasi = sertifikasimodel::join(
-                'm_jenis_pelatihan_sertifikasi as jenis',
-                'm_sertifikasi.id_jenis_pelatihan_sertifikasi', '=', 'jenis.id_jenis_pelatihan_sertifikasi'
+        $sertifikasi = sertifikasimodel::join(
+            'm_jenis_pelatihan_sertifikasi as jenis',
+            'm_sertifikasi.id_jenis_pelatihan_sertifikasi', '=', 'jenis.id_jenis_pelatihan_sertifikasi'
+        )
+            ->join(
+                'm_vendor_sertifikasi as vendor',
+                'm_sertifikasi.id_vendor_sertifikasi', '=', 'vendor.id_vendor_sertifikasi'
             )
-                ->join(
-                    'm_vendor_sertifikasi as vendor',
-                    'm_sertifikasi.id_vendor_sertifikasi', '=', 'vendor.id_vendor_sertifikasi'
-                )
-                ->join(
-                    't_detailsertifikasi as detail',
-                    'm_sertifikasi.id_sertifikasi', '=', 'detail.id_sertifikasi'
-                )
-                ->join(
-                    'm_periode as periode',
-                    'detail.id_periode', '=', 'periode.id_periode'
-                )
-                ->select(
-                    'm_sertifikasi.*',
-                    'jenis.*',
-                    'vendor.*',
-                    'periode.*',
-                    'detail.*'
-                )
-                ->where('detail.id_user', '=', $userId)
-                ->orderBy('detail.id_detail_sertifikasi')
-                ->get();
+            ->join(
+                't_detailsertifikasi as detail',
+                'm_sertifikasi.id_sertifikasi', '=', 'detail.id_sertifikasi'
+            )
+            ->join(
+                'm_periode as periode',
+                'detail.id_periode', '=', 'periode.id_periode'
+            )
+            ->select(
+                'm_sertifikasi.*',
+                'jenis.*',
+                'vendor.*',
+                'periode.*',
+                'detail.*'
+            )
+            ->where('detail.id_user', '=', $userId)
+            ->orderBy('detail.id_detail_sertifikasi')
+            ->get();
 
-
-                $identitas = akunusermodel::join(
-                    'm_identitas_diri as d',
-                    'd.id_identitas', '=', 'm_akun_user.id_identitas'
-                )
-                ->where(
-                    'm_akun_user.id_user', '=', $userId 
-                )->first();
+        $identitas = akunusermodel::join(
+            'm_identitas_diri as d',
+            'd.id_identitas', '=', 'm_akun_user.id_identitas'
+        )
+            ->where(
+                'm_akun_user.id_user', '=', $userId
+            )->first();
 
         //use Barruvdh\DomPDF\Facade\\Pdf
         $pdf = Pdf::loadView('dosen.pendataansertifikasi.export_pdf', ['sertifikasi' => $sertifikasi, 'identitas' => $identitas]);

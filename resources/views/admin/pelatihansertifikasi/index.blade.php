@@ -38,13 +38,13 @@
                             <div class="form-group row">
                                 <label class="col-1 control-label col-form-label">Filter:</label>
                                 <div class="col-3">
-                                    <select class="form-control" id="id_periode" name="id_periode" required>
+                                    <select class="form-control" id="id_periode_sertifikasi" name="id_periode_sertifikasi" required>
                                         <option value="">- Semua -</option>
                                         @foreach ($periode as $item)
                                             <option value="{{ $item->id_periode }}">{{ $item->nama_periode }}</option>
                                         @endforeach
                                     </select>
-                                    <small class="form-text text-muted">periode</small>
+                                    <small class="form-text text-muted">Periode</small>
                                 </div>
                             </div>
                         </div>
@@ -141,7 +141,7 @@
                     "dataType": "json",
                     "type": "POST",
                     "data": function(d) {
-                        d.id_periode = $('#id_periode').val();
+                        d.id_periode_sertifikasi = $('#id_periode_sertifikasi').val();
                     }
                 },
                 columns: [{
@@ -187,7 +187,7 @@
                     searchable: false
                 }]
             });
-            $('#id_periode').on('change', function() {
+            $('#id_periode_sertifikasi').on('change', function() {
                 tablePenjualan.ajax.reload();
             });
         });
