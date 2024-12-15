@@ -1,117 +1,133 @@
-<form action="{{ url('/profil/' . $idselected. '/prosesmk') }}" method="POST" id="form-tambah-mk">
+<form action="{{ url('/profil/' . $user . '/prosesmk') }}" method="post" id="form-edit-mk">
     @csrf
-    <div id="modal-master" class="modal-dialog modal-lg" role="document">
+    @method('PUT')
+    <div id="modal-master" class="modal-dialog modal-lg" role="dialog">
         <div class="modal-content">
-            <div class="modal-header bg-success">
-                <h5 class="modal-title" id="exampleModalLabel">Tambah Mata Kuliah</h5>
+            <div class="modal-header bg-warning">
+                <h5 class="modal-title" id="exampleModalLabel">Edit Mata Kuliah</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span>&times;</span>
                 </button>
             </div>
             <div class="modal-body">
-                <div class="form-group">
-                    <label>Nama User</label>
-                    <select name="id_user" id="id_user" class="form-control" required>
-                        <option value="">- Pilih Nama -</option>
-                        @foreach ($akun as $l)
-                        <option {{ $l->id_user == $idselected ? 'selected' : '' }}
-                        value="{{ $l->id_user }}"> {{ $l->username }} </option>
-                        @endforeach
-                    </select>
-                    <small id="error-id_user" class="error-text form-text text-danger"></small>
+                <div class="alert alert-green">
+                    <p>Pilih mata kuliah yang pernah Anda ajar</p>
                 </div>
                 <div class="form-group">
-                    <label>Mata Kuliah</label>
-                    <select name="id_mk" id="id_mk" class="form-control" required>
-                        <option value="">- Pilih Mata Kuliah -</option>
-                        @foreach ($mk as $k)
-                        <option value="{{ $k->id_mk }}">
-                        {{ $k->nama_mk }}
-                        </option>
-                        @endforeach
-                    </select>
-                    <small id="error-id_mk" class="error-text form-text text-danger"></small>
+                    <input type="text" id="search-mk" class="form-control" placeholder="Cari mata kuliah...">
                 </div>
-            </div>
-            <div class="modal-footer">
-                <button type="button" data-dismiss="modal" class="btn btn-warning">Batal</button>
-                <button type="submit" class="btn btn-success">Simpan</button>
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="checkbox-container">
+                            @if (session()->has('id_mk'))
+                                @foreach ($mk as $mk)
+                                    <div id="chk{{ $mk->id_mk }}" class="checkbox-item" value="{{ $mk->nama_mk }}">
+                                        <label>
+                                            <input type="checkbox" name="id_mk[]" value="{{ $mk->id_mk }}"
+                                                @if (in_array($mk->id_mk, session('selected_mk', []))) checked @endif>
+                                            {{ $mk->nama_mk }}
+                                        </label>
+                                    </div>
+                                @endforeach
+                            @else
+                                @foreach ($mk as $mkItem)
+                                    <div id="chk{{ $mkItem->id_mk }}" class="checkbox-item"
+                                        value="{{ $mkItem->nama_mk }}">
+                                        <label>
+                                            <input type="checkbox" name="id_mk[]" value="{{ $mkItem->id_mk }}"
+                                                @if (in_array($mkItem->nama_mk, $mataKuliah)) checked @endif>
+                                            {{ $mkItem->nama_mk }}
+                                        </label>
+                                    </div>
+                                @endforeach
+                            @endif
+                        </div>
+                    </div>
+                    <div class="col-md-12">
+                        <div class="modal-footer">
+                            <button type="button" data-dismiss="modal" class="btn btn-warning">Batal</button>
+                            <button type="submit" class="btn btn-success">Simpan</button>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
 </form>
 
 <style>
-    .modal-header {
-        padding: 10px;
-        /* Sesuaikan nilai padding */
+    .checkbox-container {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        /* Membuat 2 kolom */
+        gap: 10px;
+        /* Memberikan jarak antar elemen */
     }
 
-    .modal-content {
-        border-radius: 10px;
-        /* Sesuaikan nilai radius */
+    .checkbox-item {
+        display: flex;
+        /* Mengatur elemen checkbox agar sejajar dengan label */
+        align-items: center;
+    }
+
+    .alert-green {
+        background-color: #FFFFEA;
+        color: #BB6902;
     }
 </style>
 
+
 <script>
     $(document).ready(function() {
-        // Setup CSRF token untuk setiap AJAX request
-        $.ajaxSetup({
-                headers: {
-                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-            }
-        }); 
+        // Cek dan cari mata kuliah
+        $('#search-mk').on('keyup', function() {
+            var searchTerm = $(this).val().toLowerCase();
+            $('.checkbox-item').each(function() {
+                var mkName = $(this).text().toLowerCase();
+                $(this).toggle(mkName.indexOf(searchTerm) > -1);
+            });
+        });
 
-        $("#form-tambah-mk").validate({
+        // Validasi form dan kirim data dengan AJAX
+        $("#form-edit-mk").validate({
             rules: {
-                id_user: {
-                    required: true,
-                    number: true // Validasi tipe integer
-                },
-                id_mk: {
-                    required: true,
-                    number: true // Validasi tipe integer
-                }
+                // Tambahkan aturan validasi jika perlu
             },
             submitHandler: function(form) {
-                console.log('Validasi Berhasil, Form akan disubmit');
+                console.log('Form is valid'); // Debugging
+                console.log(form.action); // Debugging
+                console.log(form.method); // Debugging
+
+                let data = $('#form-edit-mk').find(':input').serializeArray();
+
                 $.ajax({
-                    url: $(form).attr('action'), // URL dari atribut action form
-                    type: 'POST', // Metode POST
-                    data: $(form).serialize(), // Serialize form untuk data request
-                    dataType: 'json', // Format data yang diharapkan
-                    beforeSend: function() {
-                        // Disable tombol submit sebelum proses selesai
-                        $('button[type="submit"]').prop('disabled', true);
-                    },
+                    url: form.action, // Mengambil URL dari form action
+                    type: form.method, // Mengambil method dari form
+                    data: data, // Mengambil data dari form
                     success: function(response) {
+                        console.log(response); // Debugging
                         if (response.status) {
-                            // Tutup modal
-                            $('#myModal').modal('hide');
-                            // Reset form
-                            $(form)[0].reset();
-                            // Tampilkan pesan sukses
+                            $('#modal-master').modal('hide');
                             Swal.fire({
                                 icon: 'success',
                                 title: 'Berhasil',
                                 text: response.message
+                            }).then(function() {
+                                // Reload halaman atau update data setelah Swal ditutup
+                                if (typeof dataMk !== 'undefined') {
+                                    dataMk.ajax
+                                        .reload(); // Reload data table jika ada
+                                } else {
+                                    location
+                                        .reload(); // Reload halaman jika tidak ada dataMk
+                                }
                             });
 
-                            // Reload DataTable jika instance tersedia
-                            if (typeof datamk !== 'undefined') {
-                                datamk.ajax.reload(null, false); // Reload tabel tanpa mengubah posisi halaman
-                            }
-
                         } else {
-                            // Reset error message
                             $('.error-text').text('');
-                            // Tampilkan pesan error jika ada
-                            if (response.msgField) {
-                                $.each(response.msgField, function(prefix, val) {
-                                    $('#error-' + prefix).text(val[0]);
-                                });
-                            }
-                            // Tampilkan alert error
+                            $.each(response.msgField, function(prefix, val) {
+                                $('#error-' + prefix).text(val[0]);
+                            });
                             Swal.fire({
                                 icon: 'error',
                                 title: 'Terjadi Kesalahan',
@@ -120,30 +136,15 @@
                         }
                     },
                     error: function(xhr, status, error) {
-                        console.error('Error:', xhr.responseJSON);
+                        console.log(xhr.responseText); // Debugging
                         Swal.fire({
                             icon: 'error',
                             title: 'Terjadi Kesalahan',
-                            text: xhr.responseJSON?.message || 'Gagal menyimpan data. Silakan coba lagi.'
+                            text: 'Gagal mengirim data.'
                         });
-                    },
-                    complete: function() {
-                        // Aktifkan kembali tombol submit setelah proses selesai
-                        $('button[type="submit"]').prop('disabled', false);
                     }
                 });
-                return false; // Mencegah form submit secara default
-            },
-            errorElement: 'span',
-            errorPlacement: function(error, element) {
-                error.addClass('invalid-feedback');
-                element.closest('.form-group').append(error);
-            },
-            highlight: function(element, errorClass, validClass) {
-                $(element).addClass('is-invalid');
-            },
-            unhighlight: function(element, errorClass, validClass) {
-                $(element).removeClass('is-invalid');
+                return false; // Mencegah form untuk submit secara biasa
             }
         });
     });

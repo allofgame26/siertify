@@ -141,47 +141,43 @@
                 </div>
 
                 @if (Auth::user()->getRole() == 'DSN')
-                    <div class="col">
-                        <div class="card card-info">
-                            <div class="card-header bg-info" style="height: 60px; padding: 12px">
-                                <h3 class="card-title">Mata Kuliah</h3>
-                                <div class="card-tools">
-                                    <button onclick="modalAction('{{ url('/profil/' . $user->id_user . '/mk') }}')" class="btn btn-success btn-sm"><i class="fas fa-plus-square"></i></button>
-                                </div>
-                            </div>
-                            <div class="card-body">
-                                @foreach ($user->matakuliah as $mk)
-                                    <span class="custom-badge-mk">{{ $mk->nama_mk }}</span>
-                                @endforeach
+                <div class="col">
+                    <div class="card card-info">
+                        <div class="card-header bg-info d-flex align-items-center" style="height: 46px; padding: 12px">
+                            <h3 class="card-title flex-grow-1 m-0">Mata Kuliah</h3>
+                            <div class="card-tools d-flex justify-content-center">
+                                <button onclick="modalAction('{{ url('/profil/' . $user->id_user . '/mk') }}')" class="btn btn-info btn-sm"><i class="fas fa-plus-square"></i>Tambah</button>
                             </div>
                         </div>
+                        <div class="card-body">
+                            @foreach ($user->matakuliah as $mk)
+                                <span class="custom-badge-mk">{{ $mk->nama_mk }}</span>
+                            @endforeach
+                        </div>
                     </div>
+                </div>
 
-                    <div class="col">
-                        <div class="card card-info">
-                            <div class="card-header bg-info" style="height: 60px; padding: 12px">
-                                <h3 class="card-title">Bidang Minat</h3>
-                                <div class="card-tools">
-                                    <button onclick="modalAction('{{ url('/profil/' . $user->id_user . '/bd') }}')" class="btn btn-success btn-sm"><i class="fas fa-plus-square"></i></button>
-                                </div>
-                            </div>
-                            <div class="card-body">
-                                @foreach ($user->bidangminat as $bd)
-                                    <span class="custom-badge-bd">{{ $bd->nama_bd }}</span>
-                                @endforeach
+                <div class="col">
+                    <div class="card card-info">
+                        <div class="card-header bg-info d-flex align-items-center" style="height: 46px; padding: 12px">
+                            <h3 class="card-title flex-grow-1 m-0">Bidang Minat</h3>
+                            <div class="card-tools d-flex justify-content-center">
+                                <button onclick="modalAction('{{ url('/profil/' . $user->id_user . '/bd') }}')" class="btn btn-info btn-sm"><i class="fas fa-plus-square"></i>Tambah</button>
                             </div>
                         </div>
+                        <div class="card-body">
+                            @foreach ($user->bidangminat as $bd)
+                                <span class="custom-badge-bd">{{ $bd->nama_bd }}</span>
+                            @endforeach
+                        </div>
                     </div>
+                </div>
                 @endif
-
-
             </div>
-
         </div>
     @endempty
-    </div>
        <!-- Modal -->
-    <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel">
         <div class="modal-dialog modal-lg" role="document">
             <div class="modal-content">
                 <!-- Konten modal akan dimuat di sini -->
@@ -205,6 +201,10 @@
         .card-header {
             position: relative;
             background-color: #00A7C4;
+        }
+
+        .card-tools .btn i {
+            margin-right: 8px;
         }
 
         .btn-warning {

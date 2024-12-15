@@ -4,7 +4,7 @@
 
 use App\Http\Controllers\BidangMinatController;
 use App\Http\Controllers\AuthController;
-use App\Http\Controllers\DashboardAdminController;
+use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\datapenggunaSuperadminController;
 use App\Http\Controllers\JenispenggunaSuperadminController;
 use Illuminate\Support\Facades\Route;
@@ -38,31 +38,22 @@ Route::post('/postlogin', [AuthController::class, 'postlogin']);
 Route::post('/logout', [AuthController::class, 'logout']);
 
 
-
 Route::get('/', [WelcomeController::class, 'landingpage']);
 
 
 // dashboard
-Route::get('/dashboard', [DashboardAdminController::class, 'index']);
-
-// profil admin
-// harus dikasih kondisi klo rolenya admin nampilin admin
-Route::get('/admin/profil', [ProfilController::class, 'profil_admin']);
-Route::get('/admin/edit', [ProfilController::class,'edit_admin']); //menampilkan halaman form edit matkul ajax
-Route::put('/admin/{id}/update_ajax', [ProfilController::class,'update_ajax']);   //menyimpan halaman form edit matkul ajax
-
-Route::get('/dashboard', [DashboardAdminController::class, 'index']);
-
+Route::get('/dashboard', [DashboardController::class, 'index']);
 
 // profil
 Route::get('/profil', [ProfilController::class, 'index'])->name('profil.index');
 Route::get('/profil/{id}/edit', [ProfilController::class, 'edit']);
 Route::put('/profil/{id}/update', [ProfilController::class, 'update']);
 Route::get('/profil/createmk', [ProfilController::class, 'createmk']);
+Route::put('/profil/{id}/prosesmk', [ProfilController::class, 'storemk']);
 Route::get('/profil/{id}/bd', [ProfilController::class, 'createbd']);
-Route::post('/profil/{id}/prosesbd', [ProfilController::class, 'storebd']);
+Route::put('/profil/{id}/prosesbd', [ProfilController::class, 'storebd']);
 Route::get('/profil/{id}/mk', [ProfilController::class, 'matakuliah']);
-Route::post('/profil/{id}/prosesmk', [ProfilController::class, 'storemk']);
+
     
 // jenis pelatihan dan sertifikasi admin
 Route::get('/jenis', [JenisPelatihanSertifikasiController::class, 'index']);  // menampilkan halaman jenis
