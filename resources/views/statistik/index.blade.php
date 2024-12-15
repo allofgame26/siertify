@@ -47,9 +47,17 @@
                         <label class="col-1 control-label col-form-label">Filter:</label>
                         <div class="col-3">
                             <select class="form-control" id="id_periode" name="id_periode" required>
-                                <option value="">- Semua -</option>
+                                <option value="">- Periode -</option>
                                 @foreach ($periode as $item)
                                     <option value="{{ $item->id_periode }}">{{ $item->nama_periode }}</option>
+                                @endforeach
+                            </select>
+                        </div>
+                        <div class="col-3">
+                            <select class="form-control" id="id_identitas" name="id_identitas" required>
+                                <option value="">- Dosen -</option>
+                                @foreach ($identitas as $item)
+                                    <option value="{{ $item->id_identitas }}">{{ $item->nama_lengkap }}</option>
                                 @endforeach
                             </select>
                         </div>
@@ -165,7 +173,8 @@
                     "type": "POST",
                     data: function(d) {
                         console.log($('#id_periode').val());  // Debugging nilai id_periode
-                        d.id_periode = $('#id_periode').val();
+                        d.id_periode = $('#id_periode').val(),
+                        d.id_identitas = $('#id_identitas').val();
                     }
                 },
                 columns: [{
@@ -209,6 +218,11 @@
             });
 
             $('#id_periode').on('change', function() {
+                dataStatistik.ajax.reload(); // Memuat ulang tabel pelatihan
+              
+            });
+
+            $('#id_identitas').on('change', function() {
                 dataStatistik.ajax.reload(); // Memuat ulang tabel pelatihan
               
             });

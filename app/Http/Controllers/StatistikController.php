@@ -6,6 +6,7 @@ use App\Models\akunusermodel;
 use App\Models\bidangminatmodel;
 use App\Models\detailpelatihan;
 use App\Models\detailsertifikasi;
+use App\Models\identitasmodel;
 use App\Models\matakuliahmodel;
 use App\Models\pelatihanmodel;
 use App\Models\periodemodel;
@@ -76,6 +77,7 @@ class StatistikController extends Controller
         $periode = periodemodel::all();
         $bidangMinat = bidangminatmodel::all();
         $mataKuliah = matakuliahmodel::all();
+        $identitas = identitasmodel::all();
 
         return view('statistik.index', [
             'breadcrumb' => $breadcrumb,
@@ -87,6 +89,7 @@ class StatistikController extends Controller
             'periode' => $periode,
             'bidangMinat' => $bidangMinat,
             'mataKuliah' => $mataKuliah,
+            'identitas' => $identitas
         ]);
     }
 
@@ -117,6 +120,11 @@ class StatistikController extends Controller
         if ($request->id_periode) {
             // Filter menggunakan nama kolom yang benar
             $data->where('periode.id_periode', $request->id_periode);
+        }
+
+        if ($request->id_identitas) {
+            // Filter menggunakan nama kolom yang benar
+            $data->where('diri.id_identitas', $request->id_identitas);
         }
 
         $data = $data->get();
