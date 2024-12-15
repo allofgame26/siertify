@@ -16,11 +16,11 @@ class bidangminatmodel extends Model
     protected $fillable = ['nama_bd','kode_bd','deskripsi_bd'];
 
     public function tagbdpelatihan():HasMany{
-        return $this->hasMany(tagbdpelatihanmodel::class);
+        return $this->hasMany(tagbdpelatihanmodel::class,'id_bd','id_bd');
     }
 
     public function tagbdsertifikasi():HasMany{
-        return $this->hasMany(tagbdsertifikasimodel::class);
+        return $this->hasMany(tagbdsertifikasimodel::class,'id_bd','id_bd');
     }
 
     public function detailbd():HasMany{

@@ -16,11 +16,11 @@ class matakuliahmodel extends Model
     protected $fillable = ['nama_mk','kode_mk','deskripsi_mk'];
 
     public function tagmkpelatihan():HasMany{
-        return $this->hasMany(tagmkpelatihanmodel::class);
+        return $this->hasMany(tagmkpelatihanmodel::class,'id_mk','id_mk');
     }
 
     public function tagmksertifkasi():HasMany{
-        return $this->hasMany(tagmksertifikasimodel::class);
+        return $this->hasMany(tagmksertifikasimodel::class,'id_mk','id_mk');
     }
 
     public function detailmk():HasMany{

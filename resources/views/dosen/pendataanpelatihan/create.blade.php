@@ -56,7 +56,7 @@
                             <small id="error-jenis_pelatihan" class="error-text form-text text-danger"></small>
                         </div>
                     </div>
-                    </div>
+                </div>
                     <div class="form-group">
                             <label>Biaya Pelatihan</label>
                             <input value="" type="number" name="biaya" id="biaya"

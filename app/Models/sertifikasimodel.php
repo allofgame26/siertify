@@ -21,10 +21,6 @@ class sertifikasimodel extends Model
 
     ];
 
-    public function periode():BelongsTo{
-        return $this->belongsTo(periodemodel::class);
-    }
-
     public function jenissertifikasi():BelongsTo{
         return $this->belongsTo(jenispelatihansertifikasimodel::class,'id_jenis_pelatihan_sertifikasi','id_jenis_pelatihan_sertifikasi');
     }
@@ -33,20 +29,20 @@ class sertifikasimodel extends Model
         return $this->belongsTo(vendorsertifikasimodel::class,'id_vendor_sertifikasi','id_vendor_sertifikasi');
     }
 
+    public function detailsertifikasi():HasMany{
+        return $this->hasMany(detailsertifikasi::class,'id_sertifikasi','id_sertifikasi');
+    }
+
     public function pesertasertifikasi():HasMany{
         return $this->hasMany(pesertasertifikasimodel::class);
     }
 
     public function tagmk():HasMany{
-        return $this->hasMany(tagmksertifikasimodel::class);
+        return $this->hasMany(tagmksertifikasimodel::class,'id_sertifikasi','id_sertifikasi');
     }
 
     public function tagbd():HasMany{
-        return $this->hasMany(tagbdsertifikasimodel::class);
-    }
-
-    public function detailsertifikasi():HasMany{
-        return $this->hasMany(detailsertifikasi::class, 'id_sertifikasi', 'id_sertifikasi');
+        return $this->hasMany(tagbdsertifikasimodel::class,'id_sertifikasi','id_sertifikasi');
     }
 
 }

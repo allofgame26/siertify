@@ -16,10 +16,10 @@ class periodemodel extends Model
     protected $fillable = ['nama_periode','tanggal_mulai','tanggal_selesai','tahun_periode','deskripsi_periode'];
 
     public function sertifikasi():HasMany{
-        return $this->hasMany(sertifikasimodel::class);
+        return $this->hasMany(detailsertifikasi::class,'id_periode','id_periode');
     }
 
     public function pelatihan():HasMany{
-        return $this->hasMany(pelatihanmodel::class);
+        return $this->hasMany(detailpelatihan::class,'id_periode','id_periode');
     }
 }

@@ -73,7 +73,7 @@ class periodeadmincontroller extends Controller
                 ]);
             }
             $periode = periodemodel::create([
-                'nama_jenis_pengguna' => $request->nama_periode,
+                'nama_periode' => $request->nama_periode,
                 'tanggal_mulai' => $request->tanggal_mulai,
                 'tanggal_selesai' => $request->tanggal_selesai,
                 'tahun_periode' => $request->tahun_periode,

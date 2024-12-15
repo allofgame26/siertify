@@ -38,8 +38,8 @@
                 <div class="form-group">
                     <label>Level Pelatihan</label>
                     <select name="level_pelatihan" id="level_pelatihan" class="form-control" required>
-                        <option value="internasional">Internasional</option>
-                        <option value="nasional">Nasional</option>
+                        <option value="Internasional">Internasional</option>
+                        <option value="Nasional">Nasional</option>
                     </select>
                     <small id="error-level_pelatihan" class="error-text form-text text-danger"></small>
                 </div>

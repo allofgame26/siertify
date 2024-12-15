@@ -182,47 +182,45 @@
                     </ul>
                 </li>
 
-                <li class="nav-item">
-                    <a href="{{ url('/pelatihan') }}"
-                        class="nav-link {{ $activeMenu == 'vendor' ? 'active' : '' }} ">
-                        <i class="nav-icon 	fas fa-book "></i>
-                        <p>Master Data</p>
-                        <i class="right fas fa-angle-left"></i>
-                    </a>
-                    <ul class="nav nav-treeview">
-                        <!-- Submenu Pelatihan -->
-                        <li class="nav-item">
-                            <a href="{{ url('/masterpelatihan') }}"
-                                class="nav-link {{ $activeMenu == 'pelatihan' ? 'active' : '' }}">
-                                <i class="fa fa-caret-right"></i>
-                                <p> Master Pelatihan</p>
-                            </a>
-                        </li>
-                        <!-- Submenu Sertifikasi -->
-                        <li class="nav-item">
-                            <a href="{{ url('mastersertifikasi') }}"
-                                class="nav-link {{ $activeMenu == 'sertifikasi' ? 'active' : '' }}">
-                                <i class="fa fa-caret-right"></i>
-                                <p> Master Sertifikasi</p>
-                            </a>
-                        </li>
-                    </ul>
-                </li>
-                <li class="nav-item">
-                    <a href="{{ url('/pelatihansertifikasi') }}"
-                        class="nav-link {{ $activeMenu == 'pelatihan-sertifikasi' ? 'active' : '' }} ">
-                        <i class="nav-icon 	fas fa-archive"></i>
-                        <p>Pelatihan & Sertifikasi</p>
-                    </a>
-                </li>
-                <li class="nav-header">Statistik</li>
-                <li class="nav-item">
-                    <a href="{{ url('/statistik') }}"
-                        class="nav-link {{ $activeMenu == 'statistik' ? 'active' : '' }} ">
-                        <i class="nav-icon fas fa-chart-bar"></i>
-                        <p>Statistik</p>
-                    </a>
-                </li>
+            <li class="nav-item">
+                <a href="{{ url('/pelatihan') }}" class="nav-link {{ $activeMenu == 'vendor' ? 'active' : '' }} ">
+                    <i class="nav-icon 	fas fa-book "></i>
+                    <p>Master Data</p>
+                    <i class="right fas fa-angle-left"></i>
+                </a>
+                <ul class="nav nav-treeview">
+                    <!-- Submenu Pelatihan -->
+                    <li class="nav-item">
+                        <a href="{{ url('/masterpelatihan') }}"
+                            class="nav-link {{ $activeMenu == 'pelatihan' ? 'active' : '' }}">
+                            <i class="fa fa-caret-right"></i>
+                            <p> Master Pelatihan</p>
+                        </a>
+                    </li>
+                    <!-- Submenu Sertifikasi -->
+                    <li class="nav-item">
+                        <a href="{{ url('mastersertifikasi') }}"
+                            class="nav-link {{ $activeMenu == 'sertifikasi' ? 'active' : '' }}">
+                            <i class="fa fa-caret-right"></i>
+                            <p> Master Sertifikasi</p>
+                        </a>
+                    </li>
+                </ul>
+            </li>
+            
+            <li class="nav-item">
+                <a href="{{ url('/detailsertifikasi') }}" class="nav-link {{ $activeMenu == 'pelatihan-sertifikasi' ? 'active' : '' }} ">
+                    <i class="nav-icon 	fas fa-archive"></i>
+                    <p>Pelatihan & Sertifikasi</p>
+                </a>
+            </li>
+            <li class="nav-header">Statistik</li>
+            <li class="nav-item">
+                <a href="{{ url('/statistik') }}" class="nav-link {{ $activeMenu == 'statistik' ? 'active' : '' }} ">
+                    <i class="nav-icon fas fa-chart-bar"></i>
+                    <p>Statistik</p>
+                </a>
+            </li>
             @endif
         </ul>
     </nav>
