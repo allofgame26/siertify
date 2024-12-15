@@ -90,26 +90,34 @@
             </td>
         </tr>
     </table>
-    <h3 class="text-center">DAFTAR AKUN PENGGUNA</h4>
+    <h3 class="text-center">DAFTAR DETAIL SERTIFIKASI</h4>
         <table class="border-all">
             <thead>
                 <tr>
                     <th>No</th>
-                    <th>Nama Sertifikat</th>
-                    <th>Jenis Pelatihan Sertifikasi</th>
-                    <th>Nama Vendor Sertifikasi</th>
-                    <th>Level Sertifikasi</th>
+                    <th>ID Sertifikasi</th>
+                    <th>ID Periode</th>
+                    <th>ID User</th>
+                    <th>Tanggal Mulai</th>
+                    <th>Tanggal Selesai</th>
+                    <th>Lokasi</th>
+                    <th>Quota Peserta</th>
+                    <th>Biaya</th>
+                    <th>Input</th>
                 </tr>
             </thead>
             <tbody>
-                @foreach ($sertifikasi as $b)
+                @foreach ($detailsertifikasi as $b)
                     <tr>
                         <td class="text-center">{{ $loop->iteration }}</td>
                         <td>{{ $b->id_sertifikasi }}</td>
-                        <td>{{ $b->nama_sertifikasi }}</td>
-                        <td>{{ $b->id_vendor_sertifikasi }}</td>
-                        <td>{{ $b->id_jenis_pelatihan_sertifikasi }}</td>
-                        <td>{{ $b->level_sertifikasi }}</td>
+                        <td>{{ $b->id_periode }}</td>
+                        <td>{{ $b->id_user }}</td>
+                        <td>{{ $b->tanggal_mulai }}</td>
+                        <td>{{ $b->tanggal_selesai }}</td>
+                        <td>{{ $b->lokasi }}</td>
+                        <td>{{ $b->biaya }}</td>
+                        <td>{{ $b->input_by }}</td>
                     </tr>
                 @endforeach
             </tbody>

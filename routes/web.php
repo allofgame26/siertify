@@ -291,9 +291,28 @@ Route::get('/detailsertifikasi/{id}/editmk', [detailsertifikasicontroller::class
 Route::put('/detailsertifikasi/updatemk', [detailsertifikasicontroller::class, 'update_mk']);
 Route::get('/detailsertifikasi/{id}/editbd', [detailsertifikasicontroller::class, 'edit_bd']);
 Route::put('/detailsertifikasi/updatebd', [detailsertifikasicontroller::class, 'update_bd']);
+Route::get('/detailsertifikasi/export_excel', [detailsertifikasicontroller::class, 'excel']);
+Route::get('/detailsertifikasi/export_pdf', [detailsertifikasicontroller::class, 'pdf']);
 
 Route::get('/detailpelatihan',[detailpelatihancontroller::class,'index']);
 Route::post('/detailpelatihan/list',[detailpelatihancontroller::class,'list']);
+Route::get('/detailpelatihan/create',[detailpelatihancontroller::class,'create']);
+Route::post('/detailpelatihan/proses',[detailpelatihancontroller::class,'store']);
+Route::get('/detailpelatihan/{id}/createmk', [detailpelatihancontroller::class, 'createmk'])->name('pendataan.sertifikasi.createmk');;
+Route::post('/detailpelatihan/storemk', [detailpelatihancontroller::class, 'store_mk']);
+Route::get('/detailpelatihan/{id}/createbd', [detailpelatihancontroller::class, 'createbd']);
+Route::post('/detailpelatihan/storebd', [detailpelatihancontroller::class, 'store_bd']);
+Route::get('/detailpelatihan/{id}/show',[detailpelatihancontroller::class, 'show']);
+Route::get('/detailpelatihan/{id}/confirm',[detailpelatihancontroller::class, 'confirm']);
+Route::delete('/detailpelatihan/{id}/delete',[detailpelatihancontroller::class, 'delete']);
+Route::get('/detailpelatihan/{id}/edit', [detailpelatihancontroller::class,'edit']); //menampilkan halaman form edit pendataan ajax
+Route::put('/detailpelatihan/{id}/update', [detailpelatihancontroller::class,'update']);   //menyimpan halaman form edit pendataan ajax
+Route::get('/detailpelatihan/{id}/editmk', [detailpelatihancontroller::class, 'edit_mk']);
+Route::put('/detailpelatihan/updatemk', [detailpelatihancontroller::class, 'update_mk']);
+Route::get('/detailpelatihan/{id}/editbd', [detailpelatihancontroller::class, 'edit_bd']);
+Route::put('/detailpelatihan/updatebd', [detailpelatihancontroller::class, 'update_bd']);
+Route::get('/detailpelatihan/export_excel', [detailpelatihancontroller::class, 'excel']);
+Route::get('/detailpelatihan/export_pdf', [detailpelatihancontroller::class, 'pdf']);
 
 
 // Route::get('/pelatihansertifikasi',[pelatihansertifikasicontroller::class, 'index']);

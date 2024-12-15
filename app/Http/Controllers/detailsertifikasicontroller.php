@@ -618,7 +618,101 @@ class detailsertifikasicontroller extends Controller
             'message' => 'Data berhasil diupdate',
         ]);
 
-        return redirect('/');
+        return redirect('/detailsertifikasi');
 
+    }
+
+    public function excel()
+    {
+
+        //ambil data yang akan di export
+        $detailsertifikasi = detailsertifikasi::select(
+                            'id_sertifikasi',
+                            'id_periode',
+                            'id_user',
+                            'tanggal_mulai',
+                            'tanggal_selesai',
+                            'lokasi',
+                            'quota_peserta',
+                            'biaya',
+                            'input_by')
+                            ->get();
+
+        //load library
+        $detailsertifikasi = new Spreadsheet();
+        $sheet = $detailsertifikasi->getActiveSheet();
+
+        $sheet->setCellValue('A1', 'No');
+        $sheet->setCellValue('B1', 'ID Sertifikasi');
+        $sheet->setCellValue('C1', 'ID Periode');
+        $sheet->setCellValue('D1', 'ID User');
+        $sheet->setCellValue('E1', 'Tanggal Mulai');
+        $sheet->setCellValue('F1', 'Tanggal Selesai');
+        $sheet->setCellValue('G1', 'Lokasi');
+        $sheet->setCellValue('H1', 'Quota Peserta');
+        $sheet->setCellValue('I1', 'Biaya');
+        $sheet->setCellValue('J1', 'Input');
+
+        $sheet->getStyle('A1:J1')->getFont()->setBold(true); //bold header
+
+        $no = 1;
+        $baris = 2;
+        foreach ($detailsertifikasi as $key => $value) {
+            $sheet->setCellValue('A' . $baris, $no);
+            $sheet->setCellValue('B' . $baris, $value->id_sertifikasi);
+            $sheet->setCellValue('C' . $baris, $value->id_periode);
+            $sheet->setCellValue('D' . $baris, $value->id_user);
+            $sheet->setCellValue('E' . $baris, $value->tanggal_mulai);
+            $sheet->setCellValue('F' . $baris, $value->tanggal_selesai);
+            $sheet->setCellValue('G' . $baris, $value->lokasi);
+            $sheet->setCellValue('H' . $baris, $value->biaya);
+            $sheet->setCellValue('I' . $baris, $value->input_by);
+            $baris++;
+            $no++;
+
+        }
+
+        foreach (range('A', 'I') as $columID) {
+            $sheet->getColumnDimension($columID)->setAutoSize(true); //set auto size kolom
+        }
+
+        $sheet->setTitle('Data Detail Sertifikasi');
+        $writer = IOFactory::createWriter($detailsertifikasi, 'Xlsx');
+        $filename = 'Data Deyail Sertifikasi' . date('Y-m-d H:i:s') . '.xlsx';
+        header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
+        header('Content-Disposition: attachment;filename="' . $filename . '"');
+        header('Cache-Control: max-age=0');
+        header('Cache-Control: max-age=1');
+        header('Expires: Mon, 26 Jul 1997 05:00:00 GMT');
+        header('Last-Modified: ' . gmdate('D, dMY H:i:s') . 'GMT');
+        header('Cache-Control: cache, must-revalidate');
+        header('Pragma: public');
+        $writer->save('php://output');
+        exit;
+
+    }
+
+    public function pdf()
+    {
+        //ambil data yang akan di export
+        $detailsertifikasi = detailsertifikasi::select(
+            'id_sertifikasi',
+            'id_periode',
+            'id_user',
+            'tanggal_mulai',
+            'tanggal_selesai',
+            'lokasi',
+            'quota_peserta',
+            'biaya',
+            'input_by')
+            ->get();
+
+     //use Barruvdh\DomPDF\Facade\\Pdf
+    $pdf = Pdf::loadView('admin.pelatihansertifikasi.export', ['detailsertifikasi'=>$detailsertifikasi]);
+    $pdf->setPaper('a4', 'potrait');
+    $pdf->setOption("isRemoteEnabled", false);
+    $pdf->render();
+
+    return $pdf->download('Data Akun Pengguna '.date('Y-m-d H:i:s').'.pdf');
     }
 }
