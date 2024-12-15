@@ -170,23 +170,9 @@
         </div>
         </div>
     </form>
-
-    @push('js')
-    <!-- Bootstrap 4 -->
-        <script src="{{ asset('adminlte/plugins/bootstrap/js/bootstrap.bundle.min.js') }}"></script>
-        <!-- Select2 -->
-        <script src="{{ asset('adminlte/plugins/select2/js/select2.full.min.js') }}"></script>
         
         <script>
             $(document).ready(function() {
-
-                //Initialize Select2 Elements
-                $('.select2').select2()
-
-                //Initialize Select2 Elements
-                $('.select2bs4').select2({
-                    theme: 'bootstrap4'
-                })
 
                 // Mengganti foto profil langsung ketika memilih file baru
                 $("#foto_profil").change(function() {
@@ -244,12 +230,14 @@
                             extension: "jpg|jpeg|png"
                         }
                     },
-                    submitHandler: function(form) {
-                        var formData = new FormData(form); // Gunakan FormData untuk file upload
 
+                    submitHandler: function(form) {
+
+                        var formData = new FormData(form); // Gunakan FormData untuk file upload
+                        console.log(...formData);
+                        
                         $.ajax({
                             url: form.action,
-                            method: 'POST',
                             type: form.method,
                             data: formData,
                             contentType: false,
@@ -309,5 +297,4 @@
                 });
             });
         </script>
-    @endpush
 @endempty

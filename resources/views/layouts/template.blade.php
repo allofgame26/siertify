@@ -37,12 +37,6 @@
 
         <!-- Main Sidebar Container -->
         <aside class="main-sidebar sidebar-dark-primary elevation-4">
-            <!-- Brand Logo -->
-            <a href="{{ url('/') }}" class="brand-link">
-                <img src="{{ asset('img/logo.png') }}" alt="SIERTIFY Logo" class="brand-image">
-                <span class="brand-text font-weight-bold">SIERTIFY</span>
-            </a>
-
             <!-- sidebar include -->
             @include('layouts.sidebar')
 
@@ -169,12 +163,5 @@
         letter-spacing: 0.5px;
     }
 
-    .brand-link {
-        background-color: #0D313F;
-    }
 
-    .brand-text {
-        color: #fff;
-        letter-spacing: 1px;
-    }
 </style>
