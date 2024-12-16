@@ -75,4 +75,8 @@ class akunusermodel extends Authenticatable
     public function getRole(){
         return $this->jenis_pengguna->kode_jenis_pengguna;
     }
+
+    public function notifikasi():HasMany{
+        return $this->hasMany(notifikasimodel::class,'id_user','id_user');
+    }
 }

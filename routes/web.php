@@ -17,6 +17,7 @@ use App\Http\Controllers\VendorPelatihanController;
 use App\Http\Controllers\VendorSertifikasiController;
 use App\Http\Controllers\pelatihansertifikasicontroller;
 use App\Http\Controllers\akunpenggunacontroller;
+use App\Http\Controllers\NotifikasiController;
 use App\Models\jenispenggunamodel;
 use App\Http\Controllers\PendataanPelatihanController;
 use App\Http\Controllers\PendataanSertifikasiController;
@@ -326,4 +327,9 @@ Route::get('/statistik/sertifikasi/{id}/detailsertifikasi', [StatistikController
 Route::get('/statistik/export_excel', [StatistikController::class, 'export_excel']);  //export excel
 Route::get('/statistik/export_pdf', [StatistikController::class, 'export_pdf']); //export pdf
 
+// notifikasi
+Route::get('/notifikasi/{id}/', [NotifikasiController::class, 'index']);
+Route::post('/notifikasi/{id}/list', [NotifikasiController::class, 'list']);
+Route::get('/notifikasi/pelatihan/{id}/detail', [NotifikasiController::class, 'detailPelatihan']);
+Route::get('/notifikasi/sertifikasi/{id}/detail', [NotifikasiController::class, 'detailSertifikasi']);
 
