@@ -45,4 +45,8 @@ class detailsertifikasi extends Model
     public function peserta():HasMany{
         return $this->hasMany(pesertasertifikasimodel::class,'id_detail_sertifikasi','id_detail_sertifikasi');
     }
+
+    public function notifikasi():HasMany{
+        return $this->hasMany(notifikasimodel::class,'id_detail_sertifikasi','id_detail_sertifikasi');
+    }
 }
