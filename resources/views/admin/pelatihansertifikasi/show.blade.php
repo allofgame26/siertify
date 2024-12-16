@@ -66,28 +66,28 @@
                             <div class="col-md-4">
                                 <div class="form-group">
                                     <label>Tanggal Mulai</label>
-                                    <input value="{{ $detailsertifikasi->tanggal_mulai }}"  type="date" name="tanggal_mulai" id="tanggal_mulai" class="form-control" required>
+                                    <input value="{{ $detailsertifikasi->tanggal_mulai }}"  type="date" name="tanggal_mulai" id="tanggal_mulai" class="form-control" readonly>
                                 </div>
                             </div>
                             <div class="col-md-4">
                                 <div class="form-group">
                                     <label>Tanggal Selesai</label>
-                                    <input value="{{ $detailsertifikasi->periode->tanggal_selesai }}" type="date" name="tanggal_selesai" id="tanggal_selesai" class="form-control" required>
+                                    <input value="{{ $detailsertifikasi->periode->tanggal_selesai }}" type="date" name="tanggal_selesai" id="tanggal_selesai" class="form-control" readonly>
                                 </div>
                             </div>
                         </div>
                     </div>
                     <div class="form-group">
                         <label>lokasi</label>
-                        <input value="{{ $detailsertifikasi->lokasi }}" type="text" name="lokasi" id="lokasi" class="form-control" required>
+                        <input value="{{ $detailsertifikasi->lokasi }}" type="text" name="lokasi" id="lokasi" class="form-control" readonly>
                     </div>
                     <div class="form-group">
                         <label>Quota Peserta</label>
-                        <input value="{{ $detailsertifikasi->quota_peserta }}" type="text" name="quota_peserta" id="quota_peserta" class="form-control" required>
+                        <input value="{{ $detailsertifikasi->quota_peserta }}" type="text" name="quota_peserta" id="quota_peserta" class="form-control" readonly>
                     </div>
                     <div class="form-group">
                         <label>Biaya</label>
-                        <input value="{{ $detailsertifikasi->biaya }}" type="number" name="biaya" id="biaya" class="form-control" required>
+                        <input value="{{ $detailsertifikasi->biaya }}" type="number" name="biaya" id="biaya" class="form-control" readonly>
                     </div>
 
                     <div>
@@ -122,6 +122,16 @@
                             @endforeach
                         @endif
                     </div>
+
+                    <table class="table table-bordered table-striped table-hover table-sm" id="table-pelatihan">
+                        <thead>
+                            <tr>
+                                <th>No</th>
+                                <th>Akun Dosen</th>
+                            </tr>
+                        </thead>
+                        <Tbody></Tbody>
+                    </table>
 
                 </div>
                 <div class="modal-footer">
@@ -203,6 +213,52 @@
     
     </style>
     <script>
+
+var tableDetail;
+        $(document).ready(function() {
+            tableDetail = $('#table-pelatihan').DataTable({
+                autoWidth: false,
+                serverSide: true,
+                ajax: {
+                    "url": "{{ url('/detailsertifikasi/' . $detailsertifikasi->id_detail_sertifikasi . '/showpeserta') }}",
+                    "dataType": "json",
+                    "type": "POST",
+                    "headers": {
+                        "X-CSRF-TOKEN": "{{ csrf_token() }}"
+                    },
+                    dataSrc: function (json) {
+                        console.log(json); // Memeriksa data yang diterima
+                        return json.data;
+                    }
+                },
+                columns: [{
+                    // nomor urut dari laravel datatable addIndexColumn()
+                    data: "DT_RowIndex",
+                    className: "text-center",
+                    orderable: false,
+                    searchable: false
+                }, {
+                    data: "nama_peserta",
+                    className: "",
+                    orderable: true,
+                    searchable: true
+                },
+                // {
+                // // },{
+                // //     data: "nip",
+                // //     className: "",
+                // //     orderable: true,
+                // //     searchable: true
+                // // },{
+                //     data: "aksi",
+                //     className: "",
+                //     orderable: false,
+                //     searchable: false
+                // }
+                ],
+            });
+        });
+
         $(document).ready(function() {
             $("#form-show").validate({
                 rules: {

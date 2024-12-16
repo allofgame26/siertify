@@ -125,7 +125,8 @@
                      </div>
                  </div>
              @endif
-
+             
+             <input type="hidden" name="status_disetujui" value="tidak">
             <input type="hidden" name="input_by" value="dosen">
             </div>
             <div class="modal-footer">

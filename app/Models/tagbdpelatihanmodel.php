@@ -15,10 +15,10 @@ class tagbdpelatihanmodel extends Model
     protected $fillable = ['id_bd','id_pelatihan'];
 
     public function bidangminat():BelongsTo{
-        return $this->belongsTo(bidangminatmodel::class);
+        return $this->belongsTo(bidangminatmodel::class,'id_bd','id_bd');
     }
 
     public function pelatihan():BelongsTo{
-        return $this->belongsTo(pelatihanmodel::class);
+        return $this->belongsTo(pelatihanmodel::class,'id_pelatihan','id_pelatihan');
     }
 }
