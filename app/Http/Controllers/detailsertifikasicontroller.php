@@ -2,12 +2,14 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\akunusermodel;
 use App\Models\bidangminatmodel;
 use Illuminate\Http\Request;
 use App\Models\detailsertifikasi;
 use App\Models\jenispelatihansertifikasimodel;
 use App\Models\matakuliahmodel;
 use App\Models\periodemodel;
+use App\Models\pesertasertifikasimodel;
 use App\Models\sertifikasimodel;
 use App\Models\tagbdsertifikasimodel;
 use App\Models\tagmksertifikasimodel;
@@ -74,8 +76,7 @@ class detailsertifikasicontroller extends Controller
             return 'Rp' . number_format($detailsertifikasi->biaya, 0, ',', '.') ?? ' ';
         })
         ->addColumn('aksi', function ($detailsertifikasi) {
-            $btn = '<button onclick="modalAction(\'' . url('/detailsertifikasi/' . $detailsertifikasi->id_detail_sertifikasi . '/surattugas') . '\')" class="btn btn-primary btn-sm"><i class="fa fa-pencil"></i>Surat Tugas</button> ';
-            $btn .= '<button onclick="modalAction(\'' . url('/detailsertifikasi/' . $detailsertifikasi->id_detail_sertifikasi . '/show') . '\')" class="btn btn-info btn-sm"><i class="fa fa-pencil"></i>Detail</button> ';
+            $btn = '<button onclick="modalAction(\'' . url('/detailsertifikasi/' . $detailsertifikasi->id_detail_sertifikasi . '/show') . '\')" class="btn btn-info btn-sm"><i class="fa fa-pencil"></i>Detail</button> ';
             $btn .= '<button onclick="modalAction(\'' . url('/detailsertifikasi/' . $detailsertifikasi->id_detail_sertifikasi . '/edit') . '\')" class="btn btn-warning btn-sm"><i class="fa fa-pencil"></i>Edit</button> ';
             $btn .= '<button onclick="modalAction(\'' . url('/detailsertifikasi/' . $detailsertifikasi->id_detail_sertifikasi . '/confirm') . '\')" class="btn btn-danger btn-sm">Hapus</button> ';
             
@@ -136,7 +137,22 @@ class detailsertifikasicontroller extends Controller
                 'tanggal_selesai' => 'required|date|after:tanggal_mulai', 
                 // 'mata_kuliah' => 'required|integer',
                 // 'bidang_minat' => 'required|integer',
-            ]; 
+            ];
+            
+            $validatedData = $request->validate([
+                'id_sertifikasi' => 'required|integer',
+                'quota_peserta' => 'required|integer|min:1',
+                'id_mk' => 'required|array',
+                'id_mk.*' => 'integer',
+                'id_bd' => 'required|array',
+                'id_bd.*' => 'integer',
+                'biaya' => 'required|numeric',
+                'lokasi' => 'required|string|max:255',
+                'id_periode' => 'required|integer',
+                'tanggal_mulai' => 'required|date',
+                'tanggal_selesai' => 'required|date|after_or_equal:tanggal_mulai',
+            ]);
+
 
             $validator = Validator::make($request->all(), $rules);
 
@@ -150,17 +166,45 @@ class detailsertifikasicontroller extends Controller
 
             DB::beginTransaction();
 
-            $detailsertifikasi = detailsertifikasi::create([
-                'id_sertifikasi' => $request->id_sertifikasi,
-                'id_periode' => $request->id_periode,
+
+            $idDetailSertifikasi = DB::table('t_detailsertifikasi')->insertGetId([
+                'id_sertifikasi' => $validatedData['id_sertifikasi'],
+                'biaya' => $validatedData['biaya'],
                 'id_user' => Auth::user()->id_user,
-                'tanggal_mulai' => $request->tanggal_mulai,
-                'tanggal_selesai' => $request->tanggal_selesai,
-                'lokasi' => $request->lokasi,
                 'quota_peserta' => $request->quota_peserta,
-                'biaya' => $request->biaya,
+                'lokasi' => $validatedData['lokasi'],
+                'id_periode' => $validatedData['id_periode'],
+                'tanggal_mulai' => $validatedData['tanggal_mulai'],
+                'tanggal_selesai' => $validatedData['tanggal_selesai'],
                 'input_by' => $request->input_by,
+                'status_disetujui' => $request->status_disetujui,
+                'created_at' => now(),
+                'updated_at' => now(),
             ]);
+
+            // Query untuk mencari dosen yang relevan berdasarkan mata kuliah dan bidang minat
+            $dosenQuery = DB::table('m_akun_user as akun')
+                ->join('m_detailmkdosen as tagmk', 'akun.id_user', '=', 'tagmk.id_user')
+                ->join('m_detailbddosen as tagbd', 'akun.id_user', '=', 'tagbd.id_user')
+                ->whereIn('tagmk.id_mk', $validatedData['id_mk'])
+                ->whereIn('tagbd.id_bd', $validatedData['id_bd'])
+                ->select('akun.id_user', 'akun.username', DB::raw('COUNT(*) as sertifikasi_count'))
+                ->groupBy('akun.id_user', 'akun.username')
+                ->orderBy('sertifikasi_count', 'asc')
+                ->limit($validatedData['quota_peserta'])
+                ->get();
+
+            // Tambahkan data ke tabel t_peserta_sertifikasi
+            $pesertaData = [];
+            foreach ($dosenQuery as $dosen) {
+                $pesertaData[] = [
+                    'id_detail_sertifikasi' => $idDetailSertifikasi,
+                    'id_user' => $dosen->id_user,
+                ];
+            }
+
+            pesertasertifikasimodel::insert($pesertaData);
+
 
             $idsertifikasiBaru = $request->id_sertifikasi;
 
@@ -182,7 +226,7 @@ class detailsertifikasicontroller extends Controller
             // Commit transaction jika semua berhasil
             DB::commit();
 
-            if($detailsertifikasi){
+            if($idDetailSertifikasi){
                 return response()->json([
                     'status'    => true,
                     'message'   => 'Data user berhasil disimpan'
@@ -325,6 +369,22 @@ class detailsertifikasicontroller extends Controller
         return view('admin.pelatihansertifikasi.show', ['detailsertifikasi' => $detailsertifikasi, 'sertifikasi' => $sertifikasi, 'periode' => $periode, 'mataKuliah' => $mataKuliah, 'bidangMinat' => $bidangMinat]);
     }
 
+    public function showpeserta(Request $request,string $id){
+
+        $pesertasertifikasi = pesertasertifikasimodel::select('id_user','id_detail_sertifikasi')->with('akun')->where('id_detail_sertifikasi','=', $id)->get();
+
+        // Return data untuk DataTables
+        return DataTables::of($pesertasertifikasi)
+        ->addIndexColumn()
+        ->addColumn('nama_peserta', function ($pesertasertifikasi) {
+            return $pesertasertifikasi->akun->username ?? '';
+        })
+        // ->addColumn('nip', function ($pesertapelatihan) {
+        //     return $pesertapelatihan->akun->identitas->NIP ?? '';
+        // })
+        ->make(true);
+    }
+
     public function confirm($id){
 
         $detailsertifikasi = detailsertifikasi::select(
@@ -419,7 +479,9 @@ class detailsertifikasicontroller extends Controller
                 ->where('tagbd.id_sertifikasi', '=', $detailsertifikasi->id_sertifikasi)
                 ->select('bd.*')
                 ->get()
-                ->toArray();           
+                ->toArray();
+                
+            // Pemilihan Peserta
 
                 return view('admin.pelatihansertifikasi.edit', ['detailsertifikasi' => $detailsertifikasi, 'sertifikasi' => $sertifikasi, 'periode' => $periode, 'mataKuliah' => $mataKuliah, 'bidangMinat' => $bidangMinat, 'vendor' => $vendor, 'jenis' => $jenis]);             
     }

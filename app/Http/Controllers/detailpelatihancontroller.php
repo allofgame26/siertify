@@ -13,6 +13,8 @@ use App\Models\tagbdpelatihanmodel;
 use App\Models\tagmkpelatihanmodel;
 use App\Models\vendorpelatihanmodel;
 use App\Models\jenispelatihansertifikasimodel;
+use App\Models\pesertapelatihanmodel;
+use App\Models\pesertasertifikasimodel;
 use Yajra\DataTables\Facades\DataTables;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
@@ -123,19 +125,33 @@ class detailpelatihancontroller extends Controller
             return response()->json($id_bd); // Kembalikan hasil pencarian dalam format JSON
         }
 
-        // cek apakah request berupa ajax
-        if ($request->ajax() || $request->wantsJson()) {
-            $rules = [
-                'id_pelatihan' => 'required',
-                'biaya' => 'required|integer', 
-                'lokasi' => 'required|max:50', 
-                'quota_peserta' => 'required|max:5',
-                'id_periode' => 'required', 
-                'tanggal_mulai' => 'required|date|after:today',
-                'tanggal_selesai' => 'required|date|after:tanggal_mulai', 
-                // 'mata_kuliah' => 'required|integer',
-                // 'bidang_minat' => 'required|integer',
-            ]; 
+       // cek apakah request berupa ajax
+       if ($request->ajax() || $request->wantsJson()) {
+        $rules = [
+            'id_pelatihan' => 'required',
+            'biaya' => 'required|integer', 
+            'lokasi' => 'required|max:50', 
+            'quota_peserta' => 'required|max:5',
+            'id_periode' => 'required', 
+            'tanggal_mulai' => 'required|date|after:today',
+            'tanggal_selesai' => 'required|date|after:tanggal_mulai', 
+            // 'mata_kuliah' => 'required|integer',
+            // 'bidang_minat' => 'required|integer',
+        ];
+        
+        $validatedData = $request->validate([
+            'id_pelatihan' => 'required|integer',
+            'quota_peserta' => 'required|integer|min:1',
+            'id_mk' => 'required|array',
+            'id_mk.*' => 'integer',
+            'id_bd' => 'required|array',
+            'id_bd.*' => 'integer',
+            'biaya' => 'required|numeric',
+            'lokasi' => 'required|string|max:255',
+            'id_periode' => 'required|integer',
+            'tanggal_mulai' => 'required|date',
+            'tanggal_selesai' => 'required|date|after_or_equal:tanggal_mulai',
+        ]);
 
             $validator = Validator::make($request->all(), $rules);
 
@@ -149,18 +165,44 @@ class detailpelatihancontroller extends Controller
 
             DB::beginTransaction();
 
-            $detailpelatihan = detailpelatihan::create([
-                'id_pelatihan' => $request->id_pelatihan,
-                'id_periode' => $request->id_periode,
+
+            $idDetailPelatihan = DB::table('t_detailpelatihan')->insertGetId([
+                'id_pelatihan' => $validatedData['id_pelatihan'],
+                'biaya' => $validatedData['biaya'],
                 'id_user' => Auth::user()->id_user,
-                'tanggal_mulai' => $request->tanggal_mulai,
-                'tanggal_selesai' => $request->tanggal_selesai,
-                'lokasi' => $request->lokasi,
                 'quota_peserta' => $request->quota_peserta,
-                'biaya' => $request->biaya,
+                'lokasi' => $validatedData['lokasi'],
+                'id_periode' => $validatedData['id_periode'],
+                'tanggal_mulai' => $validatedData['tanggal_mulai'],
+                'tanggal_selesai' => $validatedData['tanggal_selesai'],
                 'input_by' => $request->input_by,
                 'status_disetujui' => $request->status_disetujui,
+                'created_at' => now(),
+                'updated_at' => now(),
             ]);
+
+            // Query untuk mencari dosen yang relevan berdasarkan mata kuliah dan bidang minat
+            $dosenQuery = DB::table('m_akun_user as akun')
+                ->join('m_detailmkdosen as tagmk', 'akun.id_user', '=', 'tagmk.id_user')
+                ->join('m_detailbddosen as tagbd', 'akun.id_user', '=', 'tagbd.id_user')
+                ->whereIn('tagmk.id_mk', $validatedData['id_mk'])
+                ->whereIn('tagbd.id_bd', $validatedData['id_bd'])
+                ->select('akun.id_user', 'akun.username', DB::raw('COUNT(*) as pelatihan_count'))
+                ->groupBy('akun.id_user', 'akun.username')
+                ->orderBy('pelatihan_count', 'asc')
+                ->limit($validatedData['quota_peserta'])
+                ->get();
+
+            // Tambahkan data ke tabel t_peserta_sertifikasi
+            $pesertaData = [];
+            foreach ($dosenQuery as $dosen) {
+                $pesertaData[] = [
+                    'id_detail_pelatihan' => $idDetailPelatihan,
+                    'id_user' => $dosen->id_user,
+                ];
+            }
+
+            pesertapelatihanmodel::insert($pesertaData);
 
             $idpelatihanBaru = $request->id_pelatihan;
 
@@ -182,7 +224,7 @@ class detailpelatihancontroller extends Controller
             // Commit transaction jika semua berhasil
             DB::commit();
 
-            if($detailpelatihan){
+            if($idDetailPelatihan){
                 return response()->json([
                     'status'    => true,
                     'message'   => 'Data berhasil disimpan'
@@ -317,9 +359,25 @@ class detailpelatihancontroller extends Controller
         ->join('m_bidang_minat as bd', 'tagbd.id_bd', '=', 'bd.id_bd')
         ->where('tagbd.id_pelatihan', '=', $detailpelatihan->id_pelatihan)
         ->pluck('bd.nama_bd')
-        ->toArray();            
+        ->toArray();
 
-        return view('admin.detailpelatihan.show', ['detailpelatihan' => $detailpelatihan, 'pelatihan' => $pelatihan, 'periode' => $periode, 'mataKuliah' => $mataKuliah, 'bidangMinat' => $bidangMinat]);
+        return view('admin.detailpelatihan.show', ['detailpelatihan' => $detailpelatihan, 'pelatihan' => $pelatihan, 'periode' => $periode, 'mataKuliah' => $mataKuliah, 'bidangMinat' => $bidangMinat,]);
+    }
+
+    public function showpeserta(Request $request,string $id){
+
+        $pesertapelatihan = pesertapelatihanmodel::select('id_user','id_detail_pelatihan')->with('akun')->where('id_detail_pelatihan','=', $id)->get();
+
+        // Return data untuk DataTables
+        return DataTables::of($pesertapelatihan)
+        ->addIndexColumn()
+        ->addColumn('nama_peserta', function ($pesertapelatihan) {
+            return $pesertapelatihan->akun->username ?? '';
+        })
+        // ->addColumn('nip', function ($pesertapelatihan) {
+        //     return $pesertapelatihan->akun->identitas->NIP ?? '';
+        // })
+        ->make(true);
     }
 
     public function confirm($id){

@@ -274,6 +274,7 @@ Route::post('/detailsertifikasi/storemk', [detailsertifikasicontroller::class, '
 Route::get('/detailsertifikasi/{id}/createbd', [detailsertifikasicontroller::class, 'createbd']);
 Route::post('/detailsertifikasi/storebd', [detailsertifikasicontroller::class, 'store_bd']);
 Route::get('/detailsertifikasi/{id}/show',[detailsertifikasicontroller::class, 'show']);
+Route::post('/detailsertifikasi/{id}/showpeserta',[detailpelatihancontroller::class, 'showpeserta']);
 Route::get('/detailsertifikasi/{id}/confirm',[detailsertifikasicontroller::class, 'confirm']);
 Route::delete('/detailsertifikasi/{id}/delete',[detailsertifikasicontroller::class, 'delete']);
 Route::get('/detailsertifikasi/{id}/edit', [detailsertifikasicontroller::class,'edit']); //menampilkan halaman form edit pendataan ajax
@@ -294,6 +295,7 @@ Route::post('/detailpelatihan/storemk', [detailpelatihancontroller::class, 'stor
 Route::get('/detailpelatihan/{id}/createbd', [detailpelatihancontroller::class, 'createbd']);
 Route::post('/detailpelatihan/storebd', [detailpelatihancontroller::class, 'store_bd']);
 Route::get('/detailpelatihan/{id}/show',[detailpelatihancontroller::class, 'show']);
+Route::post('/detailpelatihan/{id}/showpeserta',[detailpelatihancontroller::class, 'showpeserta']);
 Route::get('/detailpelatihan/{id}/confirm',[detailpelatihancontroller::class, 'confirm']);
 Route::delete('/detailpelatihan/{id}/delete',[detailpelatihancontroller::class, 'delete']);
 Route::get('/detailpelatihan/{id}/edit', [detailpelatihancontroller::class,'edit']); //menampilkan halaman form edit pendataan ajax
