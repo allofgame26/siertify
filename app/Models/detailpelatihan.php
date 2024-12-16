@@ -44,5 +44,9 @@ class detailpelatihan extends Model
     public function peserta():HasMany{
         return $this->hasMany(pesertapelatihanmodel::class,'id_detail_pelatihan','id_detail_pelatihan');
     }
+
+    public function notifikasi():HasMany{
+        return $this->hasMany(notifikasimodel::class,'id_detail_pelatihan','id_detail_pelatihan');
+    }
     
 }

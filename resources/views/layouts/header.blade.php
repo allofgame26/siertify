@@ -14,9 +14,9 @@
     <ul class="navbar-nav ml-auto">
       <!-- Navbar notif -->
       <li class="nav-item">
-        <a class="nav-link" data-widget="navbar-notif" href="#" role="button">
+        <a class="nav-link" data-widget="navbar-notif" href="{{ url('notifikasi/' . Auth::id()) }}" role="button">
           <i class="fas fa-bell"></i>
-        </a>
+      </a>
       </li>
 
       <li class="nav-item">

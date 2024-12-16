@@ -133,36 +133,6 @@
                         <small class="form-text text-muted">Abaikan jika tidak ingin ubah password</small>
                         <small id="error-password" class="error-text form-text text-danger"></small>
                     </div>
-                    @if (Auth::user()->getRole() == 'DSN')
-
-                    <div class="col">
-                        <div class="card card-info">
-                            <div class="card-header bg-info" style="height: 60px; padding: 12px">
-                                <h3 class="card-title">Mata Kuliah</h3>
-                            </div>
-                            <div class="card-body">
-                                @foreach ($user->matakuliah as $mk)
-                                    <span class="custom-badge-mk">{{ $mk->nama_mk }}</span>
-                                @endforeach
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="col">
-                        <div class="card card-info">
-                            <div class="card-header bg-info" style="height: 60px; padding: 12px">
-                                <h3 class="card-title">Bidang Minat</h3>
-                            </div>
-                            <div class="card-body">
-                                @foreach ($user->bidangminat as $bd)
-                                    <span class="custom-badge-bd">{{ $bd->nama_bd }}</span>
-                                @endforeach
-                            </div>
-                        </div>
-                    </div>
-                    
-                </div>
-                @endif
             <div class="modal-footer">
                 <button type="button" data-dismiss="modal" class="btn btn-warning">Batal</button>
                 <button type="submit" class="btn btn-success">Simpan</button>

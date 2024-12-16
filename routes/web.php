@@ -17,6 +17,7 @@ use App\Http\Controllers\VendorPelatihanController;
 use App\Http\Controllers\VendorSertifikasiController;
 use App\Http\Controllers\pelatihansertifikasicontroller;
 use App\Http\Controllers\akunpenggunacontroller;
+use App\Http\Controllers\NotifikasiController;
 use App\Models\jenispenggunamodel;
 use App\Http\Controllers\PendataanPelatihanController;
 use App\Http\Controllers\PendataanSertifikasiController;
@@ -29,7 +30,7 @@ use App\Http\Controllers\detailpelatihancontroller;
 use App\Models\detailsertifikasi;
 use App\Http\Controllers\PenugasanPelatihanController;
 use App\Http\Controllers\PenugasanSertifikasiController;
-
+use App\Http\Controllers\StatistikController;
 
 Route::pattern('id','[0-9]+');
 
@@ -352,4 +353,21 @@ Route::get('/penugasan/sertifikasi/{id}/create', [PenugasanSertifikasiController
 Route::post('/penugasan/sertifikasi/{id}/store', [PenugasanSertifikasiController::class, 'store']);
 Route::get('/penugasan/sertifikasi/export_excel', [PenugasanSertifikasiController::class, 'export_excel']);  //export excel
 Route::get('/penugasan/sertifikasi/export_pdf', [PenugasanSertifikasiController::class, 'export_pdf']); //export pdf
+
+// statistik
+Route::get('/statistik', [StatistikController::class, 'index']);
+Route::post('/statistik/list', [StatistikController::class, 'list']);
+Route::get('/statistik/pelatihan/{id}/detail/{id_periode}', [StatistikController::class, 'show']);
+Route::post('/statistik/pelatihan/{id}/list/{id_periode}', [StatistikController::class, 'showList']);
+Route::get('/statistik/pelatihan/{id}/detailpelatihan', [StatistikController::class, 'detailPelatihan']);
+Route::post('/statistik/sertifikasi/{id}/list/{id_periode}', [StatistikController::class, 'showList2']);
+Route::get('/statistik/sertifikasi/{id}/detailsertifikasi', [StatistikController::class, 'detailSertifikasi']);
+Route::get('/statistik/export_excel', [StatistikController::class, 'export_excel']);  //export excel
+Route::get('/statistik/export_pdf', [StatistikController::class, 'export_pdf']); //export pdf
+
+// notifikasi
+Route::get('/notifikasi/{id}/', [NotifikasiController::class, 'index']);
+Route::post('/notifikasi/{id}/list', [NotifikasiController::class, 'list']);
+Route::get('/notifikasi/pelatihan/{id}/detail', [NotifikasiController::class, 'detailPelatihan']);
+Route::get('/notifikasi/sertifikasi/{id}/detail', [NotifikasiController::class, 'detailSertifikasi']);
 
