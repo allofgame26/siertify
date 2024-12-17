@@ -2,7 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\detailpelatihan;
 use App\Models\pelatihanmodel;
+use App\Models\periodemodel;
+use App\Models\pesertapelatihanmodel;
 use Illuminate\Support\Facades\DB;
 use Yajra\DataTables\Facades\DataTables;
 use Illuminate\Support\Facades\Validator;
@@ -27,127 +30,53 @@ class PengajuanPelatihanPimpinanController extends Controller
 
         $activeMenu = 'pengajuan'; //set menu yang sedang aktif
 
-        return view('pimpinan.pengajuan.index', ['breadcrumb' => $breadcrumb, 'page' => $page, 'activeMenu' => $activeMenu]);
+        $periode = periodemodel::select('id_periode','nama_periode')->get();
+
+        return view('pimpinan.pengajuan.index', ['breadcrumb' => $breadcrumb, 'page' => $page, 'activeMenu' => $activeMenu, 'periode' => $periode]);
     }
 
     public function list(Request $request)
     {
-        $pengajuan = pelatihanmodel::select('nama_pelatihan', 'tanggal_mulai', 'id_vendor_pelatihan', 'status_disetujui');
+        $pengajuan = detailpelatihan::select(
+            'id_detail_pelatihan',
+            'id_pelatihan',
+            'id_periode',
+            'id_user',
+            'tanggal_mulai',
+            'tanggal_selesai',
+            'lokasi',
+            'quota_peserta',
+            'biaya',
+            'no_pelatihan',
+            'status_disetujui',
+            'input_by',
+            'surat_tugas')
+            ->with('pelatihan','periode')->get();
+
 
         // Return data untuk DataTables
         return DataTables::of($pengajuan)
             ->addIndexColumn() // menambahkan kolom index / nomor urut
+            ->addColumn('nama_pelatihan', function ($pengajuan) {
+                return $pengajuan->pelatihan->nama_pelatihan ?? '';
+            })
+            ->addColumn('nama_periode', function ($pengajuan) {
+                return $pengajuan->periode->nama_periode ?? '';
+            })
+            ->addColumn('biaya_format', function ($pengajuan) {
+                return 'Rp' . number_format($pengajuan->biaya, 0, ',', '.') ?? ' ';
+            })
+            ->addColumn('status_disetujui', function ($pengajuan) {
+                return $pengajuan->status_disetujui ?? 'Belum Di Balas';
+            })
             ->addColumn('aksi', function ($pengajuan) {
-                $btn  = '<button onclick="modalAction(\''.url('/pengajuan/' . $pengajuan->id_pelatihan . '/show_ajax').'\')" class="btn btn-info btn-sm">Detail</button> '; 
-                $btn = '<button onclick="modalAction(\'' . url('/pengajuan/' . $pengajuan->id_pelatihan . '/edit_ajax') . '\')" class="btn btn-warning btn-sm"><i class="fa fa-pencil"></i>Edit</button> ';
-                $btn .= '<button onclick="modalAction(\'' . url('/pengajuan/' . $pengajuan->id_pelatihan . '/delete_ajax') . '\')" class="btn btn-danger btn-sm">Hapus</button> ';
+                $btn  = '<button onclick="modalAction(\''.url('/pengajuan/' . $pengajuan->id_detail_pelatihan . '/show').'\')" class="btn btn-info btn-sm">Pengajuan</button> '; 
 
                 return $btn;
             })
 
-
             ->rawColumns(['aksi']) // memberitahu bahwa kolom aksi berisi HTML
             ->make(true);
-    }
-
-    public function store_ajax(Request $request)
-    {
-        // cek apakah request berupa ajax
-        if ($request->ajax() || $request->wantsJson()) {
-            $rules = [
-                'nama_pelatihan' => 'required|string|min:3|max:50',
-                'tanggal_mulai' => 'required|string|min:1|max:255',
-                'id_vendor_pelatihan' => 'required|string|min:1|max:255',
-                'status_disetujui' => 'required|string|min:1|max:255',
-            ];
-            // use Illuminate\Support\Facades\Validator;
-            $validator = Validator::make($request->all(), $rules);
-
-            if ($validator->fails()) {
-                return response()->json([
-                    'status' => false, // response status, false: error/gagal, true: berhasil
-                    'message' => 'Validasi Gagal',
-                    'msgField' => $validator->errors() // pesan error validasi
-                ]);
-            }
-            pelatihanmodel::create($request->all());
-            return response()->json([
-                'status' => true,
-                'message' => 'Data Jenis berhasil disimpan'
-            ]);
-        }
-        return redirect('/');
-    }
-
-    public function edit_ajax(string $id)
-    {
-        $pengajauan = pelatihanmodel::find($id);
-        return view('pimpinan.pengajuan.edit', ['jenis' => $pengajauan]);
-    }
-
-    // 4. public function update_ajax(Request $request, $id)
-    public function update_ajax(Request $request, $id)
-    {
-        // cek apakah request dari ajax
-        if ($request->ajax() || $request->wantsJson()) {
-            $rules = [
-                'nama_pelatihan' => 'required|string|min:3|max:50',
-                'tanggal_mulai' => 'required|string|min:1|max:255',
-                'id_vendor_pelatihan' => 'required|string|min:1|max:30',
-                'status_disetujui' => 'required|string|min:1|max:5',
-            ];
-            // use Illuminate\Support\Facades\Validator;
-            $validator = Validator::make($request->all(), $rules);
-            if ($validator->fails()) {
-                return response()->json([
-                    'status' => false, // respon json, true: berhasil, false: gagal
-                    'message' => 'Validasi gagal.',
-                    'msgField' => $validator->errors() // menunjukkan field mana yang error
-                ]);
-            }
-            $check = pelatihanmodel::find($id);
-            if ($check) {
-                $check->update($request->all());
-                return response()->json([
-                    'status' => true,
-                    'message' => 'Data berhasil diupdate'
-                ]);
-            } else {
-                return response()->json([
-                    'status' => false,
-                    'message' => 'Data tidak ditemukan'
-                ]);
-            }
-        }
-        return redirect('/');
-    }
-
-    public function confirm_ajax(string $id)
-    {
-        $pengajauan = pelatihanmodel::find($id);
-        return view('pimpinan.pengajuan.confirm_delete', ['pengajuan' => $pengajauan]);
-    }
-
-    // 6. public function delete_ajax(Request $request, $id)
-    public function delete_ajax(Request $request, $id)
-    {
-        // cek apakah request dari ajax
-        if ($request->ajax() || $request->wantsJson()) {
-            $jenis = pelatihanmodel::find($id);
-            if ($jenis) {
-                $jenis->delete();
-                return response()->json([
-                    'status' => true,
-                    'message' => 'Data berhasil dihapus'
-                ]);
-            } else {
-                return response()->json([
-                    'status' => false,
-                    'message' => 'Data tidak ditemukan'
-                ]);
-            }
-        }
-        return redirect('/');
     }
 
     public function export_excel()
@@ -216,14 +145,51 @@ class PengajuanPelatihanPimpinanController extends Controller
         return $pdf->download('Data Peangajuan ' . date('Y-m-d H:i:s') . '.pdf');
     }
 
-     public function show_ajax(string $id) {
+     public function show(string $id) {
         // Cari barang berdasarkan id
-        $pengajuan = pelatihanmodel::find($id);
+        $pengajuan = detailpelatihan::select(
+            'id_detail_pelatihan',
+            'id_pelatihan',
+            'id_periode',
+            'id_user',
+            'tanggal_mulai',
+            'tanggal_selesai',
+            'lokasi',
+            'quota_peserta',
+            'biaya',
+            'no_pelatihan',
+            'status_disetujui',
+            'input_by',
+            'surat_tugas')
+            ->with('pelatihan','periode')->find($id);
     
+            $pelatihan = pelatihanmodel::select(
+                'id_pelatihan',
+                'nama_pelatihan',
+                'id_vendor_pelatihan',
+                'id_jenis_pelatihan_sertifikasi',
+                'level_pelatihan'
+                )->with('jenispelatihan','vendorpelatihan');
+    
+            $periode = periodemodel::select('id_periode','nama_periode');
+    
+            $mataKuliah = DB::table('t_tagging_mk_sertifikasi as tagmk')
+            ->join('m_mata_kuliah as mk', 'tagmk.id_mk', '=', 'mk.id_mk')
+            ->where('tagmk.id_sertifikasi', '=', $pengajuan->id_pelatihan)
+            ->pluck('mk.nama_mk')
+            ->toArray(); 
+    
+    
+        // Ambil mata kuliah terkait
+            $bidangMinat = DB::table('t_tagging_bd_sertifikasi as tagbd')
+            ->join('m_bidang_minat as bd', 'tagbd.id_bd', '=', 'bd.id_bd')
+            ->where('tagbd.id_sertifikasi', '=', $pengajuan->id_pelatihan)
+            ->pluck('bd.nama_bd')
+            ->toArray(); 
         // Periksa apakah barang ditemukan
         if ($pengajuan) {
             // Tampilkan halaman show_ajax dengan data barang
-            return view('pengajuan.show_ajax', ['pengajuan' => $pengajuan]);
+            return view('pimpinan.pengajuan.show', ['pengajuan' => $pengajuan, 'pelatihan' => $pelatihan, 'periode' => $periode , 'mataKuliah' => $mataKuliah, 'bidangMinat' => $bidangMinat]);
         } else {
             // Tampilkan pesan kesalahan jika barang tidak ditemukan
             return response()->json([
@@ -231,5 +197,21 @@ class PengajuanPelatihanPimpinanController extends Controller
                 'message' => 'Data tidak ditemukan'
             ]);
         }
+    }
+
+    public function showpeserta(Request $request,string $id){
+
+        $pesertapelatihan = pesertapelatihanmodel::select('id_user','id_detail_pelatihan')->with('akun')->where('id_detail_pelatihan','=', $id)->get();
+
+        // Return data untuk DataTables
+        return DataTables::of($pesertapelatihan)
+        ->addIndexColumn()
+        ->addColumn('nama_peserta', function ($pesertapelatihan) {
+            return $pesertapelatihan->akun->username ?? '';
+        })
+        // ->addColumn('nip', function ($pesertapelatihan) {
+        //     return $pesertapelatihan->akun->identitas->NIP ?? '';
+        // })
+        ->make(true);
     }
 }
