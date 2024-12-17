@@ -49,13 +49,6 @@
             @if (Auth::user()->getRole() == 'PMP')
                 <li class="nav-header">Kelola Pelatihan Sertifikasi</li>
                 <li class="nav-item">
-                    <a href="{{ url('/data-pelatihan-sertifikasi') }}"
-                        class="nav-link {{ $activeMenu == 'data-pelatihan-sertifikasi' ? 'active' : '' }} ">
-                        <i class="nav-icon 	fas fa-archive"></i>
-                        <p>Data Pelatihan & Sertifikasi Dosen</p>
-                    </a>
-                </li>
-                <li class="nav-item">
                     <a href="{{ url('/pengajuan') }}"
                         class="nav-link {{ $activeMenu == 'pengajuan' ? 'active' : '' }} ">
                         <i class="nav-icon 	fas fa-user-friends"></i>
@@ -122,14 +115,6 @@
 
             <!-- Fitur Admin -->
             @if (Auth::user()->getRole() == 'ADM')
-                <li class="nav-header">Data Pengguna</li>
-                <li class="nav-item">
-                    <a href="{{ url('/data-dosen') }}"
-                        class="nav-link {{ $activeMenu == 'data-dosen' ? 'active' : '' }} ">
-                        <i class="nav-icon fas fa-user-friends"></i>
-                        <p>Data Dosen</p>
-                    </a>
-                </li>
                 <li class="nav-header">Kelola Akademik</li>
                 <li class="nav-item">
                     <a href="{{ url('/periode') }}" class="nav-link {{ $activeMenu == 'periode' ? 'active' : '' }} ">

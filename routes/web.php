@@ -322,7 +322,8 @@ Route::get('/pengajuan/{id}/edit_ajax', [PengajuanPelatihanPimpinanController::c
 Route::put('/pengajuan/{id}/update_ajax', [PengajuanPelatihanPimpinanController::class,'update_ajax']);   //menyimpan halaman form edit jenis ajax
 Route::get('/pengajuan/export_excel', [PengajuanPelatihanPimpinanController::class, 'export_excel']);  //export excel
 Route::get('/pengajuan/export_pdf', [PengajuanPelatihanPimpinanController::class, 'export_pdf']); //export pdf
-Route::get('/{id}/show_ajax', [PengajuanPelatihanPimpinanController::class, 'show_ajax']); //show_ajax
+Route::get('/pengajuan/{id}/show', [PengajuanPelatihanPimpinanController::class, 'show']); //show_ajax
+Route::post('/pengajuan/{id}/showpeserta',[PengajuanPelatihanPimpinanController::class, 'showpeserta']);
 
 // jenis pelatihan dan sertifikasi
 Route::get('/sertifikasi', [PengajuanSertifikasiPimpinanController::class, 'index']);  // menampilkan halaman jenis

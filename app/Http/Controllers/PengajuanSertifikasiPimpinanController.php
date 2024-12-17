@@ -2,8 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\detailsertifikasi;
 use App\Models\pelatihanmodel;
 use App\Models\sertifikasimodel;
+use App\Models\periodemodel;
 use Illuminate\Support\Facades\DB;
 use Yajra\DataTables\Facades\DataTables;
 use Illuminate\Support\Facades\Validator;
@@ -28,24 +30,47 @@ class PengajuanSertifikasiPimpinanController extends Controller
 
         $activeMenu = 'sertifikasi'; //set menu yang sedang aktif
 
-        return view('pimpinan.pengajuan.sertifikasi.index', ['breadcrumb' => $breadcrumb, 'page' => $page, 'activeMenu' => $activeMenu]);
+        $periode = periodemodel::select('id_periode','nama_periode')->get();
+
+        return view('pimpinan.pengajuan.sertifikasi.index', ['breadcrumb' => $breadcrumb, 'page' => $page, 'activeMenu' => $activeMenu,'periode' => $periode]);
     }
 
     public function list(Request $request)
     {
-        $sertifikasi = sertifikasimodel::select('nama_sertifikasi', 'tanggal_mulai', 'id_vendor_sertifikasi', 'status_disetujui');
+        $pengajuan = detailsertifikasi::select(
+            'id_sertifikasi',
+            'id_periode',
+            'id_user',
+            'tanggal_mulai',
+            'tanggal_selesai',
+            'lokasi',
+            'quota_peserta',
+            'biaya',
+            'status_disetujui',
+            'input_by',)
+            ->with('sertifikasi','periode')->get();
+
 
         // Return data untuk DataTables
-        return DataTables::of($sertifikasi)
+        return DataTables::of($pengajuan)
             ->addIndexColumn() // menambahkan kolom index / nomor urut
-            ->addColumn('aksi', function ($sertifikasi) {
-                $btn  = '<button onclick="modalAction(\''.url('/sertifikasi/' . $sertifikasi->id_pelatihan . '/show_ajax').'\')" class="btn btn-info btn-sm">Detail</button> '; 
-                $btn = '<button onclick="modalAction(\'' . url('/sertifikasi/' . $sertifikasi->id_pelatihan . '/edit_ajax') . '\')" class="btn btn-warning btn-sm"><i class="fa fa-pencil"></i>Edit</button> ';
-                $btn .= '<button onclick="modalAction(\'' . url('/sertifikasi/' . $sertifikasi->id_pelatihan . '/delete_ajax') . '\')" class="btn btn-danger btn-sm">Hapus</button> ';
+            ->addColumn('nama_sertifikasi', function ($pengajuan) {
+                return $pengajuan->sertifikasi->nama_sertifikasi ?? '';
+            })
+            ->addColumn('nama_periode', function ($pengajuan) {
+                return $pengajuan->periode->nama_periode ?? '';
+            })
+            ->addColumn('biaya_format', function ($pengajuan) {
+                return 'Rp' . number_format($pengajuan->biaya, 0, ',', '.') ?? ' ';
+            })
+            ->addColumn('status_disetujui', function ($pengajuan) {
+                return $pengajuan->status_disetujui ?? 'Belum di Balas';
+            })
+            ->addColumn('aksi', function ($pengajuan) {
+                $btn  = '<button onclick="modalAction(\''.url('/pengajuan/' . $pengajuan->id_pelatihan . '/show_ajax').'\')" class="btn btn-info btn-sm">Pengajuan</button> '; 
 
                 return $btn;
             })
-
 
             ->rawColumns(['aksi']) // memberitahu bahwa kolom aksi berisi HTML
             ->make(true);
