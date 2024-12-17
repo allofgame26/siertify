@@ -385,6 +385,10 @@ class detailsertifikasicontroller extends Controller
         ->make(true);
     }
 
+    public function pengajuan( Request $request, string $id){
+        
+    }
+
     public function confirm($id){
 
         $detailsertifikasi = detailsertifikasi::select(
