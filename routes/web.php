@@ -317,13 +317,15 @@ Route::get('/pengajuan', [PengajuanPelatihanPimpinanController::class, 'index'])
 // jenis pelatihan dan sertifikasi
 Route::get('/pengajuan', [PengajuanPelatihanPimpinanController::class, 'index']);  // menampilkan halaman jenis
 Route::post('/pengajuan/list', [PengajuanPelatihanPimpinanController::class, 'list'] );    //menampilkan data jenis dalam bentuk json datatables
-Route::post('/pengajuan/ajax', [PengajuanPelatihanPimpinanController::class, 'store_ajax']); // Menyimpan data jenis baru Ajax 
-Route::get('/pengajuan/{id}/edit_ajax', [PengajuanPelatihanPimpinanController::class,'edit_ajax']); //menampilkan halaman form edit jenis ajax
-Route::put('/pengajuan/{id}/update_ajax', [PengajuanPelatihanPimpinanController::class,'update_ajax']);   //menyimpan halaman form edit jenis ajax
+Route::get('/pengajuan/pelatihan/{id}/show', [PengajuanPelatihanPimpinanController::class, 'show']);
+Route::post('/pengajuan/pelatihan/{id}/showpeserta',[PengajuanPelatihanPimpinanController::class, 'showpeserta']);
+Route::get('/pengajuan/sertifikasi/{id}/show', [PengajuanSertifikasiPimpinanController::class, 'show']);
+Route::post('/pengajuan/sertifikasi/{id}/showpeserta',[PengajuanSertifikasiPimpinanController::class, 'showpeserta']);
+Route::put('/pengajuan/pelatihan/{id}/update', [PengajuanPelatihanPimpinanController::class, 'update']);
+Route::put('/pengajuan/sertifikasi/{id}/update', [PengajuanSertifikasiPimpinanController::class, 'update']);
 Route::get('/pengajuan/export_excel', [PengajuanPelatihanPimpinanController::class, 'export_excel']);  //export excel
 Route::get('/pengajuan/export_pdf', [PengajuanPelatihanPimpinanController::class, 'export_pdf']); //export pdf
-Route::get('/pengajuan/{id}/show', [PengajuanPelatihanPimpinanController::class, 'show']); //show_ajax
-Route::post('/pengajuan/{id}/showpeserta',[PengajuanPelatihanPimpinanController::class, 'showpeserta']);
+
 
 // jenis pelatihan dan sertifikasi
 Route::get('/sertifikasi', [PengajuanSertifikasiPimpinanController::class, 'index']);  // menampilkan halaman jenis

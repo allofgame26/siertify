@@ -20,38 +20,38 @@ class PengajuanPelatihanPimpinanController extends Controller
     public function index()
     {
         $breadcrumb = (object)[
-            'title' => 'Data Penawaran Pelatihan & Sertifikasi ',
+            'title' => 'Data Penugasan Pelatihan & Sertifikasi ',
             'list' => ['Welcome', 'Pengajuan Pelatihan dan Sertifikasi Pimpinan']
         ];
 
         $page = (object)[
-            'title' => 'Penawaran Pelatihan  & Sertifikasi'
+            'title' => 'Penugasan Pelatihan  & Sertifikasi'
         ];
 
         $activeMenu = 'pengajuan'; //set menu yang sedang aktif
 
         $periode = periodemodel::select('id_periode','nama_periode')->get();
 
-        return view('pimpinan.pengajuan.index', ['breadcrumb' => $breadcrumb, 'page' => $page, 'activeMenu' => $activeMenu, 'periode' => $periode]);
+        return view('pimpinan.pengajuan.pelatihan.index', ['breadcrumb' => $breadcrumb, 'page' => $page, 'activeMenu' => $activeMenu, 'periode' => $periode]);
     }
 
     public function list(Request $request)
     {
-        $pengajuan = detailpelatihan::select(
-            'id_detail_pelatihan',
-            'id_pelatihan',
-            'id_periode',
-            'id_user',
-            'tanggal_mulai',
-            'tanggal_selesai',
-            'lokasi',
-            'quota_peserta',
-            'biaya',
-            'no_pelatihan',
-            'status_disetujui',
-            'input_by',
-            'surat_tugas')
-            ->with('pelatihan','periode')->get();
+
+        $pengajuan = detailpelatihan::join(
+            'm_pelatihan as pelatihan',
+            'pelatihan.id_pelatihan', '=' , 't_detailpelatihan.id_pelatihan'
+        )->join(
+            'm_periode as periode',
+            'periode.id_periode', '=', 't_detailpelatihan.id_periode'
+        )->select(
+            'pelatihan.*',
+            't_detailpelatihan.*',
+            'periode.nama_periode'
+        )
+        ->where(
+            't_detailpelatihan.input_by', '=', 'admin'
+        )->get();
 
 
         // Return data untuk DataTables
@@ -70,7 +70,7 @@ class PengajuanPelatihanPimpinanController extends Controller
                 return $pengajuan->status_disetujui ?? 'Belum Di Balas';
             })
             ->addColumn('aksi', function ($pengajuan) {
-                $btn  = '<button onclick="modalAction(\''.url('/pengajuan/' . $pengajuan->id_detail_pelatihan . '/show').'\')" class="btn btn-info btn-sm">Pengajuan</button> '; 
+                $btn  = '<button onclick="modalAction(\''.url('/pengajuan/pelatihan/' . $pengajuan->id_detail_pelatihan . '/show').'\')" class="btn btn-info btn-sm">Pengajuan</button> '; 
 
                 return $btn;
             })
@@ -145,58 +145,68 @@ class PengajuanPelatihanPimpinanController extends Controller
         return $pdf->download('Data Peangajuan ' . date('Y-m-d H:i:s') . '.pdf');
     }
 
-     public function show(string $id) {
-        // Cari barang berdasarkan id
-        $pengajuan = detailpelatihan::select(
-            'id_detail_pelatihan',
-            'id_pelatihan',
-            'id_periode',
-            'id_user',
-            'tanggal_mulai',
-            'tanggal_selesai',
-            'lokasi',
-            'quota_peserta',
-            'biaya',
-            'no_pelatihan',
-            'status_disetujui',
-            'input_by',
-            'surat_tugas')
-            ->with('pelatihan','periode')->find($id);
-    
-            $pelatihan = pelatihanmodel::select(
-                'id_pelatihan',
-                'nama_pelatihan',
-                'id_vendor_pelatihan',
-                'id_jenis_pelatihan_sertifikasi',
-                'level_pelatihan'
-                )->with('jenispelatihan','vendorpelatihan');
-    
-            $periode = periodemodel::select('id_periode','nama_periode');
-    
-            $mataKuliah = DB::table('t_tagging_mk_sertifikasi as tagmk')
-            ->join('m_mata_kuliah as mk', 'tagmk.id_mk', '=', 'mk.id_mk')
-            ->where('tagmk.id_sertifikasi', '=', $pengajuan->id_pelatihan)
-            ->pluck('mk.nama_mk')
-            ->toArray(); 
-    
-    
+    public function show(string $id)
+    {
+        // Ambil data sertifikasi
+        $pelatihan = detailpelatihan::join(
+            'm_pelatihan as pelatihan',
+            'pelatihan.id_pelatihan', '=', 't_detailpelatihan.id_pelatihan'
+        )->join(
+            'm_vendor_pelatihan as vendor',
+            'pelatihan.id_vendor_pelatihan', '=', 'vendor.id_vendor_pelatihan'
+        )->join(
+            'm_jenis_pelatihan_sertifikasi as j',
+            'j.id_jenis_pelatihan_sertifikasi', '=', 'pelatihan.id_jenis_pelatihan_sertifikasi'
+        )->join(
+            'm_periode as periode',
+            'periode.id_periode', '=', 't_detailpelatihan.id_periode'
+        )->join(
+            't_peserta_pelatihan as p',
+            'p.id_detail_pelatihan', '=', 't_detailpelatihan.id_detail_pelatihan'
+        )->select(
+            'pelatihan.*',
+            'vendor.*',
+            'j.*',
+            'periode.*',
+            't_detailpelatihan.*',
+            'p.*'
+        )->where(
+            't_detailpelatihan.id_detail_pelatihan', '=', $id
+        )->first();
+
         // Ambil mata kuliah terkait
-            $bidangMinat = DB::table('t_tagging_bd_sertifikasi as tagbd')
+        $mataKuliah = DB::table('t_tagging_mk_pelatihan as tagmk')
+            ->join('m_mata_kuliah as mk', 'tagmk.id_mk', '=', 'mk.id_mk')
+            ->where('tagmk.id_pelatihan', '=', $pelatihan->id_pelatihan)
+            ->get();
+
+        $mataKuliah = $mataKuliah->pluck('nama_mk')->toArray();
+
+        // Ambil mata kuliah terkait
+        $bidangMinat = DB::table('t_tagging_bd_pelatihan as tagbd')
             ->join('m_bidang_minat as bd', 'tagbd.id_bd', '=', 'bd.id_bd')
-            ->where('tagbd.id_sertifikasi', '=', $pengajuan->id_pelatihan)
+            ->where('tagbd.id_pelatihan', '=', $pelatihan->id_pelatihan)
             ->pluck('bd.nama_bd')
-            ->toArray(); 
-        // Periksa apakah barang ditemukan
-        if ($pengajuan) {
-            // Tampilkan halaman show_ajax dengan data barang
-            return view('pimpinan.pengajuan.show', ['pengajuan' => $pengajuan, 'pelatihan' => $pelatihan, 'periode' => $periode , 'mataKuliah' => $mataKuliah, 'bidangMinat' => $bidangMinat]);
-        } else {
-            // Tampilkan pesan kesalahan jika barang tidak ditemukan
-            return response()->json([
-                'status' => false,
-                'message' => 'Data tidak ditemukan'
-            ]);
-        }
+            ->toArray();
+
+        $peserta = detailpelatihan::join(
+            't_peserta_pelatihan as p',
+            'p.id_detail_pelatihan', '=', 't_detailpelatihan.id_detail_pelatihan'
+        )->join(
+            'm_akun_user as us',
+            'us.id_user', '=', 'p.id_user'
+        )->join(
+            'm_identitas_diri as id',
+            'id.id_identitas', '=', 'us.id_identitas'
+        )
+            ->select(
+                'id.nama_lengkap',
+                'id.NIP'
+            )->where(
+            't_detailpelatihan.id_detail_pelatihan', '=', $id
+        )->get();
+
+        return view('pimpinan.pengajuan.pelatihan.show', compact('mataKuliah', 'bidangMinat', 'pelatihan', 'peserta'));
     }
 
     public function showpeserta(Request $request,string $id){
@@ -214,4 +224,34 @@ class PengajuanPelatihanPimpinanController extends Controller
         // })
         ->make(true);
     }
+
+    public function update(Request $request, string $id)
+    {
+    
+        try {
+            // Cari record detail berdasarkan ID
+            $detailPelatihan = detailpelatihan::findOrFail($id); // Ganti DetailPelatihan dengan model tabel detail Anda
+    
+            // Update record dengan input dari form
+            $detailPelatihan->update([
+                'status_disetujui' => 'iya', // Tetapkan langsung nilai 'iya'
+                'updated_at' => now(), // Update waktu terakhir
+            ]);
+
+
+     return response()->json([
+            'status' => true,
+            'message' => 'Data berhasil diupdate',
+        ]);
+
+        return redirect('/');
+
+        } catch (\Exception $e) {
+            // Tangani error jika terjadi
+            return redirect()->back()->with('error', 'Gagal memperbarui data: ' . $e->getMessage());
+        }
+    }
+    
+
+
 }
