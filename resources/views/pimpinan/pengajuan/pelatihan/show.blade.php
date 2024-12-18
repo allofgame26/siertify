@@ -1,4 +1,4 @@
-@empty($pengajuan)
+@empty($pelatihan)
     <div id="modal-master" class="modal-dialog modal-lg" role="document">
         <div class="modal-content">
             <div class="modal-header bg-warning">
@@ -17,79 +17,100 @@
         </div>
     </div>
 @else
-    <form action="" method="POST" id="form-show">
+    <form action="{{ url('/pengajuan/pelatihan/'. $pelatihan->id_detail_pelatihan . '/update') }}" method="POST" id="form-show">
         @csrf
         @method('PUT')
         <div id="modal-master" class="modal-dialog modal-lg" role="document">
             <div class="modal-content">
                 <div class="modal-header bg-info">
-                    <h5 class="modal-title" id="exampleModalLabel">Detail pelatihan</h5>
+                    <h5 class="modal-title" id="exampleModalLabel">Penugasan Pelatihan</h5>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
+                        <span>&times;</span>
                     </button>
                 </div>
                 <div class="modal-body">
-                    <h5>Data pelatihan</h5>
-                    <div class="form-group">
-                        <label>Nama pelatihan</label>
-                        <input value="{{ $pengajuan->pelatihan->nama_pelatihan }}" type="text" name="nama_pelatihan" id="nama_pelatihan"
-                            class="form-control" readonly>
+                    <div>
+                        <p>Detail Pelatihan</p>
                     </div>
                     <div class="form-group">
-                        <label>Vendor</label>
-                        <input value="{{ $pengajuan->pelatihan->vendorpelatihan->nama_vendor_pelatihan }}" type="text" name="id_vendor_pelatihan" id="id_vendor_pelatihan"
-                            class="form-control" readonly>
+                        <label>Nama Pelatihan</label>
+                        <input value="{{ $pelatihan->nama_pelatihan }}" type="text" name="nama_pelatihan"
+                            id="nama_pelatihan" class="form-control" placeholder="" readonly>
+                        <small id="error-nama_nama_pelatihan" class="error-text form-text text-danger"></small>
                     </div>
                     <div class="form-group">
-                        <label>Jenis pelatihan</label>
-                        <input value="{{ $pengajuan->pelatihan->jenispelatihan->nama_jenis_sertifikasi }}" type="text" name="id_jenis_pelatihan_sertifikasi" id="id_jenis_pelatihan_sertifikasi"
-                            class="form-control" readonly>
+                        <label>Vendor Pelatihan</label>
+                        <input value="{{ $pelatihan->nama_vendor_pelatihan }}" type="text" name="nama_vendor_pelatihan"
+                            id="nama_vendor_pelatihan" class="form-control" placeholder="" readonly>
+                        <small id="error-nama_nama_vendor_pelatihan" class="error-text form-text text-danger"></small>
                     </div>
-                    <div class="form-group">
-                        <label> Level Sertifikat</label>   
-                        <input value="{{ $pengajuan->pelatihan->level_pelatihan }}" type="text" name="level_pelatihan" id="level_pelatihan"
-                            class="form-control" placeholder="Enter Username" readonly>
-                        <small id="error-username" class="error-text form-text text-danger"></small>
-                    </div>
-
-                    <!-- Jadwal Pelatihan -->
-                    <div class="mb-4">
-                        <h5>Jadwal Pelatihan</h5>
-                        <div class="row">
-                            <div class="col-md-4">
-                                <div class="form-group">
-                                    <label>Periode</label>
-                                    <input value="{{ $pengajuan->periode->nama_periode }}" type="text" name="id_periode" id="id_periode"
-                                    class="form-control" readonly>
-                                </div>
+                    <div class="row">
+                        <div class="col-6">
+                            <div class="form-group">
+                                <label>Level Pelatihan</label>
+                                <input value="{{ $pelatihan->level_pelatihan }}" type="text" name="level_pelatihan"
+                                    id="level_pelatihan" class="form-control" placeholder="" readonly>
+                                <small id="error-level_pelatihan" class="error-text form-text text-danger"></small>
                             </div>
-                            <div class="col-md-4">
-                                <div class="form-group">
-                                    <label>Tanggal Mulai</label>
-                                    <input value="{{ $pengajuan->tanggal_mulai }}"  type="date" name="tanggal_mulai" id="tanggal_mulai" class="form-control" readonly>
-                                </div>
-                            </div>
-                            <div class="col-md-4">
-                                <div class="form-group">
-                                    <label>Tanggal Selesai</label>
-                                    <input value="{{ $pengajuan->periode->tanggal_selesai }}" type="date" name="tanggal_selesai" id="tanggal_selesai" class="form-control" readonly>
-                                </div>
+                        </div>
+                        <div class="col-6">
+                            <div class="form-group">
+                                <label>Jenis Pelatihan</label>
+                                <input value="{{ $pelatihan->nama_jenis_sertifikasi }}" type="text"
+                                    name="jenis_pelatihan" id="jenis_pelatihan" class="form-control" placeholder=""
+                                    readonly>
+                                <small id="error-jenis_pelatihan" class="error-text form-text text-danger"></small>
                             </div>
                         </div>
                     </div>
-                    <div class="form-group">
-                        <label>lokasi</label>
-                        <input value="{{ $pengajuan->lokasi }}" type="text" name="lokasi" id="lokasi" class="form-control" readonly>
+                    <div class="row">
+                        <div class="col-6">
+                            <div class="form-group">
+                                <label>Biaya Pelatihan</label>
+                                <input value="{{ $pelatihan->biaya }}" type="number" name="biaya" id="biaya"
+                                    class="form-control" placeholder="Enter biaya pelatihan" readonly>
+                                <small id="error-biaya" class="error-text form-text text-danger"></small>
+                            </div>
+                        </div>
+                        <div class="col-6">
+                            <div class="form-group">
+                                <label>Lokasi Pelatihan</label>
+                                <input value="{{ $pelatihan->lokasi }}" type="text" name="lokasi" id="lokasi"
+                                    class="form-control" placeholder="Enter lokasi pelatihan" readonly>
+                                <small id="error-lokasi" class="error-text form-text text-danger"></small>
+                            </div>
+                        </div>
                     </div>
-                    <div class="form-group">
-                        <label>Quota Peserta</label>
-                        <input value="{{ $pengajuan->quota_peserta }}" type="text" name="quota_peserta" id="quota_peserta" class="form-control" readonly>
+                    <p>Jadwal Pelatihan</p>
+                    <div class="row">
+                        <div class="col-4">
+                            <div class="form-group">
+                                <label>Periode</label>
+                                <input value="{{ $pelatihan->nama_periode }}" type="text" name="nama_periode"
+                                    id="nama_periode" class="form-control" placeholder="Enter nama_periode pelatihan"
+                                    readonly>
+                                <small id="error-nama_periode" class="error-text form-text text-danger"></small>
+                            </div>
+                        </div>
+                        <div class="col-4">
+                            <div class="form-group">
+                                <label>Tanggal Mulai</label>
+                                <input value="{{ $pelatihan->tanggal_mulai }}" type="text" name="tanggal_mulai"
+                                    id="tanggal_mulai" class="form-control" readonly>
+                                <small id="error-tanggal_mulai" class="error-text form-text text-danger"></small>
+                            </div>
+    
+                        </div>
+                        <div class="col-4">
+                            <div class="form-group">
+                                <label>Tanggal Selesai</label>
+                                <input value="{{ $pelatihan->tanggal_selesai }}" type="text" name="tanggal_selesai"
+                                    id="tanggal_selesai" class="form-control" readonly>
+                                <small id="error-tanggal_selesai" class="error-text form-text text-danger"></small>
+                            </div>
+                        </div>
                     </div>
-                    <div class="form-group">
-                        <label>Biaya</label>
-                        <input value="{{ $pengajuan->biaya }}" type="number" name="biaya" id="biaya" class="form-control" readonly>
-                    </div>
-
+    
                     <div>
                         <p>Kategori Pelatihan</p>
                     </div>
@@ -122,20 +143,39 @@
                             @endforeach
                         @endif
                     </div>
-
-                    <table class="table table-bordered table-striped table-hover table-sm" id="table-pelatihan">
-                        <thead>
-                            <tr>
-                                <th>No</th>
-                                <th>Akun Dosen</th>
-                            </tr>
-                        </thead>
-                        <Tbody></Tbody>
-                    </table>
-
+    
+                    <div>
+                        <p>Peserta Pelatihan</p>
+                    </div>
+                    <div class="scrollable-table">
+                        <table class="table table-bordered table-striped table-hover table-sm">
+                            <thead>
+                                <tr>
+                                    <th>No</th>
+                                    <th>Nama</th>
+                                    <th>NIP</th>
+                                </tr>
+                            </thead>
+                            <TBody>
+                                @foreach ($peserta as $index => $p)
+                                    <tr>
+                                        <td>{{ $index + 1 }}</td>
+                                        <td>{{ $p->nama_lengkap }}</td>
+                                        <td>{{ $p->NIP }}</td>
+                                    </tr>
+                                @endforeach
+                            </TBody>
+    
+                        </table>
+                    </div>
+    
+    
+                    <input type="hidden" name="input_by" value="{{ Auth::user()->getRole() == 'DSN' ? 'dosen' : '' }}">
+    
                 </div>
                 <div class="modal-footer">
                     <button type="button" data-dismiss="modal" class="btn btn-warning">Kembali</button>
+                    <button type="submit" class="btn btn-success">Setujui</button>
                 </div>
             </div>
         </div>
@@ -214,65 +254,17 @@
     </style>
     <script>
 
-var tableDetail;
-        $(document).ready(function() {
-            tableDetail = $('#table-pelatihan').DataTable({
-                autoWidth: false,
-                serverSide: true,
-                ajax: {
-                    "url": "{{ url('/pengajuan/' . $pengajuan->id_detail_pelatihan . '/showpeserta') }}",
-                    "dataType": "json",
-                    "type": "POST",
-                    "headers": {
-                        "X-CSRF-TOKEN": "{{ csrf_token() }}"
-                    },
-                    dataSrc: function (json) {
-                        console.log(json); // Memeriksa data yang diterima
-                        return json.data;
-                    }
-                },
-                columns: [{
-                    // nomor urut dari laravel datatable addIndexColumn()
-                    data: "DT_RowIndex",
-                    className: "text-center",
-                    orderable: false,
-                    searchable: false
-                }, {
-                    data: "nama_peserta",
-                    className: "",
-                    orderable: true,
-                    searchable: true
-                },
-                // {
-                // // },{
-                // //     data: "nip",
-                // //     className: "",
-                // //     orderable: true,
-                // //     searchable: true
-                // // },{
-                //     data: "aksi",
-                //     className: "",
-                //     orderable: false,
-                //     searchable: false
-                // }
-                ],
-            });
-        });
-
         $(document).ready(function() {
             $("#form-show").validate({
                 rules: {
                     nama_pelatihan: {
                     required: true,
-                    number: true // Validasi tipe integer
                 },
                 id_vendor_pelatihan: {
                     required: true,
-                    number: true // Validasi tipe integer
                 },
                 id_jenis_pelatihan_sertifikasi: {
                     required: true,
-                    number: true // Validasi tipe integer
                 },
                 level_pelatihan: {
                     required: true,

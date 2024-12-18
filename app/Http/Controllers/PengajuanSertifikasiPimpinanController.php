@@ -37,18 +37,21 @@ class PengajuanSertifikasiPimpinanController extends Controller
 
     public function list(Request $request)
     {
-        $pengajuan = detailsertifikasi::select(
-            'id_sertifikasi',
-            'id_periode',
-            'id_user',
-            'tanggal_mulai',
-            'tanggal_selesai',
-            'lokasi',
-            'quota_peserta',
-            'biaya',
-            'status_disetujui',
-            'input_by',)
-            ->with('sertifikasi','periode')->get();
+  
+        $pengajuan = detailsertifikasi::join(
+            'm_sertifikasi as sertifikasi',
+            'sertifikasi.id_sertifikasi', '=' , 't_detailsertifikasi.id_sertifikasi'
+        )->join(
+            'm_periode as periode',
+            'periode.id_periode', '=', 't_detailsertifikasi.id_periode'
+        )->select(
+            'sertifikasi.*',
+            't_detailsertifikasi.*',
+            'periode.nama_periode'
+        )
+        ->where(
+            't_detailsertifikasi.input_by', '=', 'admin'
+        )->get();
 
 
         // Return data untuk DataTables
@@ -67,7 +70,7 @@ class PengajuanSertifikasiPimpinanController extends Controller
                 return $pengajuan->status_disetujui ?? 'Belum di Balas';
             })
             ->addColumn('aksi', function ($pengajuan) {
-                $btn  = '<button onclick="modalAction(\''.url('/pengajuan/' . $pengajuan->id_pelatihan . '/show_ajax').'\')" class="btn btn-info btn-sm">Pengajuan</button> '; 
+                $btn  = '<button onclick="modalAction(\''.url('/pengajuan/' . $pengajuan->id_pelatihan . '/show').'\')" class="btn btn-info btn-sm">Pengajuan</button> '; 
 
                 return $btn;
             })

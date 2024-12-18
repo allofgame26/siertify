@@ -1,4 +1,4 @@
-@empty($detailsertifikasi)
+@empty($pengajuan)
     <div id="modal-master" class="modal-dialog modal-lg" role="document">
         <div class="modal-content">
             <div class="modal-header bg-warning">
@@ -10,9 +10,9 @@
             <div class="modal-body">
                 <div class="alert alert-danger">
                     <h5><i class="icon fas fa-ban"></i> Kesalahan!!!</h5>
-                    Data Detail Sertifikasi yang anda cari tidak ditemukan
+                    Data Detail sertifikasi yang anda cari tidak ditemukan
                 </div>
-                <a href="{{ url('/detailsertifikasi') }}" class="btn btn-info">Kembali</a>
+                <a href="{{ url('/pengajuan') }}" class="btn btn-info">Kembali</a>
             </div>
         </div>
     </div>
@@ -29,65 +29,65 @@
                     </button>
                 </div>
                 <div class="modal-body">
-                    <h5>Data Sertifikasi</h5>
+                    <h5>Data sertifikasi</h5>
                     <div class="form-group">
-                        <label>Nama Sertifikasi</label>
-                        <input value="{{ $detailsertifikasi->sertifikasi->nama_sertifikasi }}" type="text" name="nama_sertifikasi" id="nama_sertifikasi"
+                        <label>Nama sertifikasi</label>
+                        <input value="{{ $pengajuan->sertifikasi->nama_sertifikasi }}" type="text" name="nama_sertifikasi" id="nama_sertifikasi"
                             class="form-control" readonly>
                     </div>
                     <div class="form-group">
                         <label>Vendor</label>
-                        <input value="{{ $detailsertifikasi->sertifikasi->vendorsertifikasi->nama_vendor_sertifikasi }}" type="text" name="id_vendor_sertifikasi" id="id_vendor_sertifikasi"
+                        <input value="{{ $pengajuan->sertifikasi->vendorsertifikasi->nama_vendor_sertifikasi }}" type="text" name="id_vendor_sertifikasi" id="id_vendor_sertifikasi"
                             class="form-control" readonly>
                     </div>
                     <div class="form-group">
-                        <label>Jenis Sertifikasi</label>
-                        <input value="{{ $detailsertifikasi->sertifikasi->jenissertifikasi->nama_jenis_sertifikasi }}" type="text" name="id_jenis_pelatihan_sertifikasi" id="id_jenis_pelatihan_sertifikasi"
+                        <label>Jenis sertifikasi</label>
+                        <input value="{{ $pengajuan->sertifikasi->jenissertifikasi->nama_jenis_sertifikasi }}" type="text" name="id_jenis_sertifikasi_sertifikasi" id="id_jenis_sertifikasi_sertifikasi"
                             class="form-control" readonly>
                     </div>
                     <div class="form-group">
                         <label> Level Sertifikat</label>   
-                        <input value="{{ $detailsertifikasi->sertifikasi->level_sertifikasi }}" type="text" name="level_sertifikasi" id="level_sertifikasi"
+                        <input value="{{ $pengajuan->sertifikasi->level_sertifikasi }}" type="text" name="level_sertifikasi" id="level_sertifikasi"
                             class="form-control" placeholder="Enter Username" readonly>
                         <small id="error-username" class="error-text form-text text-danger"></small>
                     </div>
 
                     <!-- Jadwal Pelatihan -->
                     <div class="mb-4">
-                        <h5>Jadwal Pelatihan</h5>
+                        <h5>Jadwal Sertifikasi</h5>
                         <div class="row">
                             <div class="col-md-4">
                                 <div class="form-group">
                                     <label>Periode</label>
-                                    <input value="{{ $detailsertifikasi->periode->nama_periode }}" type="text" name="id_periode" id="id_periode"
+                                    <input value="{{ $pengajuan->periode->nama_periode }}" type="text" name="id_periode" id="id_periode"
                                     class="form-control" readonly>
                                 </div>
                             </div>
                             <div class="col-md-4">
                                 <div class="form-group">
                                     <label>Tanggal Mulai</label>
-                                    <input value="{{ $detailsertifikasi->tanggal_mulai }}"  type="date" name="tanggal_mulai" id="tanggal_mulai" class="form-control" readonly>
+                                    <input value="{{ $pengajuan->tanggal_mulai }}"  type="date" name="tanggal_mulai" id="tanggal_mulai" class="form-control" readonly>
                                 </div>
                             </div>
                             <div class="col-md-4">
                                 <div class="form-group">
                                     <label>Tanggal Selesai</label>
-                                    <input value="{{ $detailsertifikasi->periode->tanggal_selesai }}" type="date" name="tanggal_selesai" id="tanggal_selesai" class="form-control" readonly>
+                                    <input value="{{ $pengajuan->periode->tanggal_selesai }}" type="date" name="tanggal_selesai" id="tanggal_selesai" class="form-control" readonly>
                                 </div>
                             </div>
                         </div>
                     </div>
                     <div class="form-group">
-                        <label>lokasi</label>
-                        <input value="{{ $detailsertifikasi->lokasi }}" type="text" name="lokasi" id="lokasi" class="form-control" readonly>
+                        <label>Lokasi</label>
+                        <input value="{{ $pengajuan->lokasi }}" type="text" name="lokasi" id="lokasi" class="form-control" readonly>
                     </div>
                     <div class="form-group">
                         <label>Quota Peserta</label>
-                        <input value="{{ $detailsertifikasi->quota_peserta }}" type="text" name="quota_peserta" id="quota_peserta" class="form-control" readonly>
+                        <input value="{{ $pengajuan->quota_peserta }}" type="text" name="quota_peserta" id="quota_peserta" class="form-control" readonly>
                     </div>
                     <div class="form-group">
                         <label>Biaya</label>
-                        <input value="{{ $detailsertifikasi->biaya }}" type="number" name="biaya" id="biaya" class="form-control" readonly>
+                        <input value="{{ $pengajuan->biaya }}" type="number" name="biaya" id="biaya" class="form-control" readonly>
                     </div>
 
                     <div>
@@ -220,7 +220,7 @@ var tableDetail;
                 autoWidth: false,
                 serverSide: true,
                 ajax: {
-                    "url": "{{ url('/detailsertifikasi/' . $detailsertifikasi->id_detail_sertifikasi . '/showpeserta') }}",
+                    "url": "{{ url('/pengajuan/pelatihan/' . $pengajuan->id_detail_pelatihan . '/showpeserta') }}",
                     "dataType": "json",
                     "type": "POST",
                     "headers": {
@@ -262,11 +262,11 @@ var tableDetail;
         $(document).ready(function() {
             $("#form-show").validate({
                 rules: {
-                    nama_sertifikasi: {
+                    nama_pelatihan: {
                     required: true,
                     number: true // Validasi tipe integer
                 },
-                id_vendor_sertifikasi: {
+                id_vendor_pelatihan: {
                     required: true,
                     number: true // Validasi tipe integer
                 },
@@ -274,7 +274,7 @@ var tableDetail;
                     required: true,
                     number: true // Validasi tipe integer
                 },
-                level_sertifikasi: {
+                level_pelatihan: {
                     required: true,
                     minlength: 5,
                     maxlength: 20,
@@ -315,8 +315,8 @@ var tableDetail;
                                     text: response.message
                                 }).then(function() {
                                     // Reload halaman atau update data setelah Swal ditutup
-                                    if (typeof tablesertifikasi !== 'undefined') {
-                                        tablesertifikasi.ajax
+                                    if (typeof tablepelatihan !== 'undefined') {
+                                        tablepelatihan.ajax
                                             .reload(); // Reload data table jika ada
                                     } else {
                                         location
